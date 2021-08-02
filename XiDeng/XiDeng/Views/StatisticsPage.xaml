@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.StatisticsPage"
+             Title="统计"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             BackgroundColor="#24262b" >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Gray"/>
+                <Setter Property="CornerRadius" Value="8"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="HeightRequest" Value="140" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="WidthRequest" Value="180" />
+            </Style>
+            <Style TargetType="Grid">
+                <Setter Property="Padding" Value="5" />
+            </Style>
+            <Style TargetType="Image">
+                <Setter Property="Margin" Value="-5" />
+                <Setter Property="Source" Value="{Binding StatisticsBackImage}" />
+                <Setter Property="Aspect" Value="Fill" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid RowDefinitions="150,150,150,*" ColumnDefinitions="*,*" ColumnSpacing="8" RowSpacing="8" >
+                <!-- 锻炼总时长 -->
+                <Frame>
+                    <Grid>
+                        <!-- background image -->
+                        <Image/>
+                        <!-- title -->
+                        <Label Text="锻炼总时长" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" HorizontalOptions="Center"  HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding ExerciseTotal}" FontSize="40"/>
+                                    <Span Text="小时" FontSize="15"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+                <!-- 今日锻炼时长 -->
+                <Frame Grid.Row="0" Grid.Column="1">
+                    <Grid>
+                        <!-- background image -->
+                        <Image/>
+                        <Label Text="今日锻炼时长" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" HorizontalOptions="Center"   HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding ExerciseToDay}" FontSize="40"/>
+                                    <Span Text="分钟" FontSize="15"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+                <!-- 锻炼天数 -->
+                <Frame Grid.Row="1" Grid.Column="0">
+                    <Grid>
+                        <!-- background image -->
+                        <Image />
+                        <Label Text="锻炼天数" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" HorizontalOptions="Center"  HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding ExerciseTotalDayCount}" FontSize="40"/>
+                                    <Span Text="天" FontSize="15"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+                <!-- 已经连续锻炼天数 -->
+                <Frame Grid.Row="1" Grid.Column="1">
+                    <Grid>
+                        <!-- background image -->
+                        <Image />
+                        <Label Text="连续锻炼天数" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" HorizontalOptions="Center"  HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding ContinuousExerciseDays}" FontSize="40"/>
+                                    <Span Text="天" FontSize="15"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+                <!-- 连续锻炼天数记录 -->
+                <Frame Grid.Row="2" Grid.Column="0">
+                    <Grid>
+                        <!-- background image -->
+                        <Image />
+                        <Label Text="最高连续锻炼天数" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" HorizontalOptions="Center"  HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding MaxContinuousExerciseDays}" FontSize="40"/>
+                                    <Span Text="天" FontSize="15"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+                <!-- 锻炼组数 -->
+                <Frame Grid.Row="2" Grid.Column="1">
+                    <Grid>
+                        <!-- background image -->
+                        <Image />
+                        <Label Text="锻炼组数" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding ExerciseGroupCount}" FontSize="40"/>
+                                    <Span Text="组" FontSize="15"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+                <!-- 六艺十式共完成了多少次 -->
+                <Frame Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" WidthRequest="385" HeightRequest="300">
+                    <Grid>
+                        <!-- background image -->
+                        <Image />
+                        <Label Text="六艺十式" HorizontalOptions="Start" VerticalOptions="Start" FontSize="18" />
+                        <!-- content -->
+                        <Label VerticalOptions="End" Text=" 次&#10;引体向上 100次" HorizontalOptions="Center" FontSize="30" >
+
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="俯卧撑      " FontSize="18"/>
+                                    <Span Text="{Binding Skill1Count}" FontSize="30"/>
+                                    <Span Text="次" FontSize="18"/>
+                                    <Span Text="&#10;" FontSize="18"/>
+
+                                    <Span Text="深蹲          " FontSize="18"/>
+                                    <Span Text="{Binding Skill2Count}" FontSize="30"/>
+                                    <Span Text="次" FontSize="18"/>
+                                    <Span Text="&#10;" FontSize="18"/>
+
+                                    <Span Text="引体向上  " FontSize="18"/>
+                                    <Span Text="{Binding Skill3Count}" FontSize="30"/>
+                                    <Span Text="次" FontSize="18"/>
+                                    <Span Text="&#10;" FontSize="18"/>
+
+                                    <Span Text="举腿          " FontSize="18"/>
+                                    <Span Text="{Binding Skill4Count}" FontSize="30"/>
+                                    <Span Text="次" FontSize="18"/>
+                                    <Span Text="&#10;" FontSize="18"/>
+
+                                    <Span Text="桥              " FontSize="18"/>
+                                    <Span Text="{Binding Skill5Count}" FontSize="30"/>
+                                    <Span Text="次" FontSize="18"/>
+                                    <Span Text="&#10;" FontSize="18"/>
+
+                                    <Span Text="倒立撑      " FontSize="18"/>
+                                    <Span Text="{Binding Skill6Count}" FontSize="30"/>
+                                    <Span Text="次" FontSize="18"/>
+                                    <Span Text="&#10;" FontSize="18"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.ExerciseDateDetailPage"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Padding="5"
+            BackgroundColor="#24262b"
+             >
+    <ContentPage.Content>
+        <CollectionView x:Name="cvExerciseDateLogs" ItemsSource="{Binding ExerciseLogs}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label FontSize="18" TextColor="White">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.ExerciseProjectTappedCommand,Source={x:Reference cvExerciseDateLogs}}" CommandParameter="{Binding ID}"/>
+                        </Label.GestureRecognizers>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding SkillName}" />
+                                <Span Text="-"/>
+                                <Span Text="{Binding StyleName}" />
+                                <Span Text="   "/>
+                                <Span Text="{Binding ExerciseStandard}" FontSize="16" TextColor="Gray"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="{Binding Feeling}" FontSize="16" TextColor="Gray"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

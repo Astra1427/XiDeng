@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.StylePage"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Title="{Binding Skill.Name}">
+    <ContentPage.Resources>
+        <Style TargetType="Frame">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HeightRequest" Value="150"/>
+            <Setter Property="BackgroundColor" Value="Black"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding SkillStyles}">
+            <CollectionView.ItemsLayout>
+                
+                <LinearItemsLayout ItemSpacing="8" Orientation="Vertical"/>
+
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame>
+                        <Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SkillStyleCommand}"/>
+                            </Grid.GestureRecognizers>
+                            <Label IsVisible="False" Text="{Binding ID}"/>
+                            <Image Source="{Binding Img2}" Aspect="AspectFit" HorizontalOptions="End"/>
+                            <Label TextColor="White" Margin="20">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span  Text="{Binding Name}" FontSize="Title"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+            
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AboutPage"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Title="关于">
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="8">
+                <Label Text="熄灯！" Margin="0,10,0,0" TextColor="White" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <Label TextColor="White">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="&#10;"/>
+                            <Span Text="        你知道所有想健身者最容易犯的错误是什么吗？不会坚持。他们一天换一个方法，每当有新
+工具或者新技术出来的时候，他们就放弃自己正在做的练习。经常性地更换训练目标与方法
+就像是在断送自己的训练之路。世界上那些最不可思议的训练者有很多都是独自训练，在他
+们自己的黑屋里。并不是因为他们的基因强于你我，并不是因为他们报了世界级的训练班，
+也肯定不是因为他们有着什么最先进的营养食谱或补剂，他们成为人上之人的关键在于——
+他们坚持着一种训练方法。&#10;
+        方法更换得越少，对外界依靠得越少，对自身基础越重视，你所能得到的就越多。进阶训练
+亦是如此，更加如此。当你变得更大更强时，抵制那些让你增加更多玩意的诱惑——无论是
+重量还是器械。专注于最基础、最自然的动作，然后运用它。你的抓握力是进化来使你在树
+上吊起自己身体的。你想获得最强大的抓握力？扔掉握力器，自由重量，弹簧机，然后实实
+在在地让自己悬吊起来。你想变瘦？别吃减肥药、昂贵的补剂、复杂的饮食，回到一天三顿
+饱饭——像囚徒一样。&#10;
+        懂我的意思了吗？很好。现在把自己“锁”起来，开始训练。" FontSize="16"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text="————保罗·威德" HorizontalOptions="End" TextColor="White"/>
+                <Label Text="本程序" TextColor="White" HorizontalOptions="Center" Margin="0,50,0,0"/>
+                <Label HorizontalOptions="Center" TextColor="White">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="以"/>
+                            <Span Text=" 原力囚徒健身 " TextColor="Red" >
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="YuanLiMan_Tapped"/>
+                                </Span.GestureRecognizers>
+                            </Span>
+                            <Span Text="界面为原型设计，基于《囚徒健身》的内容开发而成。&#10;所有代码均由我一人编写，制作不易，如遇bug，还请多多担待。您可以加群反馈问题或者提供建议。帮助熄灯APP更好的发展下去。"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label x:Name="lVersion" Text="当前版本：V0.0.0" TextColor="White" HorizontalOptions="Center"/>
+
+                <Frame Padding="0" WidthRequest="250" HeightRequest="50" CornerRadius="10" BackgroundColor="LightGray" HorizontalOptions="Center">
+                    <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="原力囚徒健身 QQ群：" TextColor="Red"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="229534079" TextColor="Black"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+
+                <Frame Padding="0" WidthRequest="250" HeightRequest="50" CornerRadius="10" BackgroundColor="LightGray" HorizontalOptions="Center">
+                    <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="熄灯APP QQ群：" TextColor="Red"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="745872311" TextColor="Black"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+
+            </StackLayout>
+
+            
+        </ScrollView>
+
+    </ContentPage.Content>
+</ContentPage>

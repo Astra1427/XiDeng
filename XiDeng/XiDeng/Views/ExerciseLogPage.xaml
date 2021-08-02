@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.ExerciseLogPage"
+             Title="锻炼日记"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}" BackgroundColor="#24262b">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding StatisticsIcon}" Command="{Binding StatisticsCommand}" Text="统计" Order="Default"/>
+        <!--<ToolbarItem IconImageSource="{Binding SaveIcon}" Command="{Binding SaveCommand}" Text="保存" Order="Default"/>-->
+        <ToolbarItem Command="{Binding ExportCommand}" Text="导出(备份)" Order="Secondary"/>
+        <ToolbarItem Command="{Binding ImportCommand}" Text="导入(恢复)" Order="Secondary"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <StackLayout Orientation="Horizontal"  HeightRequest="50">
+                <Label Text="定位到：" VerticalOptions="Center" TextColor="White"/>
+                <Picker x:Name="pDateTime" VerticalOptions="Center" WidthRequest="200" Title="选择日期" TextColor="White" SelectedIndexChanged="Picker_SelectedIndexChanged" ItemsSource="{Binding GroupDateTime}" ItemDisplayBinding="{Binding }" SelectedItem="{Binding SelectedDateTime,Mode=TwoWay}"/>
+            </StackLayout>
+
+            <CollectionView x:Name="cvExerciseLogs" IsGrouped="True" ItemsSource="{Binding GroupExerciseLogs}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+                <CollectionView.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label Text="锻炼日记为空" TextColor="White" FontSize="20"/>
+                    </DataTemplate>
+                </CollectionView.EmptyViewTemplate>
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding BindingContext.ExerciseProjectDateTappedCommand,Source={x:Reference cvExerciseLogs}}" CommandParameter="{Binding Key}"/>
+                            </Grid.GestureRecognizers>
+                            <Label Text="{Binding Key}" TextColor="Red" FontSize="20" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <!-- <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="编辑" BackgroundColor="LightGreen" />
+                                    <SwipeItem Text="删除" BackgroundColor="LightPink" Command="{Binding DeleteExerciseProjectCommand}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>-->
+                        <!-- Content -->
+                        <!-- </SwipeView> -->
+
+                        <StackLayout Orientation="Horizontal" Padding="5,0" >
+
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer  Command="{Binding BindingContext.ExerciseProjectTappedCommand, Source={x:Reference cvExerciseLogs}}" CommandParameter="{Binding ID}"/>
+                            </StackLayout.GestureRecognizers>
+                            <BoxView BackgroundColor="Gray" WidthRequest="1" />
+                            <Label TextColor="White">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding SkillName}" FontSize="18"/>
+                                        <Span Text="-"/>
+                                        <Span Text="{Binding StyleName}" FontSize="18"/>
+                                        <Span Text="&#10;"/>
+                                        <Span Text="{Binding ExerciseStandard}" TextColor="Gray"/>
+
+                                        <!--<Span Text="{Binding ExerciseStandard.GroupsNumber}" TextColor="Gray"/>
+                                        <Span Text="组"   TextColor="Gray"/>
+                                        <Span Text="{Binding ExerciseStandard.Number}" TextColor="Gray"/>
+                                        <Span Text="次"   TextColor="Gray"/>-->
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <!-- 哈行吧，这只是热身…… -->
+                            <Label Text="{Binding DisFeeling}" TextColor="Gray" MaxLines="1" LineBreakMode="TailTruncation" Margin="10,0" VerticalOptions="End"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

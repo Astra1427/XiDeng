@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.SettingPage"
+             Title="设置"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}">
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Label TextColor="OrangeRed" Text="锻炼" FontSize="18" Margin="0,10,0,0"/>    
+            <Grid ColumnDefinitions="50,*" BackgroundColor="DarkRed">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeSleepSecond}"/>
+                </Grid.GestureRecognizers>
+                <Image Source="{Binding TraningIcon}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label  TextColor="White" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="组间休息时间" TextColor="White" FontSize="20"/>
+                            <Span Text="&#10;"/>
+                            <Span Text="{Binding SleepSecond}"/>
+                            <Span Text="秒"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+            <Grid ColumnDefinitions="50,*" BackgroundColor="DarkRed" Margin="0,5,0,0" IsVisible="False">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeNumberSecondCommand}"/>
+                </Grid.GestureRecognizers>
+                <Image Source="{Binding TraningIcon}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label  TextColor="White" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="动作间隔时间" TextColor="White" FontSize="20"/>
+                            <Span Text="&#10;"/>
+                            <Span Text="{Binding NumberSecond}"/>
+                            <Span Text="毫秒"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+            <Grid ColumnDefinitions="50,*" BackgroundColor="DarkRed" Margin="0,5,0,0" IsVisible="True">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeActionNumberSecondCommand}" CommandParameter="1"/>
+                </Grid.GestureRecognizers>
+                <Image Source="{Binding TraningIcon}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label  TextColor="White" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="动作 “1” 时间" TextColor="White" FontSize="20"/>
+                            <Span Text="&#10;"/>
+                            <Span Text="{Binding DownNumberSecond}"/>
+                            <Span Text="毫秒"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+            <Grid ColumnDefinitions="50,*" BackgroundColor="DarkRed" Margin="0,5,0,0" IsVisible="True">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeActionNumberSecondCommand}" CommandParameter="2"/>
+                </Grid.GestureRecognizers>
+                <Image Source="{Binding TraningIcon}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label  TextColor="White" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="动作 “2” 时间" TextColor="White" FontSize="20"/>
+                            <Span Text="&#10;"/>
+                            <Span Text="{Binding UpNumberSecond}"/>
+                            <Span Text="毫秒"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+            <Grid ColumnDefinitions="50,*" BackgroundColor="DarkRed" Margin="0,5,0,0" IsVisible="False">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeRespiratoryRhythmCommand}"/>
+                </Grid.GestureRecognizers>
+                <Image Source="{Binding TraningIcon}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label  TextColor="White" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="呼吸律动" TextColor="White" FontSize="20"/>
+                            <Span Text="&#10;"/>
+                            <Span Text="{Binding IsRespiratoryRhythm}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+
+            <!--StartContinueSecond-->
+            <Grid ColumnDefinitions="50,*" BackgroundColor="DarkRed" Margin="0,5,0,0" >
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ChangeStartContinueSecondCommand}"/>
+                </Grid.GestureRecognizers>
+                <Image Source="{Binding TraningIcon}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Label  TextColor="White" Grid.Column="1">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="开始/继续 倒计时" TextColor="White" FontSize="20"/>
+                            <Span Text="&#10;"/>
+                            <Span Text="{Binding StartContinueSecond}"/>
+                            <Span Text="秒"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

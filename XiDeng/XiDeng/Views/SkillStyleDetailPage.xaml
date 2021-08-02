@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.SkillStyleDetailPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Title="{Binding SkillStyle.Name}"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor }"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding AudioIcon}" Command="{Binding AudioVolumePanelCommand}"/>
+        <!--<ToolbarItem IconImageSource="{ Binding SettingIcon}"/>-->
+        <ToolbarItem Order="Secondary" Text="更改视频" Command="{Binding PickerLocalVideoCommand}"/>
+        <ToolbarItem Order="Secondary" Text="还原视频" Command="{Binding UndoVideoCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    
+    <Grid Padding="5,0" RowDefinitions="*,50">
+        <ScrollView>
+            <StackLayout Padding="5,0">
+                <xct:MediaElement x:Name="meVideo" HeightRequest="200" Focused="meVideo_Focused" Unfocused="MediaElement_Unfocused" Aspect="AspectFit" BackgroundColor="Black" Margin="-5,0" Source="{Binding SkillStyle.DisplayVideoUri}" IsLooping="True" AutoPlay="False" KeepScreenOn="True" MediaFailed="MediaElement_MediaFailed"/>
+
+                <Label Text="训练部位" TextColor="LightGray" Margin="0,10,0,0"/>
+                <Label Text="{Binding SkillStyle.TraningPart}" TextColor="White"/>
+
+                <Label Text="动作要点" TextColor="LightGray" Margin="0,10,0,0"/>
+                <Label Text="{Binding SkillStyle.ActionDescription}" TextColor="White"/>
+
+                <Label Text="动作解析" TextColor="LightGray" Margin="0,10,0,0"/>
+                <Label Text="{Binding SkillStyle.Analysis}" TextColor="White"/>
+                <Label Text="稳扎稳打" TextColor="LightGray" Margin="0,10,0,0"/>
+                <Label Text="{Binding SkillStyle.SlowSteady}" TextColor="White"/>
+            </StackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="1" Text="开始训练" Command="{Binding GoTraningCommand}" Focused="Button_Focused" Clicked="Button_Clicked" TextColor="White" BackgroundColor="Red" FontSize="16"/>
+
+
+
+        <!-- Dark color layout -->
+        <BoxView BackgroundColor="Black" Opacity=".6" IsVisible="{Binding IsShowLayout}" Grid.RowSpan="2">
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding HideLayoutCommand}"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+        <Frame BackgroundColor="#ddd" CornerRadius="8" HorizontalOptions="Fill" VerticalOptions="Center" Margin="40,0" HeightRequest="400" IsVisible="{Binding IsChooseStandard}" Grid.RowSpan="2">
+            <Grid RowDefinitions="*,40">
+                <StackLayout>
+                    <Label Text="选择标准" TextColor="Black" FontSize="20" HorizontalOptions="Center" Margin="0,10,0,0"/>
+                    <Label Text="{Binding SkillStyle.Name}" TextColor="Black" FontAttributes="Bold" FontSize="20" Margin="0,15,0,0"/>
+                    <Picker SelectedIndex="{Binding TraningLevel}">
+                        <Picker.Items>
+                            <x:String>初级标准</x:String>
+                            <x:String>中级标准</x:String>
+                            <x:String>高级标准</x:String>
+                            <x:String>自由训练</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Label Text="{Binding CurrentStandard}" IsVisible="{Binding IsDefaultShow}" TextColor="Black" FontSize="16"/>
+                    <Label IsVisible="{Binding IsCustomTraning}" TextColor="Black" FontSize="16">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding CustomGroupNumber}"/>
+                                <Span Text=" 组"/>
+                                <Span Text="{Binding CustomNumber}"/>
+                                <Span Text=" "/>
+                                <Span Text="{Binding ShowInfo}"/>
+
+
+
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="组数" IsVisible="{Binding IsCustomTraning}"/>
+                    <Stepper Minimum="1" Maximum="100" BackgroundColor="Black" IsVisible="{Binding IsCustomTraning}" Value="{Binding CustomGroupNumber,Mode=TwoWay}"/>
+                    <Label IsVisible="{Binding IsCustomTraning}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding ShowInfo}"/>
+                                <Span Text="数"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Stepper Minimum="1" Maximum="10000" BackgroundColor="Black" IsVisible="{Binding IsCustomTraning}" Value="{Binding CustomNumber,Mode=TwoWay}"/>
+
+
+                </StackLayout>
+                <Button Text="开始" Grid.Row="1" TextColor="White" BackgroundColor="Black" Clicked="Button_Clicked" WidthRequest="200" HorizontalOptions="Center" Command="{Binding GotoTraningCommand}"/>
+            </Grid>
+        </Frame>
+
+        <!-- Audio Volume Panel-->
+        <Frame BackgroundColor="#ddd" BorderColor="Gray" HorizontalOptions="Center" VerticalOptions="Center" CornerRadius="8" WidthRequest="150" HeightRequest="120" IsVisible="{Binding IsChangeAudioVolume}">
+            <StackLayout>
+                <Label Text="音量" TextColor="Black" FontSize="18"/>
+                <Label Text="背景音乐音量："/>
+                <Slider Minimum="0" Maximum="1" MinimumTrackColor="Black" MaximumTrackColor="Gray"  Value="{Binding BackAudioVolume}" DragCompletedCommand="{Binding BackAudioVolumeValueChangedCommand}"/>
+
+                <Label Text="人声音量："/>
+                <Slider Minimum="0" Maximum="1" MinimumTrackColor="Black" MaximumTrackColor="Gray"  Value="{Binding PersonAudioVolume}" DragCompletedCommand="{Binding PersonAudioVolumeValueChangedCommand}"/>
+            </StackLayout>
+        </Frame>
+        
+        
+    </Grid>
+
+</ContentPage>

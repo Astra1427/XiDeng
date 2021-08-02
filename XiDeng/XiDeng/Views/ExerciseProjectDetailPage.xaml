@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.ExerciseProjectDetailPage"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+            BackgroundColor="#24262b"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <Grid RowDefinitions="*,44">
+            <Editor Text="{Binding Feeling}"  Placeholder="在此处写下你的心得体会" BackgroundColor="#24262b" PlaceholderColor="Gray" TextColor="White"/>
+            <Button Text="确定" FontSize="16" BackgroundColor="LightGreen" Grid.Row="1" Command="{Binding SaveFeelingCommand}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.ThanksPage"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Title="特别鸣谢">
+    <Grid>
+        <CollectionView x:Name="cvUsers">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BackgroundColor="White" WidthRequest="200" HeightRequest="150" Opacity="1">
+                        <StackLayout Opacity="1">
+                            <ImageButton Opacity="1" Source="{Binding ImgSource}" Aspect="AspectFit" WidthRequest="50" HeightRequest="50" CornerRadius="50" HorizontalOptions="Center" BackgroundColor="Transparent"/>
+                            <Label Opacity="1" Text="{Binding name}" TextColor="Black" HorizontalOptions="Center"/>
+                            <Label Opacity="1" Text="{Binding ThankText}" TextType="Html"/>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <ActivityIndicator x:Name="ai" HorizontalOptions="Center" VerticalOptions="Center"/>
+    </Grid>
+</ContentPage>

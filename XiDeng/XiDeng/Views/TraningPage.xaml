@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.TraningPage"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             >
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackCommand}"/>
+    </Shell.BackButtonBehavior>
+    <ContentPage.Content>
+    
+        
+        <Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding StopContinueCommand}"/>
+            </Grid.GestureRecognizers>
+            <Image Source="{Binding SkillStyle.Img1}" IsVisible="{Binding IsImg1}"/>
+            <Image Source="{Binding SkillStyle.Img2}" IsVisible="{Binding IsImg2}"/>
+
+
+
+            <Label TextColor="White" FontSize="18" VerticalTextAlignment="Start" HorizontalOptions="Start">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding CurrentGroupNumber}"/>
+                        <Span Text="/"/>
+                        <Span Text="{Binding Standard.GroupsNumber}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <!-- small-->
+            <Label TextColor="White" FontSize="18" VerticalTextAlignment="Start" HorizontalOptions="End">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding CurrentNumber}"/>
+                        <Span Text="/"/>
+                        <Span Text="{Binding Standard.Number}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <!-- large-->
+            <Label TextColor="White" FontSize="60" VerticalTextAlignment="Center" HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding CurrentNumber}"/>
+                        <Span Text="/"/>
+                        <Span Text="{Binding Standard.Number}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <!-- Count Down -->
+            
+            <!-- Dark Layout  -->
+            <BoxView BackgroundColor="Gray" Opacity=".5" IsVisible="{Binding IsSleep}" />
+            <Grid IsVisible="{Binding IsSleep}">
+                <Frame WidthRequest="100" HeightRequest="100" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="100" BackgroundColor="Black" Opacity=".9">
+                    <Label Text="{Binding CountDownNumber}" TextColor="White" FontSize="30" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
+                </Frame>
+            </Grid>
+            
+            
+            <!-- Traning End -->
+            <Grid IsVisible="{Binding IsEnd}">
+                <Frame WidthRequest="150" HeightRequest="150" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="100" BackgroundColor="Black" Opacity=".9">
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                        <Button Text="返回" TextColor="Black" BackgroundColor="#f25022" FontSize="16" Command="{Binding BackCommand}"/>
+                        <Button Text="再来一次" TextColor="Black" BackgroundColor="#7fba00" FontSize="16" Grid.Column="1" Command="{Binding AgainCommand}"/>
+
+                        <Button Text="写感想" Grid.Row="1" BackgroundColor="#00a4ef" FontSize="16" TextColor="Black" Command="{Binding WriteFeelingCommand}"/>
+
+                        <Button Text="拉伸指导" Grid.Row="1" TextColor="Black" Grid.Column="1" BackgroundColor="#ffb900" FontSize="16" Command="{Binding StretchGuidanceCommand}"/>
+                    </Grid>
+                </Frame>
+            </Grid>
+            
+            <!-- Stop Continue -->
+            <Grid IsVisible="{Binding IsStop}">
+                <Frame WidthRequest="150" HeightRequest="150" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="100" BackgroundColor="Black" Opacity=".9">
+                    <Button Text="继续" TextColor="Black" BackgroundColor="LightGreen" FontSize="20" Command="{Binding StopContinueCommand}"/>
+                </Frame>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

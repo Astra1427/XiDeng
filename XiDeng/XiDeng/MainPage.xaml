@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.MainPage"
+             Title="熄灯"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             >
+
+    <ContentPage.Resources>
+        <Style TargetType="Frame">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HeightRequest" Value="150"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding BookIcon}" Clicked="ExerciseLog_Clicked"/>
+
+        <ToolbarItem Text="设置" Order="Secondary" Clicked="Setting_Clicked"/>
+
+
+        <ToolbarItem Text="关于" Order="Secondary" Clicked="About_Tapped"/>
+        <ToolbarItem Text="捐助" Clicked="Donation_Clicked" Order="Secondary"/>
+        <ToolbarItem Text="特别鸣谢" Order="Secondary" Clicked="Thanks_Tapped"/>
+
+    </ContentPage.ToolbarItems>
+
+    <CollectionView  ItemsSource="{Binding Skills}" >
+
+        <CollectionView.ItemsLayout>
+            <LinearItemsLayout ItemSpacing="8" Orientation="Vertical"/>
+
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+            
+            <DataTemplate>
+                <Frame>
+                    <Grid>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SkillCommand}"  />
+                        </Grid.GestureRecognizers>
+                        <Label IsVisible="False" Text="{Binding ID}"/>
+                        <Image Source="{Binding Img}" Aspect="AspectFill"/>
+
+                        <Label TextColor="White" Margin="20">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span  Text="{Binding Name}" FontSize="Title"/>
+                                    <Span Text="&#10;"/>
+                                    <Span Text="{Binding Description}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+        <!-- six project -->
+
+
+        </CollectionView>
+
+</ContentPage>

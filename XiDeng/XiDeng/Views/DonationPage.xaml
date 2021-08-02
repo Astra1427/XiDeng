@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.DonationPage"
+             BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Title="捐助">
+    <ScrollView>
+        <Grid>
+            <StackLayout>
+                <Label Text="如果您觉得熄灯APP帮到您了，您可以选择以下方式向我捐助，帮助熄灯APP更好的发展下去。" Margin="0,10,0,0" FontSize="18" HorizontalOptions="Center" TextColor="White" HorizontalTextAlignment="Center"/>
+                <Label Text="付款时请留下QQ，我会将您的名称和图片放到特别鸣谢界面。" HorizontalOptions="Center" FontSize="16" TextColor="White"/>
+                <Label Text="支付宝" TextColor="White" Margin="0,50,0,0" FontSize="20"
+                HorizontalOptions="CenterAndExpand" />
+                <Image x:Name="imgAliPay" Aspect="AspectFit" HeightRequest="200">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Label Text="微信" TextColor="White" FontSize="20"
+                HorizontalOptions="CenterAndExpand" />
+                <Image x:Name="imgWeChatPay" Aspect="AspectFit" HeightRequest="200">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+
+            <Image x:Name="BigImg" IsVisible="False" BackgroundColor="#1E1E1E" Aspect="AspectFit" VerticalOptions="Fill" HorizontalOptions="Fill">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Hide_Tapped"/>
+                </Image.GestureRecognizers>
+            </Image>
+            
+        </Grid>
+    </ScrollView>
+</ContentPage>
