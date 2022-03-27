@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace XiDeng.ViewModel
 {
-    class ExerciseDateDetailPageViewModel:NotificationObject
+    class ExerciseDateDetailPageViewModel:BaseViewModel
     {
         private IList<ExerciseLog> exerciseLogs;
 

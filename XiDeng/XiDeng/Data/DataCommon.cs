@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using XiDeng.Common;
+using XiDeng.DataTest;
 
 namespace XiDeng.Data
 {
@@ -11,10 +12,10 @@ namespace XiDeng.Data
     {
         public static List<ExerciseLog> ExerciseLogs { get; set; }
 
-        public static ObservableCollection<Skill> Skills = new ObservableCollection<Skill>();
+        public static ObservableCollection<Skill> SkillsTest = new ObservableCollection<Skill>();
         public static void InitDatas()
         {
-            Skills.Add(new Skill()
+            SkillsTest.Add(new Skill()
             {
                 ID = 1,
                 Name = "俯卧撑",
@@ -291,7 +292,7 @@ namespace XiDeng.Data
                 }
             });
 
-            Skills.Add(new Skill
+            SkillsTest.Add(new Skill
             {
                 ID = 2,
                 Name = "深蹲",
@@ -574,7 +575,7 @@ namespace XiDeng.Data
 
             });
 
-            Skills.Add(new Skill
+            SkillsTest.Add(new Skill
             {
                 ID = 3,
                 Name = "引体向上",
@@ -853,7 +854,7 @@ namespace XiDeng.Data
 
             });
 
-            Skills.Add(new Skill
+            SkillsTest.Add(new Skill
             {
                 ID = 4,
                 Name = "举腿",
@@ -1118,7 +1119,7 @@ namespace XiDeng.Data
 
             });
 
-            Skills.Add(new Skill
+            SkillsTest.Add(new Skill
             {
                 ID = 5,
                 Name = "桥",
@@ -1380,7 +1381,7 @@ namespace XiDeng.Data
 
             });
 
-            Skills.Add(new Skill
+            SkillsTest.Add(new Skill
             {
                 ID = 6,
                 Name = "倒立撑",

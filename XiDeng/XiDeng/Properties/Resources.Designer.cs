@@ -73,6 +73,16 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] arrow_63_240 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_63_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] bengbengca {
             get {
                 object obj = ResourceManager.GetObject("bengbengca", resourceCulture);
@@ -113,6 +123,16 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] home_6_240 {
+            get {
+                object obj = ResourceManager.GetObject("home_6_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] ic_audiotrack_white_96 {
             get {
                 object obj = ResourceManager.GetObject("ic_audiotrack_white_96", resourceCulture);
@@ -143,6 +163,26 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] layer_21_240 {
+            get {
+                object obj = ResourceManager.GetObject("layer_21_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] minus_5_240 {
+            get {
+                object obj = ResourceManager.GetObject("minus_5_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] more_128 {
             get {
                 object obj = ResourceManager.GetObject("more_128", resourceCulture);
@@ -156,6 +196,16 @@ namespace XiDeng.Properties {
         internal static byte[] one {
             get {
                 object obj = ResourceManager.GetObject("one", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] plus_5_240 {
+            get {
+                object obj = ResourceManager.GetObject("plus_5_240", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -1353,6 +1403,26 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] star_3_240 {
+            get {
+                object obj = ResourceManager.GetObject("star_3_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] star_5_240 {
+            get {
+                object obj = ResourceManager.GetObject("star_5_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] start {
             get {
                 object obj = ResourceManager.GetObject("start", resourceCulture);
@@ -1413,9 +1483,39 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] user_5_240 {
+            get {
+                object obj = ResourceManager.GetObject("user_5_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] weather_116_240 {
+            get {
+                object obj = ResourceManager.GetObject("weather_116_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] WeChatPay {
             get {
                 object obj = ResourceManager.GetObject("WeChatPay", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] XiDengSkillsDataJson {
+            get {
+                object obj = ResourceManager.GetObject("XiDengSkillsDataJson", resourceCulture);
                 return ((byte[])(obj));
             }
         }

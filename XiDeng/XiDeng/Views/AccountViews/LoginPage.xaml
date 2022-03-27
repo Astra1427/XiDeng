@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AccountViews.LoginPage"
+             BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
+             x:Name="page"
+             Title="登录"
+             IsEnabled="{Binding IsE}">
+
+
+    <Grid>
+        <Frame BackgroundColor="Transparent" BorderColor="LightGray" Margin="10" Padding="10">
+            <StackLayout>
+                <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,50,0,0" BackgroundColor="LightBlue"/>
+                <Entry Placeholder="邮箱" Text="{Binding Email}" TextColor="White" PlaceholderColor="Gray"/>
+                <Frame BorderColor="White" BackgroundColor="Transparent" Padding="0">
+                    <Entry Placeholder="密码" Text="{Binding Password}" IsPassword="True" TextColor="White" PlaceholderColor="Gray"/>
+                </Frame>
+                <Label Text="忘记密码了？" TextColor="LightBlue" HorizontalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Button HorizontalOptions="Center" Text="登录" Command="{Binding LoginCommand}"/>
+                <Button HorizontalOptions="Center" Text="注册" Command="{Binding RegisterCommand}"/>
+                <Button HorizontalOptions="Center" Text="返回" Command="{Binding BackCommand}"/>
+            </StackLayout>
+        </Frame>
+        <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center" IsRunning="{Binding IsRefresh}" IsVisible="{Binding IsRefresh}"/>
+    </Grid>
+</ContentPage>

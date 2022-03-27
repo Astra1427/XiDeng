@@ -6,25 +6,27 @@ using XiDeng.Data;
 using System.Linq;
 using Xamarin.Forms;
 using XiDeng.Views;
+using XiDeng.Models.SkillModels;
+using XiDeng.Common;
 
 namespace XiDeng.ViewModel
 {
 
-    class SkillStylePageViewModel:NotificationObject
+    class SkillStylePageViewModel:BaseViewModel
     {
-        public int ID { get; set; }
-        public SkillStylePageViewModel(int ID)
+        public Guid ID { get; set; }
+        public SkillStylePageViewModel(Guid ID)
         {
             this.ID = ID;
             Init();
         
         }
 
-        public Skill Skill { get; set; }
+        public SkillDTO Skill { get; set; }
 
-        private ObservableCollection<SkillStyle> skillStyles;
+        private ObservableCollection<SkillStyleDTO> skillStyles;
 
-        public ObservableCollection<SkillStyle> SkillStyles
+        public ObservableCollection<SkillStyleDTO> SkillStyles
         {
             get { return skillStyles; }
             set { skillStyles = value; this.RaisePropertyChanged("SkillStyles"); }
@@ -39,8 +41,8 @@ namespace XiDeng.ViewModel
             try
             {
                 
-                Skill = DataCommon.Skills.Where(a => a.ID == ID).FirstOrDefault();
-                SkillStyles = Skill.Styles;
+                Skill = SkillDataCommon.Skills.Where(a => a.Id == ID).FirstOrDefault();
+                SkillStyles = Skill.SkillStyles.ToObservableCollection();
                 
             }
             catch (Exception ex)

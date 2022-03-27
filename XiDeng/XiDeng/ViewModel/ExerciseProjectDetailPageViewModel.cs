@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace XiDeng.ViewModel
 {
-    class ExerciseProjectDetailPageViewModel:NotificationObject
+    class ExerciseProjectDetailPageViewModel:BaseViewModel
     {
 
 
@@ -55,10 +55,10 @@ namespace XiDeng.ViewModel
         /// <summary>
         /// ctor    
         /// </summary>
-        public ExerciseProjectDetailPageViewModel(int eid)
+        public ExerciseProjectDetailPageViewModel(Guid eid)
         {
-            Exercise = DataCommon.ExerciseLogs.First(a => a.ID == eid);
-            Title = Exercise.SkillName + "-" + Exercise.ExerciseStandard.ToString();
+            Exercise = DataCommon.ExerciseLogs.First(a => a.Id == eid);
+            Title = Exercise.SkillName + "-" + Exercise.ToString();
             Feeling = Exercise.Feeling;
         }
 

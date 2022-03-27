@@ -15,7 +15,7 @@ namespace XiDeng.Views
     public partial class SkillStyleDetailPage : ContentPage
     {
         public string SkillID { get; set; }
-        public string SkillStyleID { set { BindingContext = new SkillStyleDetailPageViewModel(int.Parse(SkillID), int.Parse(value)); } }
+        public string SkillStyleID { set { BindingContext = new SkillStyleDetailPageViewModel(Guid.Parse(SkillID), Guid.Parse(value)); } }
 
         public SkillStyleDetailPage()
         {

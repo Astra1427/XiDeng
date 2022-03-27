@@ -14,7 +14,7 @@ namespace XiDeng.Views
     [QueryProperty("Eid", "EID")]
     public partial class ExerciseProjectDetailPage : ContentPage
     {
-        public int Eid
+        public string Eid
         {
             set {
                 //int v = 0;
@@ -27,7 +27,7 @@ namespace XiDeng.Views
                 //{
                 //    return;
                 //}
-                this.BindingContext = new ExerciseProjectDetailPageViewModel(value);
+                this.BindingContext = new ExerciseProjectDetailPageViewModel(Guid.Parse(value));
             }
         }
 

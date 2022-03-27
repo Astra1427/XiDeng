@@ -4,6 +4,7 @@
              x:Class="XiDeng.Views.ThanksPage"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+                IsEnabled="{Binding IsE}"
              Title="特别鸣谢">
     <Grid>
         <CollectionView x:Name="cvUsers">

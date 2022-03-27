@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.PlanViews.AddActionPage"
+             BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False"
+             xmlns:converter="clr-namespace:XiDeng.Common.Converts"
+             x:Name="page"
+             Title="设置动作"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+                IsEnabled="{Binding IsE}"
+             >
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding OnAppearingCommand}"
+            />
+        
+    </ContentPage.Behaviors>
+    <StackLayout>
+        <StackLayout.Resources>
+            <ResourceDictionary>
+                <converter:DayWeekConverter x:Key="dwConverter" x:Name="dwConvert" ByWeek="True" />
+            </ResourceDictionary>
+        </StackLayout.Resources>
+        
+        <Picker Title="天" ItemsSource="{Binding DayList}" 
+                x:Name="pDayList"
+                ItemDisplayBinding="{Binding .,Converter={StaticResource dwConverter}}"
+                SelectedItem="{Binding SelectedDayNumber}">
+            <!--<Picker.ItemDisplayBinding>
+                <Binding Path="." Converter="{StaticResource DayWeekConverter}" ConverterParameter="{Binding ByWeek}"/>
+            </Picker.ItemDisplayBinding>-->
+        </Picker>
+        <Picker Title="动作组" ItemsSource="{Binding Skills}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedSkill}"/>
+        <Picker Title="动作" ItemsSource="{Binding SelectedSkill.SkillStyles}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedStyle}"/>
+        <Picker Title="等级" ItemsSource="{Binding SelectedStyle.Standards}" ItemDisplayBinding="{Binding Grade}" SelectedItem="{Binding SelectedStandard}"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="组数：" VerticalOptions="Center"/>
+            <Entry Text="{Binding SelectedStandard.GroupNumber}" Keyboard="Numeric" WidthRequest="100" IsReadOnly="{Binding IsReadOnlyStandard}"/>
+            <Label Text="动作数：" VerticalOptions="Center">
+                <Label.Triggers>
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding SelectedStyle.TraningType}"
+                        Value="{StaticResource True}">
+                        <Setter Property="Text" Value="秒数" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+            <Entry Text="{Binding SelectedStandard.Number}" Keyboard="Numeric" IsReadOnly="{Binding IsReadOnlyStandard}" WidthRequest="100"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Button Text="添加" Command="{Binding AddDayActionCommand}"/>
+            <Button Text="设为休息日" Command="{Binding SetRestDayCommand}"/>
+        </StackLayout>
+
+        <ListView ItemsSource="{Binding GroupPlanActions}"
+                  IsGroupingEnabled="True" GroupDisplayBinding="{Binding Key}"
+                  SelectionMode="None" Margin="3" SeparatorVisibility="None">
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="0">
+                            <Label Text="{Binding Key,Converter={StaticResource dwConverter}}" TextColor="White" FontSize="16" VerticalOptions="Center"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid >
+                            <Label Text="{Binding Style.Name}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding StyleID,TargetNullValue=''}"
+                                                 Value=""
+                                                 >
+                                        <Setter Property="Text" Value="休息日" />
+                                        <Setter Property="TextColor" Value="LightGreen" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="&#10;"/>
+                                        <Span Text="{Binding .}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Image Source="{Binding BindingContext.RemoveIcon,Source={x:Reference page}}" HorizontalOptions="End" Aspect="AspectFit" Margin="10">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.RemoveActionCommand,Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Plugin.FilePicker;
+using Plugin.FilePicker.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XiDeng.Common;
 using XiDeng.Data;
 using XiDeng.ViewModel;
 using XiDeng.Views;
@@ -35,7 +39,6 @@ namespace XiDeng
                 var grid = sender as Grid;
                 var label = grid.Children[0] as Label;
                 int ID = int.Parse(label.Text);
-
 
             }
             catch (Exception ex)
@@ -68,5 +71,21 @@ namespace XiDeng
         {
             await Shell.Current.GoToAsync("DonationPage");
         }
+
+        private async void BackupDatabase_Tapped(object sender, EventArgs e)
+        {
+            await App.Database.BackupAsync();
+        }
+
+        //private async void BackupData_Tapped(object sender, EventArgs e)
+        //{
+        //    bool isSuccess = await CrossFilePicker.Current.SaveFile(new FileData("data", $"XiDengBackUp_Skills.txt", () =>
+        //    {
+        //        return new MemoryStream(Encoding.UTF8.GetBytes(DataCommon.Skills.ToJson()));
+        //    }));
+
+        //    await this.Message(isSuccess.ToString());
+
+        //}
     }
 }

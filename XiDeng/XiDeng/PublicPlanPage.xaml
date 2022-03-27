@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.PublicPlanPage"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Title="公开的计划"
+                IsEnabled="{Binding IsE}"
+             x:Name="page">
+    <ListView ItemsSource="{Binding Plans}" IsPullToRefreshEnabled="True" RefreshCommand="{Binding LoadPlansCommand}" IsRefreshing="{Binding IsRefresh}" 
+                  HasUnevenRows="True" SelectionMode="None"
+                  >
+
+        <ListView.ItemTemplate>
+            <DataTemplate >
+                <ViewCell>
+                    <Frame HasShadow="True" CornerRadius="5" Margin="10,5">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.GotoPlanDetailCommand,Source={x:Reference page}}" CommandParameter="{Binding .}"/>
+                            </StackLayout.GestureRecognizers>
+                            <Image Source="{Binding CoverUrl}"/>
+                            <Label FontSize="16">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
+                                        <Span Text="&#10;"/>
+                                        <Span Text="{Binding Description}" />
+                                        <Span Text="&#10;"/>
+                                        <Span Text="{Binding DayNumber}"/>
+                                        <Span Text="天 / "/>
+                                        <Span Text="{Binding DisIsLoop}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Image Source="{Binding CollectIcon}" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.GotoCollectionFolderPopupPageCommand,Source={x:Reference page}}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

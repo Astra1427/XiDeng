@@ -121,6 +121,9 @@
   <data name="AliPay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AliPay.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="arrow_63_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_63_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="bengbengca" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bengbengca.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -133,6 +136,9 @@
   <data name="finish" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\finish.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="home_6_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\home_6_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="ic_audiotrack_white_96" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ic_audiotrack_white_96.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -142,11 +148,20 @@
   <data name="ic_settings_white_96" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ic_settings_white_96.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="layer_21_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\layer_21_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="minus_5_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\minus_5_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="more_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\more_128.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="one" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\one.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="plus_5_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plus_5_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="recovery" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\recovery.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -508,6 +523,12 @@
   <data name="start" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\start.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="star_3_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_3_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="star_5_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\star_5_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="StatisticsBackImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StatisticsBackImage.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -523,8 +544,17 @@
   <data name="two" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\two.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="user_5_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user_5_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="weather_116_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\weather_116_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="WeChatPay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WeChatPay.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="XiDengSkillsDataJson" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\XiDengSkillsDataJson.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="xz" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\xz.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.CollectionViews.CollectFolderListPage"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Title="收藏夹"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Name="page"
+                IsEnabled="{Binding IsE}"
+             Shell.TabBarIsVisible="False">
+    
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding LoadFoldersCommand}"
+            />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="添加" Command="{Binding GotoAddFolderCommand}"/>
+    </ContentPage.ToolbarItems>
+    
+    <ListView ItemsSource="{Binding CollectionFolder}"
+              IsPullToRefreshEnabled="True" RefreshCommand="{Binding LoadFoldersCommand}" IsRefreshing="{Binding IsRefresh}" 
+                HasUnevenRows="True" SelectionMode="None">
+        <ListView.ItemTemplate>
+            <DataTemplate >
+                <ViewCell>
+                    <Frame HasShadow="True" CornerRadius="5" Margin="10,5">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.GotoFolderDetailCommand,Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
+                            </StackLayout.GestureRecognizers>
+                            <Image Source="{Binding BindingContext.FolderIcon,Source={x:Reference page}}" Aspect="AspectFit" HeightRequest="50"/>
+                            <Label FontSize="16">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Text="隐藏">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsPublic}"
+                                                 Value="True">
+                                        <Setter Property="Text" Value="公开" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

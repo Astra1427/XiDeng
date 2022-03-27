@@ -5,10 +5,11 @@ using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Data;
 using System.Linq;
+using XiDeng.Models.SkillModels;
 
 namespace XiDeng.ViewModel
 {
-    class StatisticsPageViewModel:NotificationObject
+    class StatisticsPageViewModel:BaseViewModel
     {
         #region Image sources
         private ImageSource statisticsBackImage;
@@ -167,14 +168,14 @@ namespace XiDeng.ViewModel
             
             
 
-            ExerciseGroupCount = DataCommon.ExerciseLogs.Sum(a=>a.ExerciseStandard.GroupsNumber);
+            ExerciseGroupCount = DataCommon.ExerciseLogs.Sum(a=>a.GroupNumber);
 
-            Skill1Count = DataCommon.ExerciseLogs.Where(a=>a.SkillID == 1).Sum(a=>a.ExerciseStandard.GroupsNumber* a.ExerciseStandard.Number);
-            Skill2Count = DataCommon.ExerciseLogs.Where(a=>a.SkillID == 2).Sum(a=>a.ExerciseStandard.GroupsNumber* a.ExerciseStandard.Number);
-            Skill3Count = DataCommon.ExerciseLogs.Where(a=>a.SkillID == 3).Sum(a=>a.ExerciseStandard.GroupsNumber* a.ExerciseStandard.Number);
-            Skill4Count = DataCommon.ExerciseLogs.Where(a=>a.SkillID == 4).Sum(a=>a.ExerciseStandard.GroupsNumber* a.ExerciseStandard.Number);
-            Skill5Count = DataCommon.ExerciseLogs.Where(a=>a.SkillID == 5).Sum(a=>a.ExerciseStandard.GroupsNumber* a.ExerciseStandard.Number);
-            Skill6Count = DataCommon.ExerciseLogs.Where(a=>a.SkillID == 6).Sum(a=>a.ExerciseStandard.GroupsNumber* a.ExerciseStandard.Number);
+            Skill1Count = DataCommon.ExerciseLogs.Where(a=>a.Style.SkillId == SkillDataCommon.Skills[0].Id).Sum(a=>a.GroupNumber* a.Number);
+            Skill2Count = DataCommon.ExerciseLogs.Where(a=>a.Style.SkillId == SkillDataCommon.Skills[1].Id).Sum(a=>a.GroupNumber* a.Number);
+            Skill3Count = DataCommon.ExerciseLogs.Where(a=>a.Style.SkillId == SkillDataCommon.Skills[2].Id).Sum(a=>a.GroupNumber* a.Number);
+            Skill4Count = DataCommon.ExerciseLogs.Where(a=>a.Style.SkillId == SkillDataCommon.Skills[3].Id).Sum(a=>a.GroupNumber* a.Number);
+            Skill5Count = DataCommon.ExerciseLogs.Where(a=>a.Style.SkillId == SkillDataCommon.Skills[4].Id).Sum(a=>a.GroupNumber* a.Number);
+            Skill6Count = DataCommon.ExerciseLogs.Where(a=>a.Style.SkillId == SkillDataCommon.Skills[5].Id).Sum(a=>a.GroupNumber* a.Number);
         }
     }
 }

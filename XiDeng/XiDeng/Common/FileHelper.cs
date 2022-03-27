@@ -11,11 +11,14 @@ namespace XiDeng.Common
         public static string VideoUriFile = "VideoUriFile";
         public static string SettingFile = "SettingFile";
         public static string ExerciseLogFile = "ExerciseLogFile";
+        public static string LoginInfoFile = "LoginInfoFile";
+        public static string SkillFile = "SkillFile";
+
         public static bool WriteFile(string name,string content)
         {
             try
             {
-                File.WriteAllText(BasePath + name + ".txt",content);
+                File.WriteAllText(BasePath+"/" + name + ".txt",content);
                 return true;
             }
             catch (Exception ex)
@@ -29,7 +32,7 @@ namespace XiDeng.Common
         {
             try
             {
-                return File.ReadAllText(BasePath + name + ".txt");
+                return File.ReadAllText(BasePath+"/" + name + ".txt");
             }
             catch (Exception ex)
             {
@@ -39,7 +42,7 @@ namespace XiDeng.Common
 
         public static bool IsExist(string name)
         {
-            return File.Exists(BasePath + name + ".txt");
+            return File.Exists(BasePath+"/" + name + ".txt");
         }
     }
 }

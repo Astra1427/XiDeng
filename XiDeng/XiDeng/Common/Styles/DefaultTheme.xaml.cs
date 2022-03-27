@@ -9,7 +9,7 @@ namespace XiDeng.Common.Styles
         public DefaultTheme()
         {
             InitializeComponent();
-
+            
         }
 
     }

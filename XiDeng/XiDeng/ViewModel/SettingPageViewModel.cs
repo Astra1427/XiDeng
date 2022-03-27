@@ -10,7 +10,7 @@ using XiDeng.Data;
 
 namespace XiDeng.ViewModel
 {
-    class SettingPageViewModel:NotificationObject
+    class SettingPageViewModel:BaseViewModel
     {
         private ImageSource traningIcon;
 
@@ -51,6 +51,26 @@ namespace XiDeng.ViewModel
             set { upNumberSecond = value;RaisePropertyChanged("UpNumberSecond"); }
         }
 
+        private bool isOffline;
+        public bool IsOffline
+        {
+            get { return isOffline; }
+            set
+            {
+                if (Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty())
+                {
+                    this.Message("请登录之后再使用此功能。");
+                }
+                else
+                {
+
+                    isOffline = value;
+                    Config.IsOffline = value;
+                    FileHelper.WriteFile(FileHelper.SettingFile, JsonConvert.SerializeObject(Config));
+                }
+                this.RaisePropertyChanged(nameof(IsOffline));
+            }
+        }
 
 
 
@@ -229,6 +249,12 @@ namespace XiDeng.ViewModel
         public SettingPageViewModel()
         {
             TraningIcon = Utility.GetImage("ic_query_builder_grey_600_36dp");
+
+            BackCommand = new Command<object>(async obj=> {
+                App.Config = this.Config;
+                await Shell.Current.GoToAsync("../",true);
+            });
+
             //read second
             try
             {
@@ -238,6 +264,7 @@ namespace XiDeng.ViewModel
                 StartContinueSecond = Config.StartContinueSecond;
                 UpNumberSecond = Config.UpNumberSecond;
                 DownNumberSecond = Config.DownNumberSecond;
+                isOffline = Config.IsOffline;
             }
             catch (Exception ex)
             {
@@ -245,6 +272,8 @@ namespace XiDeng.ViewModel
             }
         }
 
+
+        public new Command<object> BackCommand { get; set; }
 
     }
 }

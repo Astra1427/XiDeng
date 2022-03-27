@@ -5,12 +5,20 @@
              Title="熄灯"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              >
 
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding OnAppearingCommand}"
+            />
+    </ContentPage.Behaviors>
+    
     <ContentPage.Resources>
         <Style TargetType="Frame">
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="HeightRequest" Value="150"/>
+            <!--<Setter Property="HeightRequest" Value="150"/>-->
         </Style>
     </ContentPage.Resources>
 
@@ -23,43 +31,87 @@
         <ToolbarItem Text="关于" Order="Secondary" Clicked="About_Tapped"/>
         <ToolbarItem Text="捐助" Clicked="Donation_Clicked" Order="Secondary"/>
         <ToolbarItem Text="特别鸣谢" Order="Secondary" Clicked="Thanks_Tapped"/>
+        <ToolbarItem Text="backup database" Order="Secondary" Clicked="BackupDatabase_Tapped"/>
 
     </ContentPage.ToolbarItems>
 
-    <CollectionView  ItemsSource="{Binding Skills}" >
+    <Grid RowDefinitions="20,2*,20,*" Padding="5">
+        <Label Text="当前进行的计划" TextColor="White" FontSize="16">
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                             Binding="{Binding Plan,TargetNullValue=''}"
+                             Value="">
+                    <Setter Property="Text" Value="没有进行的计划" />
+                </DataTrigger>
+            </Label.Triggers>
+        </Label>
+        <Frame HeightRequest="250" Grid.Row="1" HasShadow="True" BackgroundColor="#3e3e42">
+            <StackLayout>
 
-        <CollectionView.ItemsLayout>
-            <LinearItemsLayout ItemSpacing="8" Orientation="Vertical"/>
+                <Label Text="{Binding Plan.Name}"/>
+                <Label>
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding CurrentDay}"/>
+                            <Span Text="/"/>
+                            <Span Text="{Binding Plan.DayNumber}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Text="{Binding Plan.Description}"/>
+                <Image VerticalOptions="FillAndExpand" BackgroundColor="LightBlue" Source="{Binding Plan.CoverUrl}"/>
+                <Grid>
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid"
+                                     Binding="{Binding Plan,TargetNullValue=''}"
+                                     Value="">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                    </Grid.Triggers>
+                    <Button Text="详情" Command="{Binding GotoPlanDetailCommand}"/>
+                    <Button Text="开始训练" Grid.Column="1" Command="{Binding StartPlanTraningCommand}"/>
+                    <Button Text="分享" Grid.Column="2" Command="{Binding ShareCommand}"/>
+                </Grid>
+            </StackLayout>
+        </Frame>
 
-        </CollectionView.ItemsLayout>
-        <CollectionView.ItemTemplate>
+
+        <Label Text="动作" Grid.Row="2" TextColor="White" FontSize="16"/>
+        <CollectionView  ItemsSource="{Binding Skills}" Grid.Row="3">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="8" Orientation="Horizontal"/>
+
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
             
-            <DataTemplate>
-                <Frame>
-                    <Grid>
+                <DataTemplate>
+                    <Frame>
+                        <Grid>
 
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SkillCommand}"  />
-                        </Grid.GestureRecognizers>
-                        <Label IsVisible="False" Text="{Binding ID}"/>
-                        <Image Source="{Binding Img}" Aspect="AspectFill"/>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SkillCommand}"  />
+                            </Grid.GestureRecognizers>
+                            <Label IsVisible="False" Text="{Binding Id}"/>
+                            <Image Source="{Binding ImgUrl}" Aspect="AspectFill"/>
 
-                        <Label TextColor="White" Margin="20">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span  Text="{Binding Name}" FontSize="Title"/>
-                                    <Span Text="&#10;"/>
-                                    <Span Text="{Binding Description}"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Grid>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-        <!-- six project -->
+                            <Label TextColor="White" Margin="20">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span  Text="{Binding Name}" FontSize="Title"/>
+                                        <Span Text="&#10;"/>
+                                        <Span Text="{Binding Description}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <!-- six project -->
 
 
         </CollectionView>
+    </Grid>
 
 </ContentPage>

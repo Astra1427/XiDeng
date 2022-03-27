@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.PlanViews.TraningPlanPage"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.NavBarIsVisible="{Binding IsStop}"
+             Shell.TabBarIsVisible="False"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel.PlanViewModels"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Name="page"
+                IsEnabled="{Binding IsE}"
+             >
+
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding InitCommand}"
+            />
+    </ContentPage.Behaviors>
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackCommand}"/>
+    </Shell.BackButtonBehavior>
+    
+    
+    <ContentPage.Content>
+
+
+        <Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding StopContinueCommand}"/>
+            </Grid.GestureRecognizers>
+            <Image Source="{Binding CurrentAction.Style.Img1}" IsVisible="{Binding IsImg1}" />
+            <Image Source="{Binding CurrentAction.Style.Img2}" IsVisible="{Binding IsImg2}" />
+
+
+            <Label Text="{Binding ReallySecond}" HorizontalOptions="Center" VerticalOptions="End" TextColor="White" FontSize="20"/>
+
+            <Label TextColor="White" FontSize="18" VerticalTextAlignment="Start" HorizontalOptions="Start">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding CurrentGroupNumber}"/>
+                        <Span Text="/"/>
+                        <Span Text="{Binding CurrentAction.GroupNumber}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <!-- small-->
+            <Label TextColor="White" FontSize="18" VerticalTextAlignment="Start" HorizontalOptions="End">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding CurrentNumber}"/>
+                        <Span Text="/"/>
+                        <Span Text="{Binding CurrentAction.Number}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <!-- large-->
+            <Label TextColor="White" FontSize="60" VerticalTextAlignment="Center" HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding CurrentNumber}"/>
+                        <Span Text="/"/>
+                        <Span Text="{Binding CurrentAction.Number}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <!-- Count Down -->
+
+            <!-- Dark Layout  -->
+            <BoxView BackgroundColor="Gray" Opacity=".5" IsVisible="{Binding IsSleep}" />
+            <Grid IsVisible="{Binding IsSleep}">
+                <Frame WidthRequest="100" HeightRequest="100" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="100" BackgroundColor="Black" Opacity=".9">
+                    <Label Text="{Binding CountDownNumber}" TextColor="White" FontSize="30" VerticalTextAlignment="Center" HorizontalOptions="Center"/>
+                </Frame>
+            </Grid>
+
+
+            <!-- Traning End -->
+            <Grid IsVisible="{Binding IsEnd}">
+                <Frame WidthRequest="150" HeightRequest="150" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="100" BackgroundColor="Black" Opacity=".9">
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,*">
+                        <Button Text="返回" TextColor="Black" BackgroundColor="#f25022" FontSize="16" Command="{Binding BackCommand}"/>
+                        <Button Text="再来一次" TextColor="Black" BackgroundColor="#7fba00" FontSize="16" Grid.Column="1" Command="{Binding AgainCommand}"/>
+
+                        <Button Text="写感想" Grid.Row="1" BackgroundColor="#00a4ef" FontSize="16" TextColor="Black" Command="{Binding WriteFeelingCommand}"/>
+
+                        <Button Text="拉伸指导" Grid.Row="1" TextColor="Black" Grid.Column="1" BackgroundColor="#ffb900" FontSize="16" Command="{Binding StretchGuidanceCommand}"/>
+                    </Grid>
+                </Frame>
+            </Grid>
+
+            <!-- Stop Continue -->
+            <Grid IsVisible="{Binding IsStop}">
+                <Frame WidthRequest="150" HeightRequest="150" VerticalOptions="Center" HorizontalOptions="Center" CornerRadius="100" BackgroundColor="Black" Opacity=".9">
+                    <Button Text="继续" TextColor="Black" BackgroundColor="LightGreen" FontSize="20" Command="{Binding StopContinueCommand}"/>
+                </Frame>
+            </Grid>
+
+            <StackLayout VerticalOptions="End" HeightRequest="100">
+                <Label Text="动作列表:"/>
+                <CollectionView
+                    IsVisible="{Binding IsStop}"
+                    ItemsSource="{Binding Plan.PlanEachDays}"
+                    SelectedItem="{Binding CurrentAction}"  
+                    SelectionMode="Single"
+                    VerticalOptions="End"
+                    HeightRequest="100"
+                    >
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="8" Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid IsEnabled="False">
+                                <Label Text="{Binding Style.Name}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                 Binding="{Binding StyleID,TargetNullValue=''}"
+                                                 Value=""
+                                                 >
+                                            <Setter Property="Text" Value="休息日" />
+                                            <Setter Property="TextColor" Value="LightGreen" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding .}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+            
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

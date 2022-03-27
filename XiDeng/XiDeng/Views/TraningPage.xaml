@@ -4,6 +4,9 @@
              x:Class="XiDeng.Views.TraningPage"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Shell.NavBarIsVisible="{Binding IsStop}"
+             Shell.TabBarIsVisible="False"
+                IsEnabled="{Binding IsE}"
              >
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackCommand}"/>
@@ -19,13 +22,14 @@
             <Image Source="{Binding SkillStyle.Img2}" IsVisible="{Binding IsImg2}"/>
 
 
+            <Label Text="{Binding ReallySecond}" HorizontalOptions="Center" VerticalOptions="End" TextColor="White" FontSize="20"/>
 
             <Label TextColor="White" FontSize="18" VerticalTextAlignment="Start" HorizontalOptions="Start">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="{Binding CurrentGroupNumber}"/>
                         <Span Text="/"/>
-                        <Span Text="{Binding Standard.GroupsNumber}"/>
+                        <Span Text="{Binding Standard.GroupNumber}"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>

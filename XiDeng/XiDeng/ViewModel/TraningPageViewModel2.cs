@@ -13,13 +13,12 @@ using System.Reflection;
 using System.IO;
 using XiDeng.Common;
 using Xamarin.Essentials;
+using XiDeng.Models.SkillModels;
 
 namespace XiDeng.ViewModel
 {
-    class TraningPageViewModel:NotificationObject
+    class TraningPageViewModel2:BaseViewModel
     {
-
-
         #region UI
         private bool isImg1 = true;
 
@@ -36,9 +35,6 @@ namespace XiDeng.ViewModel
             get { return isImg2; }
             set { isImg2 = value; this.RaisePropertyChanged("IsImg2"); }
         }
-
-
-
         #endregion
 
         #region TraningEnd
@@ -49,16 +45,17 @@ namespace XiDeng.ViewModel
             get { return isEnd; }
             set { isEnd = value; this.RaisePropertyChanged("IsEnd"); }
         }
-        public DelegateCommand BackCommand { get => new DelegateCommand {ExecuteAction = new Action<object>(BackFunc) }; }
+        public new DelegateCommand BackCommand { get => new DelegateCommand { ExecuteAction = new Action<object>(BackFunc) }; }
 
         private void BackFunc(object obj)
         {
             ClearSound();
             IsBack = true;
+            GC.Collect();
             Shell.Current.GoToAsync("..");
         }
 
-        public DelegateCommand AgainCommand { get => new DelegateCommand() { ExecuteAction = new Action<object>(AgainFunc)}; }
+        public DelegateCommand AgainCommand { get => new DelegateCommand() { ExecuteAction = new Action<object>(AgainFunc) }; }
 
         private void AgainFunc(object obj)
         {
@@ -71,42 +68,35 @@ namespace XiDeng.ViewModel
         #endregion
 
         #region  Feeling
-        public DelegateCommand WriteFeelingCommand { get => new DelegateCommand { ExecuteAction = new Action<object>( async (obj)=> {
-            string feeling = await App.Current.MainPage.DisplayPromptAsync("感想","有什么需要备注的吗？","写完了","不写了","在此处写下你的心得体会",-1,null,"");
-            if (string.IsNullOrEmpty(feeling))
+        public DelegateCommand WriteFeelingCommand
+        {
+            get => new DelegateCommand
             {
-                return;
-            }
-            DataCommon.ExerciseLogs.Last().Feeling += "\n"+feeling;
-            DataCommon.ExerciseLogs.Last().DisFeeling = feeling.Length > 9 ? feeling.Substring(0,9) + "……" : feeling;
-            FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
-        }) }; }
+                ExecuteAction = new Action<object>(async (obj) => {
+                    string feeling = await App.Current.MainPage.DisplayPromptAsync("感想", "有什么需要备注的吗？", "写完了", "不写了", "在此处写下你的心得体会", -1, null, "");
+                    if (string.IsNullOrEmpty(feeling))
+                    {
+                        return;
+                    }
+                    DataCommon.ExerciseLogs.Last().Feeling += "\n" + feeling;
+                    DataCommon.ExerciseLogs.Last().DisFeeling = feeling.Length > 9 ? feeling.Substring(0, 9) + "……" : feeling;
+                    FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+                })
+            };
+        }
         #endregion
         #region Stretch Guidance
-        public DelegateCommand StretchGuidanceCommand { get => new DelegateCommand { ExecuteAction = new Action<object>(obj=> {
-                    Browser.OpenAsync($"https://www.baidu.com/s?wd={DataCommon.Skills.First(a=>a.ID == SkillStyle.SkillID).Name} 拉伸");
+        public DelegateCommand StretchGuidanceCommand
+        {
+            get => new DelegateCommand
+            {
+                ExecuteAction = new Action<object>(obj => {
+                    Browser.OpenAsync($"https://www.baidu.com/s?wd={SkillDataCommon.Skills.First(a => a.Id == SkillStyle.SkillId).Name} 拉伸");
 
-        })
-        }; }
+                })
+            };
+        }
         #endregion
-
-        public double ExerciseTime { get; set; }
-
-        private SkillStyle skillStyle;
-
-        public SkillStyle SkillStyle
-        {
-            get { return skillStyle; }
-            set { skillStyle = value; this.RaisePropertyChanged("SkillStyle"); }
-        }
-
-        private Standard standard;
-
-        public Standard Standard
-        {
-            get { return standard; }
-            set { standard = value; this.RaisePropertyChanged("Standard"); }
-        }
 
         #region Init Sound
         public ISimpleAudioPlayer StartAudio = CrossSimpleAudioPlayer.CreateSimpleAudioPlayer();
@@ -120,42 +110,58 @@ namespace XiDeng.ViewModel
 
         public void InitSound()
         {
-            var assembly = typeof(App).GetTypeInfo().Assembly;
-            Stream startMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.start.mp3");
-            Stream backMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.bengbengca.mp3");
-            Stream oneMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.one.mp3");
-            Stream twoMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.two.mp3");
-            Stream threeMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.three.mp3");
-            Stream finishMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.finish.mp3");
-            Stream recoveryhMp3 = assembly.GetManifestResourceStream("XiDeng."+ "Resources.recovery.mp3");
-            //Stream TenSecondsCoundDownMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.countdown10seconds.mp3");
+            try
+            {
+                var assembly = typeof(App).GetTypeInfo().Assembly;
+                Stream startMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.start.mp3");
+                Stream backMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.bengbengca.mp3");
+                Stream oneMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.one.mp3");
+                Stream twoMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.two.mp3");
+                Stream threeMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.three.mp3");
+                Stream finishMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.finish.mp3");
+                Stream recoveryhMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.recovery.mp3");
+                //Stream TenSecondsCoundDownMp3 = assembly.GetManifestResourceStream("XiDeng." + "Resources.countdown10seconds.mp3");
 
 
 
-            StartAudio.Load(startMp3);
-            BackAudio.Load(backMp3);
-            BackAudio.Loop = true;
-            OneAudio.Load(oneMp3);
-            TwoAudio.Load(twoMp3);
-            ThreeAudio.Load(threeMp3);
-            FinishAudio.Load(finishMp3);
-            RecoveryAudio.Load(recoveryhMp3);
-            //TenSecondsCoundDownAudio.Load(TenSecondsCoundDownMp3);
+                StartAudio.Load(startMp3);
+                BackAudio.Load(backMp3);
+                BackAudio.Loop = true;
+                OneAudio.Load(oneMp3);
+                TwoAudio.Load(twoMp3);
+                ThreeAudio.Load(threeMp3);
+                FinishAudio.Load(finishMp3);
+                RecoveryAudio.Load(recoveryhMp3);
+                //TenSecondsCoundDownAudio.Load(TenSecondsCoundDownMp3);
 
 
-            //set Volume
-            BackAudio.Volume = Config.BackAudioVolume;
-            StartAudio.Volume = Config.PersonAudioVolume;
-            OneAudio.Volume = Config.PersonAudioVolume;
-            TwoAudio.Volume = Config.PersonAudioVolume;
-            ThreeAudio.Volume = Config.PersonAudioVolume;
-            FinishAudio.Volume = Config.PersonAudioVolume;
-            RecoveryAudio.Volume = Config.PersonAudioVolume;
-            //TenSecondsCoundDownAudio.Volume = Config.PersonAudioVolume;
+                //set Volume
+                BackAudio.Volume = Config.BackAudioVolume;
+                StartAudio.Volume = Config.PersonAudioVolume;
+                OneAudio.Volume = Config.PersonAudioVolume;
+                TwoAudio.Volume = Config.PersonAudioVolume;
+                ThreeAudio.Volume = Config.PersonAudioVolume;
+                FinishAudio.Volume = Config.PersonAudioVolume;
+                RecoveryAudio.Volume = Config.PersonAudioVolume;
+                //TenSecondsCoundDownAudio.Volume = Config.PersonAudioVolume;
+
+                startMp3.Dispose();
+                backMp3.Dispose();
+                oneMp3.Dispose();
+                twoMp3.Dispose();
+                threeMp3.Dispose();
+                finishMp3.Dispose();
+                recoveryhMp3.Dispose();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
 
-        public async void ContinueSound() {
+        public async void ContinueSound()
+        {
             BackAudio.Play();
             await StartTraning();
         }
@@ -184,7 +190,7 @@ namespace XiDeng.ViewModel
         public bool IsStop
         {
             get { return isStop; }
-            set { isStop = value;RaisePropertyChanged("IsStop"); }
+            set { isStop = value; RaisePropertyChanged("IsStop"); }
         }
 
 
@@ -213,7 +219,7 @@ namespace XiDeng.ViewModel
 
             }
         }
-        public DelegateCommand ContinueCommand { get => new DelegateCommand {ExecuteAction = new Action<object>(ContinueFunc) }; }
+        public DelegateCommand ContinueCommand { get => new DelegateCommand { ExecuteAction = new Action<object>(ContinueFunc) }; }
 
         private async void ContinueFunc(object obj)
         {
@@ -227,6 +233,25 @@ namespace XiDeng.ViewModel
         }
 
         #endregion
+
+        public double ExerciseTime { get; set; }
+
+        private SkillStyleDTO skillStyle;
+
+        public SkillStyleDTO SkillStyle
+        {
+            get { return skillStyle; }
+            set { skillStyle = value; this.RaisePropertyChanged("SkillStyle"); }
+        }
+
+        private StandardDTO standard;
+
+        public StandardDTO Standard
+        {
+            get { return standard; }
+            set { standard = value; this.RaisePropertyChanged("Standard"); }
+        }
+
 
         private ConfigModel config;
 
@@ -246,15 +271,15 @@ namespace XiDeng.ViewModel
         /// <param name="SkillID"></param>
         /// <param name="StyleID"></param>
         /// <param name="StandardJson"></param>
-        public TraningPageViewModel(string SkillID,string StyleID,string StandardJson)
+        public TraningPageViewModel2(string SkillID, string StyleID, string StandardJson)
         {
             try
             {
-                Standard = JsonConvert.DeserializeObject<Standard>(Uri.UnescapeDataString(StandardJson));
+                Standard = JsonConvert.DeserializeObject<StandardDTO>(Uri.UnescapeDataString(StandardJson));
                 Config = JsonConvert.DeserializeObject<ConfigModel>(FileHelper.ReadFile(FileHelper.SettingFile));
                 SleepCountDownNumber = Config.SleepSecond;
-
-                if (Standard.TraningType == 1)
+                NumberSpeechOptions = new SpeechOptions() { Volume = (float)Config.PersonAudioVolume };
+                if (Standard.Style.TraningType)
                 {
 
                     DownNumberSecond = 1000;
@@ -268,24 +293,39 @@ namespace XiDeng.ViewModel
                 }
             }
             catch (Exception ex)
-            { 
+            {
                 App.Current.MainPage.DisplayAlert("错误", "读取设置信息失败，请重新设置", "好的");
                 BackFunc(null);
                 return;
             }
-            int sid = int.Parse(SkillID);
-            int stid = int.Parse(StyleID);
-            SkillStyle = DataCommon.Skills.Where(a=>a.ID == sid).FirstOrDefault().Styles.Where(a=>a.ID == stid).FirstOrDefault();
+            Guid sid = Guid.Parse(SkillID);
+            Guid stid = Guid.Parse(StyleID);
+            SkillStyle = SkillDataCommon.Skills.Where(a => a.Id == sid).FirstOrDefault().SkillStyles.Where(a => a.Id == stid).FirstOrDefault();
             InitSound();
+            Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+            {
+                ReallySecond++;
+                return true;
+            });
             CountDownPlay();
         }
+
+        private int reallySecond;
+
+        public int ReallySecond
+        {
+            get { return reallySecond; }
+            set { reallySecond = value; RaisePropertyChanged(nameof(ReallySecond)); }
+        }
+
+
 
         private int currentGroupNumber;
 
         public int CurrentGroupNumber
         {
             get { return currentGroupNumber; }
-            set { currentGroupNumber = value;this.RaisePropertyChanged("CurrentGroupNumber"); }
+            set { currentGroupNumber = value; this.RaisePropertyChanged("CurrentGroupNumber"); }
         }
 
 
@@ -305,11 +345,18 @@ namespace XiDeng.ViewModel
             set { isSleep = value; this.RaisePropertyChanged("IsSleep"); }
         }
 
+        private SpeechOptions numberSpeechOptions;
+
+        public SpeechOptions NumberSpeechOptions
+        {
+            get { return numberSpeechOptions; }
+            set { numberSpeechOptions = value; RaisePropertyChanged("NumberSpeechOptions"); }
+        }
 
         /// <summary>
         /// Start Is Only One
         /// </summary>
-        public bool IsStart = false;    
+        public bool IsStart = false;
         /// <summary>
         /// Start Traning
         /// </summary>
@@ -320,22 +367,22 @@ namespace XiDeng.ViewModel
                 return;
             }
             IsStart = true;
-            for (int i = 0; i < Standard.GroupsNumber; i++)
+            for (int i = 0; i < Standard.GroupNumber; i++)
             {
 
                 while (true)
                 {
                     if (IsStop || IsBack)
                     {
-                        return ;
+                        return;
                     }
                     //1
                     //Play 1
                     CurrentNumber++;
-                    if (Standard.TraningType == 1)
+                    if (SkillStyle.TraningType )
                     {
                         //count down
-                        await TextToSpeech.SpeakAsync(CurrentNumber.ToString(),new SpeechOptions() { Volume = (float)Config.PersonAudioVolume});
+                        TextToSpeech.SpeakAsync(CurrentNumber.ToString(), NumberSpeechOptions);
                     }
                     else
                     {
@@ -346,13 +393,13 @@ namespace XiDeng.ViewModel
                     await Task.Delay(DownNumberSecond);
                     //record Exercise Time
                     ExerciseTime += DownNumberSecond / 1000;
-                    
+
                     //2
-                    if (Standard.TraningType == 1)
+                    if (SkillStyle.TraningType)
                     {
                         //count down
                         CurrentNumber++;
-                        await TextToSpeech.SpeakAsync(CurrentNumber.ToString(),new SpeechOptions() { Volume = (float)Config.PersonAudioVolume});
+                        TextToSpeech.SpeakAsync(CurrentNumber.ToString(), NumberSpeechOptions);
                     }
                     else
                     {
@@ -372,11 +419,11 @@ namespace XiDeng.ViewModel
                     }
                 }
 
-                if (Standard.IsSingle == 1)
+                if (SkillStyle.IsSingle)
                 {
                     IsImg1 = true;
                     IsImg2 = false;
-                    await TextToSpeech.SpeakAsync("换边",new SpeechOptions() { Volume = 1});
+                    await TextToSpeech.SpeakAsync("换边", new SpeechOptions() { Volume = 1 });
                     await CountDown(Config.StartContinueSecond);
                     ExerciseTime += Config.StartContinueSecond;
 
@@ -413,7 +460,7 @@ namespace XiDeng.ViewModel
                 }
 
                 CurrentGroupNumber++;
-                if (CurrentGroupNumber == Standard.GroupsNumber)
+                if (CurrentGroupNumber == Standard.GroupNumber)
                 {
                     //Compeleted traning
                     break;
@@ -423,7 +470,7 @@ namespace XiDeng.ViewModel
                 IsImg1 = true;
                 IsImg2 = false;
                 await Sleep(SleepCountDownNumber);
-                
+
             }
             //traning end
             FinishAudio.Play();
@@ -452,7 +499,7 @@ namespace XiDeng.ViewModel
             string SkillName = "???";
             try
             {
-                SkillName = DataCommon.Skills.Single(a => a.ID == this.SkillStyle.SkillID).Name;
+                SkillName = SkillDataCommon.Skills.Single(a => a.Id == this.SkillStyle.SkillId).Name;
             }
             catch (Exception ex)
             {
@@ -460,15 +507,14 @@ namespace XiDeng.ViewModel
             }
             DataCommon.ExerciseLogs.Add(new ExerciseLog()
             {
-                ID = DataCommon.ExerciseLogs.LastOrDefault() == null ? 1 : DataCommon.ExerciseLogs.LastOrDefault().ID + 1,
-                SkillID = this.SkillStyle.SkillID,
+                Id = Guid.NewGuid(),
                 SkillName = SkillName,
-                StyleID = this.SkillStyle.ID,
-                StyleName = this.SkillStyle.Name,
+                StyleID = this.SkillStyle.Id,
                 ExerciseDateTime = DateTime.Now,
                 ExerciseTime = this.ExerciseTime,
-                ExerciseStandard = this.Standard,
-                Feeling = ""
+                GroupNumber = this.Standard.GroupNumber,
+                Number = this.Standard.Number,
+                Feeling = "",
             });
             FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
         }
@@ -479,7 +525,7 @@ namespace XiDeng.ViewModel
         public int CountDownNumber
         {
             get { return countDownNumber; }
-            set { countDownNumber = value;this.RaisePropertyChanged("CountDownNumber"); }
+            set { countDownNumber = value; this.RaisePropertyChanged("CountDownNumber"); }
         }
 
 
@@ -494,7 +540,7 @@ namespace XiDeng.ViewModel
         /// <summary>
         /// Sleep second default : 60
         /// </summary>
-        public async Task Sleep(int sleepSecond )
+        public async Task Sleep(int sleepSecond)
         {
             IsSleep = true;
             CountDownNumber = sleepSecond;
@@ -578,12 +624,12 @@ namespace XiDeng.ViewModel
 
         }
         /// <summary>
-        /// Count Donw Is Only one
+        /// Count Down Is Only one
         /// </summary>
-        public bool IsCountDown = false;    
+        public bool IsCountDown = false;
         public async Task CountDown(int second = 3)
         {
-            if (IsCountDown )
+            if (IsCountDown)
             {
                 return;
             }

@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XiDeng.Common.Styles.DefaultTheme">
     <!-- Default Theme-->
-    <Color x:Key="ShellBackGroundColor" >Black</Color>
-    <Color x:Key="ContentPageBackGroundColor">Black</Color>
+    <Color x:Key="ShellBackGroundColor">#252526</Color>
+    <Color x:Key="ContentPageBackGroundColor">#2A2A2C</Color>
 </ResourceDictionary>

@@ -17,7 +17,7 @@ namespace XiDeng.Views
     {
         public string ID { 
             set { 
-            BindingContext = new SkillStylePageViewModel(int.Parse(value));
+            BindingContext = new SkillStylePageViewModel(Guid.Parse(value));
             }
         }
         public StylePage()

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.PlanViews.PlanDetailPage"
+             x:Name="page"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             xmlns:converter="clr-namespace:XiDeng.Common.Converts"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel.PlanViewModels"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:controls="clr-namespace:XiDeng.Common.Controls"
+                IsEnabled="{Binding IsE}"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding OnAppearingCommand}"
+            />
+    </ContentPage.Behaviors>
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="修改" Order="Primary" Command="{Binding BindingContext.GotoUpdatePlanCommand,Source={x:Reference page}}" IsEnabled="{Binding IsOwner}"/>
+        <ToolbarItem Text="{Binding PublishPlanText}" Order="Secondary" Command="{Binding BindingContext.PublishPlanCommand,Source={x:Reference page}}" IsEnabled="{Binding IsOwner}"/>
+        <ToolbarItem Text="删除" Order="Secondary" Command="{Binding BindingContext.DeletePlanCommand,Source={x:Reference page}}" IsDestructive="True" IsEnabled="{Binding IsOwner}" />
+        <ToolbarItem Text="分享" Order="Secondary" />
+
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:DayWeekConverter x:Key="dwConverter" x:Name="dwConvert" ByWeek="True" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <RefreshView IsRefreshing="{Binding IsRefresh}">
+        <StackLayout>
+
+            <ListView Header="{Binding BindingContext,Source={x:Reference page}}" 
+                  IsGroupingEnabled="True" ItemsSource="{Binding GroupPlanActions}" GroupDisplayBinding="{Binding Key}"
+                  SelectionMode="None" Margin="3" HasUnevenRows="True"
+                  SeparatorVisibility="None">
+
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Image HeightRequest="200" BackgroundColor="LightBlue"/>
+
+                            <Frame HasShadow="True" HeightRequest="60"  BackgroundColor="Black" Margin="20,-30,20,0" Padding="10">
+                                <Grid ColumnDefinitions="*,100">
+                                    <Label Text="{Binding Plan.Name}" TextColor="White" FontSize="20"/>
+                                    <Label Text ="天数" Grid.Column="1"  FontSize="18" TextColor="White"/>
+                                </Grid>
+                            </Frame>
+
+                            <Label Text="描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述。" Margin="20"/>
+
+                            <Label Text="动作列表" TextColor="White" FontSize="18" Margin="20,0"/>
+
+                        </StackLayout>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="0">
+                                <Label Text="{Binding Key,Converter={StaticResource dwConverter}}" TextColor="White" FontSize="16" VerticalOptions="Center"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid >
+                                <Label Text="{Binding Style.Name}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label"
+                                                 Binding="{Binding StyleID,TargetNullValue=''}"
+                                                 Value=""
+                                                 >
+                                            <Setter Property="Text" Value="休息日" />
+                                            <Setter Property="TextColor" Value="LightGreen" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding .}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Image Source="{Binding BindingContext.RemoveIcon,Source={x:Reference page}}" BackgroundColor="LightBlue" HorizontalOptions="End" Aspect="AspectFit" Margin="10"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button Text="开始计划" VerticalOptions="EndAndExpand" Command="{Binding StartPlanCommand}" IsVisible="{Binding IsStarted,Converter={StaticResource InverseBooleanConverter}}"/>
+            <Grid IsVisible="{Binding IsStarted}">
+                <Button Text="停止计划" Command="{Binding PausePlanCommand}" IsVisible="{Binding IsStarted}"/>
+                <Button Text="重新开始" Command="{Binding RestartPlanCommand}" IsVisible="{Binding IsStarted}" Grid.Column="1"/>
+            </Grid>
+        </StackLayout>
+    </RefreshView>
+
+</ContentPage>

@@ -5,7 +5,9 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="{Binding SkillStyle.Name}"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor }"
-             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}">
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel"
+             x:DataType="vm:SkillStyleDetailPageViewModel">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="{Binding AudioIcon}" Command="{Binding AudioVolumePanelCommand}"/>
@@ -18,7 +20,7 @@
     <Grid Padding="5,0" RowDefinitions="*,50">
         <ScrollView>
             <StackLayout Padding="5,0">
-                <xct:MediaElement x:Name="meVideo" HeightRequest="200" Focused="meVideo_Focused" Unfocused="MediaElement_Unfocused" Aspect="AspectFit" BackgroundColor="Black" Margin="-5,0" Source="{Binding SkillStyle.DisplayVideoUri}" IsLooping="True" AutoPlay="False" KeepScreenOn="True" MediaFailed="MediaElement_MediaFailed"/>
+                <xct:MediaElement x:Name="meVideo" HeightRequest="200" Focused="meVideo_Focused" Unfocused="MediaElement_Unfocused" Aspect="AspectFit" BackgroundColor="Black" Margin="-5,0" Source="{Binding SkillStyle.VideoUrl}" IsLooping="True" AutoPlay="False" KeepScreenOn="True" MediaFailed="MediaElement_MediaFailed"/>
 
                 <Label Text="训练部位" TextColor="LightGray" Margin="0,10,0,0"/>
                 <Label Text="{Binding SkillStyle.TraningPart}" TextColor="White"/>
@@ -48,7 +50,7 @@
                 <StackLayout>
                     <Label Text="选择标准" TextColor="Black" FontSize="20" HorizontalOptions="Center" Margin="0,10,0,0"/>
                     <Label Text="{Binding SkillStyle.Name}" TextColor="Black" FontAttributes="Bold" FontSize="20" Margin="0,15,0,0"/>
-                    <Picker SelectedIndex="{Binding TraningLevel}">
+                    <Picker SelectedIndex="{Binding TraningLevel}" TextColor="Black" >
                         <Picker.Items>
                             <x:String>初级标准</x:String>
                             <x:String>中级标准</x:String>

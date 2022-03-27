@@ -1,8 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="XiDeng.App">
+             x:Class="XiDeng.App"
+             xmlns:converts="clr-namespace:XiDeng.Common.Converts">
     <Application.Resources>
         <ResourceDictionary x:Name="AppResources" Source="Common/Styles/DefaultTheme.xaml"/>
+
+        <converts:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <!--<converts:DayWeekConverter x:Key="DayWeekConverter"/>-->
+        <x:Boolean x:Key="True">True</x:Boolean>
+
+        <Style TargetType="Image">
+            <Setter Property="Aspect" Value="AspectFit" />
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="#ACACAC" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="#ACACAC" />
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="#1B1B1C" />
+        </Style>
+        <Style TargetType="Editor">
+            <Setter Property="PlaceholderColor" Value="#ACACAC" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="RadioButton">
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="Picker">
+            <Setter Property="TitleColor" Value="#ACACAC" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
     </Application.Resources>
+    
 </Application>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.PlanViews.UpdatePlanPage"
+             Title="修改计划"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel.PlanViewModels"
+             x:DataType="vm:UpdatePlanPageViewModel"
+                IsEnabled="{Binding IsE}"
+             >
+    <ScrollView>
+        <RefreshView IsRefreshing="{Binding IsRefresh}">
+            <StackLayout Padding="5">
+                <Entry Text="{Binding Plan.Name}" Placeholder="计划名字"/>
+                <Editor Placeholder="简介" HeightRequest="75" Text="{Binding Plan.Description}"/>
+                <StackLayout Orientation="Horizontal">
+                    <RadioButton IsChecked="{Binding ByDay}">
+                        <RadioButton.Content >
+                            按天
+                        </RadioButton.Content>
+                    </RadioButton>
+                    <RadioButton IsChecked="{Binding ByWeek}">
+                        <RadioButton.Content>
+                            按周
+                        </RadioButton.Content>
+                    </RadioButton>
+                </StackLayout>
+
+                <Label Text="天数"/>
+                <Entry Keyboard="Numeric" Text="{Binding DayNumber}" IsReadOnly="{Binding ByWeek}"/>
+
+                <Button Text="设置动作" Command="{Binding GotoAddActionPageCommand}"/>
+                <StackLayout Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding Plan.IsPublic}"/>
+                    <Label Text="是否公开" VerticalOptions="Center" TextColor="White" FontSize="16"/>
+                    <CheckBox IsChecked="{Binding Plan.IsLoop}"/>
+                    <Label Text="是否循环" VerticalOptions="Center" TextColor="White" FontSize="16"/>
+                </StackLayout>
+
+                <Label Text="封面" FontSize="16" TextColor="White"/>
+                <Image HeightRequest="200" BackgroundColor="LightBlue" Source="{Binding Cover}">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SelectCoverCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Button Text="添加" Command="{Binding UpdateSubmitCommand}"/>
+                <Button Text="取消" Command="{Binding CancelCommand}"/>
+            </StackLayout>
+        </RefreshView>
+    </ScrollView>
+</ContentPage>

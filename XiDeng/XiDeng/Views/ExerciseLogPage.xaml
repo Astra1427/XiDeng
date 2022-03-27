@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XiDeng.Views.ExerciseLogPage"
              Title="锻炼日记"
-             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}" BackgroundColor="#24262b">
+             Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             BackgroundColor="#24262b"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel"
+             xmlns:models="clr-namespace:XiDeng.Data">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="{Binding StatisticsIcon}" Command="{Binding StatisticsCommand}" Text="统计" Order="Default"/>
@@ -57,9 +60,9 @@
                                     <FormattedString>
                                         <Span Text="{Binding SkillName}" FontSize="18"/>
                                         <Span Text="-"/>
-                                        <Span Text="{Binding StyleName}" FontSize="18"/>
+                                        <Span Text="{Binding Style.Name}" FontSize="18"/>
                                         <Span Text="&#10;"/>
-                                        <Span Text="{Binding ExerciseStandard}" TextColor="Gray"/>
+                                        <Span Text="{Binding .}" TextColor="Gray"/>
 
                                         <!--<Span Text="{Binding ExerciseStandard.GroupsNumber}" TextColor="Gray"/>
                                         <Span Text="组"   TextColor="Gray"/>

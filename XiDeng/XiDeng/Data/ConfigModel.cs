@@ -4,7 +4,7 @@ using System.Text;
 
 namespace XiDeng.Data
 {
-    class ConfigModel
+    public class ConfigModel
     {
         public int SleepSecond { get; set; }
         /// <summary>
@@ -27,5 +27,10 @@ namespace XiDeng.Data
         public double BackAudioVolume { get; set; }
         public double PersonAudioVolume { get; set; }
         public string VersionNumber { get; set; }
+
+        /// <summary>
+        /// 是否为离线模式 ， [Only Native]
+        /// </summary>
+        public bool IsOffline { get; set; }
     }
 }

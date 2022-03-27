@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AccountViews.RegisterPage"
+             BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel.AccountViewModels"
+             x:DataType="vm:RegisterPageViewModel"
+             Title="注册"
+            IsEnabled="{Binding IsE}">
+    <Grid>
+        <Frame BorderColor="White" Margin="10" Padding="10" BackgroundColor="Transparent">
+            <StackLayout>
+                <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,0" BackgroundColor="LightBlue"/>
+                <Entry Placeholder="昵称" Text="{Binding Name}"/>
+                <Entry Placeholder="邮箱" Text="{Binding Email}"/>
+                <Entry Placeholder="密码" Text="{Binding Password}" IsPassword="True"/>
+                <Entry Placeholder="确认密码" Text="{Binding ConfirmPassword}" IsPassword="True"/>
+                <Grid ColumnDefinitions="1.5*,*">
+                    <Entry Placeholder="验证码" Text="{Binding VerifyCode}"/>
+                    <Button Text="{Binding SendEmailButtonText}" Command="{Binding SendCodeToEmailCommand}" IsEnabled="{Binding CanExecuteSendEmail}" Grid.Column="1"/>
+                </Grid>
+
+                <Button HorizontalOptions="Center" Text="注册" Command="{Binding RegisterCommand}"/>
+                <Button HorizontalOptions="Center" Text="返回" Command="{Binding BackCommand}"/>
+            </StackLayout>
+        </Frame>
+        <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center" IsRunning="{Binding IsRefresh}" IsVisible="{Binding IsRefresh}"/>
+    </Grid>
+</ContentPage>

@@ -38,7 +38,7 @@ namespace XiDeng.Views
             get { return standardJson; }
             set {
                 standardJson = Uri.UnescapeDataString(value);
-                this.BindingContext = new TraningPageViewModel(SkillID, StyleID, StandardJson);
+                this.BindingContext = new TraningPageViewModel2(SkillID, StyleID, StandardJson);
             }
         }
 
@@ -46,13 +46,13 @@ namespace XiDeng.Views
         {
             InitializeComponent();
             
-
+            
         }
 
         protected override bool OnBackButtonPressed()
         {
-            (this.BindingContext as TraningPageViewModel).ClearSound();
-            (this.BindingContext as TraningPageViewModel).IsBack = true;
+            (this.BindingContext as TraningPageViewModel2).ClearSound();
+            (this.BindingContext as TraningPageViewModel2).IsBack = true;
             return base.OnBackButtonPressed();
         }
     }

@@ -7,7 +7,7 @@ using Xamarin.Forms;
 using XiDeng.Command;
 using XiDeng.ViewModel;
 
-namespace XiDeng.Data
+namespace XiDeng.DataTest
 {
     public class Skill
     {
@@ -88,7 +88,7 @@ namespace XiDeng.Data
     }
 
 
-    public class Standard:NotificationObject
+    public class Standard:BaseViewModel
     {
 
         private int groupsNumber;

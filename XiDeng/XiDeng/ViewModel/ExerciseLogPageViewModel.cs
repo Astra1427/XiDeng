@@ -16,7 +16,7 @@ using Plugin.FilePicker.Abstractions;
 
 namespace XiDeng.ViewModel
 {
-    public class ExerciseLogPageViewModel:NotificationObject
+    public class ExerciseLogPageViewModel:BaseViewModel
     {
         public static bool IsChanged = false;
         private List<ExerciseLog> exerciseLogs;
@@ -100,6 +100,7 @@ namespace XiDeng.ViewModel
             {
                 string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
                 //File.WriteAllText("data/XiDengBackUp" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt", FileHelper.ReadFile(FileHelper.ExerciseLogFile));
+                
                 bool isSuccess = await CrossFilePicker.Current.SaveFile(new FileData("data", $"XiDengBackUp{DateTime.Now.ToString("yyyyMMddHHmmss")}.txt", () =>
                 {
                     return new MemoryStream(Encoding.UTF8.GetBytes(FileHelper.ReadFile(FileHelper.ExerciseLogFile)));

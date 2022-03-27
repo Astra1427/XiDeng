@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.MyProfilePage"
+             xmlns:vm="clr-namespace:XiDeng.ViewModel.AccountViewModels"
+             x:DataType="vm:MyProfileViewModel"
+             BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
+             Shell.NavBarIsVisible="False"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+                IsEnabled="{Binding IsE}"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding PrepareAccountDataCommand}"
+            />
+    </ContentPage.Behaviors>
+    
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="#ACACAC" />
+        </Style>
+    </ContentPage.Resources>
+    <RefreshView IsRefreshing="{Binding IsRefresh}">
+        <StackLayout BackgroundColor="Transparent">
+            <Frame HeightRequest="100" HasShadow="True" BackgroundColor="#252526">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ViewMyProfileCommand}"/>
+                </Frame.GestureRecognizers>
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="{Binding Account.PhotoUrl}" WidthRequest="50" HeightRequest="50" BackgroundColor="LightBlue"/>
+                    <Label HorizontalOptions="StartAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Account.Name}"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="{Binding Account.Introduce}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                    <Button Text="同步" IsVisible="{Binding IsLogged}" IsEnabled="{Binding IsLogged}" BackgroundColor="#007acc" Command="{Binding SynchronizationCommand}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+
+                </StackLayout>
+            </Frame>
+
+
+            <TableView Intent="Menu"  >
+                <TableView.Resources>
+                    <Style TargetType="Image">
+                        <Setter Property="HeightRequest" Value="25" />
+                        <Setter Property="Margin" Value="0,0,10,0" />
+                    </Style>
+                    <Style TargetType="Label">
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="Margin" Value="20,0,0,0" />
+                        <Setter Property="TextColor" Value="#ACACAC" />
+                    </Style>
+                </TableView.Resources>
+                <TableRoot>
+
+                    <TableSection >
+
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}" CommandParameter="CollectFolderListPage"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="我的收藏"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="锻炼日志"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}" CommandParameter="MyPlanPage"/>
+                                </StackLayout.GestureRecognizers>
+                                <!--<StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GotoMyPlanPageCommand}"/>
+                                </StackLayout.GestureRecognizers>-->
+                                <Label Text="我的计划"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </TableSection>
+
+
+                    <TableSection Title="其他" TextColor="White">
+                        <ViewCell>
+
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}" CommandParameter="SettingPage"/>
+                                </StackLayout.GestureRecognizers>
+                                <!--<StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GotoSettingsPage}"/>
+                                </StackLayout.GestureRecognizers>-->
+
+                                <Label Text="设置"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="帮助"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="问题与建议"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="检查更新"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="关于"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </StackLayout>
+    </RefreshView>
+</ContentPage>

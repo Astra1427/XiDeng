@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.PlanViews.MyPlanPage"
+             Title="我的计划"
+             BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
+                IsEnabled="{Binding IsE}"
+             x:Name="page">
+    
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding AddIcon}" Command="{Binding GotoAddPlanPageCommand}"/>
+    </ContentPage.ToolbarItems>
+    <Grid>
+        <ListView ItemsSource="{Binding Plans}"
+                  IsPullToRefreshEnabled="True" RefreshCommand="{Binding LoadPlansCommand}" IsRefreshing="{Binding IsRefresh}" 
+                  HasUnevenRows="True" SelectionMode="None"
+                  >
+
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <ViewCell>
+                        <Frame HasShadow="True" CornerRadius="5" Margin="10,5">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.GotoPlanDetailCommand,Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Image Source="{Binding CoverUrl}"/>
+                                <Label FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding Description}" />
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding DayNumber}"/>
+                                            <Span Text="天 / "/>
+                                            <Span Text="{Binding DisIsLoop}"/>
+
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label Text="{Binding PublishStatus}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="White" FontSize="20"/>
+
+                            </StackLayout>
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>

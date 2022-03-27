@@ -2,9 +2,15 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:XiDeng"
-             x:Class="XiDeng.ShellApp">
+             x:Class="XiDeng.ShellApp"
+       TitleColor="White"
+       BackgroundColor="{x:DynamicResource ShellBackGroundColor}"
+       UnselectedColor="#ACACAC"
+       >
     
     <TabBar>
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" Title="MainPage"/>
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" Title="主页" Icon="{Binding IconHome}" />
+        <ShellContent ContentTemplate="{DataTemplate local:PublicPlanPage}" Title="计划" Icon="{Binding IconStar}" />
+        <ShellContent ContentTemplate="{DataTemplate local:MyProfilePage}" Title="我的" Icon="{Binding IconProfile}"/>
     </TabBar>
 </Shell>

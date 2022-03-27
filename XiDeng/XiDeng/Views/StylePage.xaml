@@ -27,7 +27,7 @@
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding SkillStyleCommand}"/>
                             </Grid.GestureRecognizers>
-                            <Label IsVisible="False" Text="{Binding ID}"/>
+                            <Label IsVisible="False" Text="{Binding Id}"/>
                             <Image Source="{Binding Img2}" Aspect="AspectFit" HorizontalOptions="End"/>
                             <Label TextColor="White" Margin="20">
                                 <Label.FormattedText>

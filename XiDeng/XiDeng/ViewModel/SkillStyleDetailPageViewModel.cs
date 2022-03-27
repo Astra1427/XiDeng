@@ -10,10 +10,11 @@ using Newtonsoft.Json;
 using System.Web;
 using XiDeng.IService;
 using Xamarin.Essentials;
+using XiDeng.Models.SkillModels;
 
 namespace XiDeng.ViewModel
 {
-    class SkillStyleDetailPageViewModel:NotificationObject
+    class SkillStyleDetailPageViewModel:BaseViewModel
     {
 
         #region Image
@@ -156,11 +157,11 @@ namespace XiDeng.ViewModel
 
         #endregion
 
-        private Standard currentStandard;
+        private StandardDTO currentStandard;
 
-        public Standard CurrentStandard
+        public StandardDTO CurrentStandard
         {
-            get { return currentStandard ?? SkillStyle.PrimaryStandard; }
+            get { return currentStandard ?? SkillStyle.Standards[0]; }
             set { currentStandard = value; this.RaisePropertyChanged("CurrentStandard"); }
         }
 
@@ -194,22 +195,22 @@ namespace XiDeng.ViewModel
                 IsCustomTraning = false;
                 if (TraningLevel == 0)
                 {
-                    CurrentStandard = SkillStyle.PrimaryStandard;
+                    CurrentStandard = SkillStyle.Standards[0];
                 }
                 else if (TraningLevel == 1)
                 {
-                    CurrentStandard = SkillStyle.IntermediateStandard;
+                    CurrentStandard = SkillStyle.Standards[1];
 
                 }
                 else if (TraningLevel == 2)
                 {
-                    CurrentStandard = SkillStyle.UpgradeStandard;
+                    CurrentStandard = SkillStyle.Standards[2];
 
                 }
                 else if (TraningLevel == 3)
                 {
                     //custom
-                    CurrentStandard = new Standard {GroupsNumber = 1,Number = 1,TraningType=SkillStyle.IntermediateStandard.TraningType,IsSingle = SkillStyle.PrimaryStandard.IsSingle };
+                    CurrentStandard = new StandardDTO {GroupNumber = 1,Number = 1, StyleId = SkillStyle.Id, Style = SkillStyle };//TraningType=SkillStyle.Standards[1].TraningType,IsSingle = SkillStyle.Standards[0].IsSingle
                     IsCustomTraning = true;
                     IsDefaultShow = false;
                 }
@@ -217,9 +218,9 @@ namespace XiDeng.ViewModel
         }
 
 
-        private SkillStyle skillStyle;
+        private SkillStyleDTO skillStyle;
 
-        public SkillStyle SkillStyle
+        public SkillStyleDTO SkillStyle
         {
             get { return skillStyle; }
             set { skillStyle = value;this.RaisePropertyChanged("SkillStyle"); }
@@ -234,9 +235,9 @@ namespace XiDeng.ViewModel
                 //$"SkillStyleDetailPage?SkillID=1&SkillStyleID=1"
                 if (IsCustomTraning)
                 {
-                    CurrentStandard = new Standard { GroupsNumber = CustomGroupNumber,Number = CustomNumber, TraningType = SkillStyle.IntermediateStandard.TraningType, IsSingle = SkillStyle.PrimaryStandard.IsSingle };
+                    CurrentStandard = new StandardDTO { GroupNumber = CustomGroupNumber,Number = CustomNumber, StyleId = SkillStyle.Id, Style = SkillStyle };//TraningType = SkillStyle.Standards[1].TraningType, IsSingle = SkillStyle.Standards[0].IsSingle
                 }
-                string routuri = $"TraningPage?SkillID={this.SkillStyle.SkillID}&StyleID={this.SkillStyle.ID}&StandardJson={Uri.EscapeDataString(JsonConvert.SerializeObject(CurrentStandard))}";
+                string routuri = $"TraningPage?SkillID={this.SkillStyle.SkillId}&StyleID={this.SkillStyle.Id}&StandardJson={Uri.EscapeDataString(JsonConvert.SerializeObject(CurrentStandard))}";
                 await Shell.Current.GoToAsync(routuri,false);
             }
             catch (Exception ex)
@@ -255,13 +256,13 @@ namespace XiDeng.ViewModel
                 {
                     return;
                 }
-                var style = DataCommon.Skills.Where(a => a.ID == this.SkillStyle.SkillID).FirstOrDefault().Styles.Where(a => a.ID == this.SkillStyle.ID).First();
+                var style = SkillDataCommon.Skills.Where(a => a.Id == this.SkillStyle.SkillId).FirstOrDefault().SkillStyles.Where(a => a.Id == this.SkillStyle.Id).First();
 
-                style.DisplayVideoUri = fr.FullPath;
-                this.SkillStyle.DisplayVideoUri = fr.FullPath;
-                style.LocalVideoUri = fr.FullPath;
-                this.SkillStyle.LocalVideoUri = fr.FullPath;
-                FileHelper.WriteFile(FileHelper.VideoUriFile, JsonConvert.SerializeObject(DataCommon.Skills));
+                style.VideoUrl = fr.FullPath;
+                this.SkillStyle.VideoUrl = fr.FullPath;
+                style.VideoUrl = fr.FullPath;
+                this.SkillStyle.VideoUrl = fr.FullPath;
+                FileHelper.WriteFile(FileHelper.VideoUriFile, JsonConvert.SerializeObject(SkillDataCommon.Skills));
             }
             catch (Exception ex)
             {
@@ -275,10 +276,10 @@ namespace XiDeng.ViewModel
         {
             try
             {
-                var style = DataCommon.Skills.Where(a => a.ID == this.SkillStyle.SkillID).FirstOrDefault().Styles.Where(a => a.ID == this.SkillStyle.ID).First();
-                style.DisplayVideoUri = style.VideoUri;
-                style.LocalVideoUri = style.VideoUri;
-                FileHelper.WriteFile(FileHelper.VideoUriFile, JsonConvert.SerializeObject(DataCommon.Skills));
+                var style = SkillDataCommon.Skills.Where(a => a.Id == this.SkillStyle.SkillId).FirstOrDefault().SkillStyles.Where(a => a.Id == this.SkillStyle.Id).First();
+                style.VideoUrl = style.VideoUrl;
+                style.VideoUrl = style.VideoUrl;
+                FileHelper.WriteFile(FileHelper.VideoUriFile, JsonConvert.SerializeObject(SkillDataCommon.Skills));
                 App.Current.MainPage.DisplayAlert("Tips", "操作成功！\n请重新进入该界面", "好的");
             }
             catch (Exception ex)
@@ -293,7 +294,7 @@ namespace XiDeng.ViewModel
         /// </summary>
         /// <param name="SkillID"></param>
         /// <param name="SkillStyleID"></param>
-        public SkillStyleDetailPageViewModel(int SkillID,int SkillStyleID)
+        public SkillStyleDetailPageViewModel(Guid SkillID,Guid SkillStyleID)
         {
             try
             {
@@ -302,7 +303,7 @@ namespace XiDeng.ViewModel
                 BackAudioVolume = Config.BackAudioVolume;
                 PersonAudioVolume = Config.PersonAudioVolume;
 
-                SkillStyle = DataCommon.Skills.Where(a => a.ID == SkillID).FirstOrDefault().Styles.Where(a => a.ID == SkillStyleID).FirstOrDefault();
+                SkillStyle = SkillDataCommon.Skills.Where(a => a.Id == SkillID).FirstOrDefault().SkillStyles.Where(a => a.Id == SkillStyleID).FirstOrDefault();
                 if (SkillStyle == null)
                 {
                     App.Current.MainPage.DisplayAlert("Error", "获取数据失败,请检查数据是否存在！", "OK");
@@ -317,7 +318,7 @@ namespace XiDeng.ViewModel
 
             InitImage();
             InitStandard();
-            ShowInfo = SkillStyle.PrimaryStandard.TraningType == 0 ? "次"  : "秒";
+            ShowInfo = SkillStyle.TraningType ? "秒" : "次";
         }
 
         private void InitImage()
@@ -329,21 +330,26 @@ namespace XiDeng.ViewModel
 
         private void InitStandard()
         {
-            var Last = DataCommon.ExerciseLogs.LastOrDefault(a => a.SkillID == this.SkillStyle.SkillID && a.StyleID == this.SkillStyle.ID);
+            var Last = DataCommon.ExerciseLogs.LastOrDefault(a => a.Style.SkillId == this.SkillStyle.SkillId && a.StyleID == this.SkillStyle.Id);
             if (Last == null)
             {
                 return;
             }
-            var standard = Last.ExerciseStandard;
+            StandardDTO standard = new StandardDTO() { 
+                GroupNumber = Last.GroupNumber,
+                Number = Last.Number,
+                StyleId = Last.StyleID
+            };
             if (standard == null)
             {
                 return;
             }
             TraningLevel = 3;
-            CustomGroupNumber = standard.GroupsNumber;
+            CustomGroupNumber = standard.GroupNumber;
             CustomNumber = standard.Number;
-            CurrentStandard = new Standard { GroupsNumber = standard.GroupsNumber, Number = standard.Number, TraningType = SkillStyle.IntermediateStandard.TraningType, IsSingle = SkillStyle.PrimaryStandard.IsSingle };
-            
+
+            CurrentStandard = new StandardDTO { GroupNumber = standard.GroupNumber, Number = standard.Number,StyleId = SkillStyle.Id,Style = SkillStyle };//TraningType = SkillStyle.Standards[1].TraningType, IsSingle = SkillStyle.Standards[1].IsSingle
+
         }
     }
 }

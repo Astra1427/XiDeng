@@ -17,6 +17,13 @@ namespace XiDeng.Views
         {
             InitializeComponent();
             this.BindingContext = new SettingPageViewModel();
+            
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            App.Config = (this.BindingContext as SettingPageViewModel).Config;
+            return base.OnBackButtonPressed();
         }
     }
 }
