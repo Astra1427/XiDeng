@@ -44,7 +44,7 @@ namespace XiDeng.ViewModel
             catch (Exception ex)
             {
                 //logger
-                await this.Message(ex.Message);
+                await this.Message(ex.ToString());
             }
             finally
             {

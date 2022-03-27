@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XiDeng.Models;
@@ -15,24 +17,25 @@ namespace XiDeng.Common
 
         public static async Task LocalToCloud()
         {
-            var plans = await App.Database.GetAllAsync<ExercisePlanDTO>();
+            var plans = await App.Database.ExercisePlans.ToListAsync() ;
 
             if (plans != null)
             {
                 foreach (ExercisePlanDTO item in plans)
                 {
-                    item.PlanEachDays = new ObservableCollection<PlanEachDayDTO>(await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == item.Id));
+                    
+                    item.PlanEachDays = await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == item.Id).ToListAsync();
                 }
             }
 
 
-            var skill = await App.Database.GetAsync<SkillDTO>(x => x.OwnerId == Utility.LoggedAccount.Id && x.OrderNumber > 6);
+            var skill = await App.Database.Skills.FirstOrDefaultAsync(x => x.OwnerId == Utility.LoggedAccount.Id && x.OrderNumber > 6);
             if (skill != null)
             {
-                skill.SkillStyles = new ObservableCollection<SkillStyleDTO>(await App.Database.GetAllAsync<SkillStyleDTO>(x => x.SkillId == skill.Id));
+                skill.SkillStyles = await App.Database.SkillStyles.Where(x => x.SkillId == skill.Id).ToListAsync();
             }
 
-            var runningPlans = await App.Database.GetAllAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id);
+            var runningPlans = await App.Database.AccountRunningPlans.Where(x => x.AccountId == Utility.LoggedAccount.Id).ToListAsync();
             var response = await ActionNames.Synchronization.LocalToCloud.PostAsync(new SynchronizationDTO
             {
                 Account = Utility.LoggedAccount,
@@ -68,11 +71,11 @@ namespace XiDeng.Common
 
                     Utility.LoggedAccount = model.Account;
                     FileHelper.WriteFile(FileHelper.LoginInfoFile, model.Account.ToJson());
-
+                    int rows = 0;
                     #region Owner Skills
                     model.Skill.Updated = true;
                     model.Skill.IsRemoved = false;
-                    await App.Database.SaveAsync(model.Skill);
+                    rows = await App.Database.Skills.AddOrUpdateAsync(model.Skill);
 
                     if (model.Skill.SkillStyles != null)
                     {
@@ -82,31 +85,34 @@ namespace XiDeng.Common
                             item.IsRemoved = false;
                         }
 
-                        await App.Database.SaveAllAsync(model.Skill.SkillStyles);
+                        rows = await App.Database.SkillStyles.AddOrUpdateRangeAsync(model.Skill.SkillStyles);
                     }
                     #endregion
+                    rows = await App.Database.SaveChangesAsync();
+
 
                     #region My ExercisePlans
 
                     model.ExercisePlans.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
-                    await App.Database.SaveAllAsync(model.ExercisePlans);
-
+                    rows = await App.Database.ExercisePlans.AddOrUpdateRangeAsync(model.ExercisePlans);
                     foreach (ExercisePlanDTO item in model.ExercisePlans)
                     {
                         item.PlanEachDays.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
 
-                        IEnumerable<PlanEachDayDTO> deletedPlanDays = await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == item.Id);
+                        IEnumerable<PlanEachDayDTO> deletedPlanDays = await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == item.Id).ToListAsync();
 
-                        _ = await App.Database.DeleteAllAsync(deletedPlanDays);
-
-                        _ = await App.Database.InsertAllAsync(item.PlanEachDays);
+                        App.Database.PlanEachDays.RemoveRange(deletedPlanDays);
+                        rows = await App.Database.SaveChangesAsync();
+                        App.Database.PlanEachDays.AddRange(item.PlanEachDays);
+                        rows = await App.Database.SaveChangesAsync();
                     }
                     #endregion
 
                     #region Running Plans
                     model.RunningPlans.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
-                    await App.Database.SaveAllAsync(model.RunningPlans);
+                    rows = await App.Database.AccountRunningPlans.AddOrUpdateRangeAsync(model.RunningPlans);
                     #endregion
+                    rows = await App.Database.SaveChangesAsync();
 
                     #region CollectionFolders
                     model.CollectionFolders.ForEach(async x => {
@@ -116,10 +122,11 @@ namespace XiDeng.Common
                             e.Updated = true;
                             e.IsRemoved = false;
                         });
-                        await App.Database.SaveAllAsync(x.ExercisePlanCollections);
+                        await App.Database.ExercisePlanCollections.AddOrUpdateRangeAsync(x.ExercisePlanCollections);
                     });
-                    await App.Database.InsertAllAsync(model.CollectionFolders);
+                    await App.Database.CollectionFolders.AddRangeAsync(model.CollectionFolders);
                     #endregion
+                    rows = await App.Database.SaveChangesAsync();
 
                     #region PlansOfCollectionFolders
 
@@ -130,11 +137,13 @@ namespace XiDeng.Common
                             p.Updated = true;
                             p.IsRemoved = false;
                         });
-                        var deletedPlanDays = await App.Database.GetAllAsync<PlanEachDayDTO>(a => a.PlanId == x.Id);
-                        await App.Database.DeleteAllAsync(deletedPlanDays);
-                        await App.Database.InsertAllAsync(x.PlanEachDays);
+                        var deletedPlanDays = await App.Database.PlanEachDays.Where(a => a.ExercisePlanDTOId == x.Id).ToListAsync();
+                        App.Database.PlanEachDays.RemoveRange(deletedPlanDays);
+                        await App.Database.SaveChangesAsync();
+                        await App.Database.PlanEachDays.AddRangeAsync(x.PlanEachDays);
+                        rows = await App.Database.SaveChangesAsync();
                     });
-                    await App.Database.InsertAllAsync(model.PlansOfCollectionFolders);
+                    await App.Database.ExercisePlans.AddRangeAsync(model.PlansOfCollectionFolders);
                     #endregion
 
                     await "同步成功".Message();

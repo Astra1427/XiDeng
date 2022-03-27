@@ -36,16 +36,16 @@ namespace XiDeng.Data
         [Newtonsoft.Json.JsonIgnore]
         private SkillStyleDTO style;
 
-        [SQLite.Ignore]
+        //[SQLite.Ignore]
         [Newtonsoft.Json.JsonIgnore]
         public SkillStyleDTO Style
         {
             get
             {
-                if (style == null )
-                {
-                    style = SkillDataCommon.Skills.FirstOrDefault(x => x.SkillStyles.Any(s => s.Id == StyleID)).SkillStyles.FirstOrDefault(x => x.Id == StyleID);
-                }
+                //if (style == null )
+                //{
+                //    style = SkillDataCommon.Skills.FirstOrDefault(x => x.SkillStyles.Any(s => s.Id == StyleID)).SkillStyles.FirstOrDefault(x => x.Id == StyleID);
+                //}
                 return style;
             }
             set { style = value; RaisePropertyChanged(nameof(Style)); }

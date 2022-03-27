@@ -1,5 +1,5 @@
-﻿using SQLite;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 
@@ -18,7 +18,7 @@ namespace XiDeng.Models.SkillModels
         private SkillStyleDTO style;
 
         [Newtonsoft.Json.JsonIgnore]
-        [SQLite.Ignore]
+        [NotMapped]
         public SkillStyleDTO Style
         {
             get { 

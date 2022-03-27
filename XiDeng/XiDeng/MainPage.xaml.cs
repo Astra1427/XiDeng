@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Data;
@@ -74,7 +75,7 @@ namespace XiDeng
 
         private async void BackupDatabase_Tapped(object sender, EventArgs e)
         {
-            await App.Database.BackupAsync();
+            await Share.RequestAsync(new ShareFileRequest(new ShareFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "xdDB.db3"))));
         }
 
         //private async void BackupData_Tapped(object sender, EventArgs e)

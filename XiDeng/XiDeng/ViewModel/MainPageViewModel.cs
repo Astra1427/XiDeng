@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -14,7 +15,7 @@ using XiDeng.Views.PlanViews;
 
 namespace XiDeng.ViewModel
 {
-    class MainPageViewModel:BaseViewModel
+    class MainPageViewModel : BaseViewModel
     {
         #region Init Image
         private ImageSource bookIcon;
@@ -22,7 +23,7 @@ namespace XiDeng.ViewModel
         public ImageSource BookIcon
         {
             get { return bookIcon; }
-            set { bookIcon = value;this.RaisePropertyChanged("BookIcon"); }
+            set { bookIcon = value; this.RaisePropertyChanged("BookIcon"); }
         }
 
         #endregion
@@ -70,18 +71,19 @@ namespace XiDeng.ViewModel
         public bool IsFinished { get; set; }
         public MainPageViewModel()
         {
-            OnAppearingCommand = new Command<object>(async obj=> {
+            OnAppearingCommand = new Command<object>(async obj =>
+            {
                 if (Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty())
                 {
                     return;
                 }
-                RunningPlan = await App.Database.GetAsync<AccountRunningPlanDTO>(x=>!x.IsPause && x.AccountId == Utility.LoggedAccount.Id);
+                RunningPlan = await App.Database.AccountRunningPlans.FirstOrDefaultAsync(x => !x.IsPause && x.AccountId == Utility.LoggedAccount.Id);
                 if (RunningPlan == null)
                 {
                     Plan = null;
                     return;
                 }
-                Plan = await App.Database.GetAsync <ExercisePlanDTO>(x=>x.Id == RunningPlan.PlanId);
+                Plan = await App.Database.ExercisePlans.Include(x=>x.PlanEachDays).FirstOrDefaultAsync(x => x.Id == RunningPlan.PlanId);
                 if (Plan == null)
                 {
                     //need download plan data
@@ -89,7 +91,7 @@ namespace XiDeng.ViewModel
                 }
 
                 CurrentDay = RunningPlan.StartTime.HasValue ? (int)(DateTime.Now - RunningPlan.StartTime).Value.TotalDays + 1 : 1;
-                if (CurrentDay > (Plan.DayNumber ?? 0) && Plan.IsLoop)
+                if (Plan.DayNumber != 0 && CurrentDay > (Plan.DayNumber) && Plan.IsLoop)
                 {
                     CurrentDay = (CurrentDay % Plan.DayNumber.Value) == 0 ? Plan.DayNumber.Value : (CurrentDay % Plan.DayNumber.Value);
                 }
@@ -103,20 +105,22 @@ namespace XiDeng.ViewModel
 
             });
 
-            GotoPlanDetailCommand = new Command<object>(async obj=> {
+            GotoPlanDetailCommand = new Command<object>(async obj =>
+            {
                 if (Plan == null)
                 {
                     return;
                 }
                 await Shell.Current.GoToAsync(nameof(PlanDetailPage) + $"?PlanId={Plan.Id}&ByWeek={Plan.Cycle == 0}");
             });
-            StartPlanTraningCommand = new Command<object>(async obj=> {
+            StartPlanTraningCommand = new Command<object>(async obj =>
+            {
                 if (IsFinished)
                 {
                     await this.Message("该计划已完成！");
                     return;
                 }
-                await Shell.Current.GoToAsync(nameof(TraningPlanPage)+$"?RunningPlanID={RunningPlan.Id}");
+                await Shell.Current.GoToAsync(nameof(TraningPlanPage) + $"?RunningPlanID={RunningPlan.Id}");
             });
             Init();
         }

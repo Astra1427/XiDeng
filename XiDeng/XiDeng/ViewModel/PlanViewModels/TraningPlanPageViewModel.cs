@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Plugin.SimpleAudioPlayer;
 using System;
 using System.Collections.Generic;
@@ -279,7 +280,7 @@ namespace XiDeng.ViewModel.PlanViewModels
         {
             AgainCommand = new Command<object>(async obj=> {
                 LoadConfigForAction();
-                CurrentAction = Plan.PlanEachDays[0];
+                CurrentAction = Plan.PlanEachDays?.FirstOrDefault();
                 CurrentGroupNumber = 0;
                 CurrentNumber = 0;
                 await CountDownPlay();
@@ -296,14 +297,14 @@ namespace XiDeng.ViewModel.PlanViewModels
                 InitSound();
 
                 #region Check data and Init Data
-                this.RunningPlan = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.Id == runningPlanId);
+                this.RunningPlan = await App.Database.AccountRunningPlans.FirstOrDefaultAsync(x => x.Id == runningPlanId);
                 if (RunningPlan == null)
                 {
                     await this.Message("数据丢失，你可以选择重新开始该计划或者同步数据。");
                     this.BackCommand?.Execute(null);
                     return;
                 }
-                Plan = await App.Database.GetAsync<ExercisePlanDTO>(x => x.Id == RunningPlan.PlanId);
+                Plan = await App.Database.ExercisePlans.FirstOrDefaultAsync(x => x.Id == RunningPlan.PlanId);
                 if (Plan == null)
                 {
                     await this.Message("数据丢失，你可以选择重新开始该计划或者同步数据。");
@@ -329,7 +330,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 //load actions
                 Console.WriteLine(Plan.Id.ToString());
                 Console.WriteLine(ToDayNumber.ToString());
-                Plan.PlanEachDays = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == Plan.Id)).Where(x=>x.DayNumber == ToDayNumber).OrderBy(x => x.OrderNumber).ToObservableCollection();
+                Plan.PlanEachDays = (await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == Plan.Id).ToListAsync())?.Where(x=>x.DayNumber == ToDayNumber).OrderBy(x => x.OrderNumber).ToObservableCollection();
                 Console.WriteLine(Plan.PlanEachDays.Count);
 
                 if (Plan.PlanEachDays == null || Plan.PlanEachDays.Count == 0)

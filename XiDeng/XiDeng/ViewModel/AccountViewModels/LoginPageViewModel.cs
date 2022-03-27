@@ -92,18 +92,16 @@ namespace XiDeng.ViewModel.AccountViewModels
                     {
                         SkillDataCommon.Skills = skillResponse.Content.To<ObservableCollection<SkillDTO>>();
                         FileHelper.WriteFile(FileHelper.SkillFile, skillResponse.Content);
-                        if (await App.Database.CheckConflictAsync<SkillDTO>(SkillDataCommon.Skills.FirstOrDefault(x => x.OwnerId == Utility.LoggedAccount.Id)))
+                        if (await App.Database.Skills.CheckConflictAsync(SkillDataCommon.Skills.FirstOrDefault(x => x.OwnerId == Utility.LoggedAccount.Id)))
                         {
                             await this.Message("本地数据与云端数据冲突，请执行同步操作！");
                         }
                         else
                         {
-                            int rows = await App.Database.SaveAllAsync(SkillDataCommon.Skills);
-#if DEBUG
-                            await this.Message("Download Rows:"+rows);
-#endif
+                            await App.Database.Skills.AddOrUpdateRangeAsync(SkillDataCommon.Skills);
                         }
                     }
+                    await App.Database.SaveChangesAsync();
 
                     //go to my profile page
                     await Shell.Current.GoToAsync("../");

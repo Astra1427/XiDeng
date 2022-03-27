@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -44,24 +45,24 @@ namespace XiDeng.ViewModel.PlanViewModels
                         //await App.Database.SaveAllAsync(ps);
                         foreach (var item in ps)
                         {
-                            if (await App.Database.CheckConflictAsync(item))
+                            if (await App.Database.ExercisePlans.CheckConflictAsync(item))
                             {
                                 IsConflict = true;
                                 continue;
                             }
 
                             item.Updated = true;
-                            await App.Database.SaveAsync(item);
+                            await App.Database.ExercisePlans.AddOrUpdateAsync(item);
 
                             foreach (var day in item.PlanEachDays)
                             {
-                                if (await App.Database.CheckConflictAsync(day))
+                                if (await App.Database.PlanEachDays.CheckConflictAsync(day))
                                 {
                                     IsConflict = true;
                                     continue;
                                 }
                                 day.Updated = true;
-                                await App.Database.SaveAsync(day);
+                                await App.Database.PlanEachDays.AddOrUpdateAsync(day);
                             }
                         }
 
@@ -76,11 +77,11 @@ namespace XiDeng.ViewModel.PlanViewModels
                     {
                         await this.Message(response.Message);
                         //load offline data
-                        ps = new ObservableCollection<ExercisePlanDTO>((await App.Database.GetAllAsync<ExercisePlanDTO>(x => !x.IsRemoved && x.AccountId == Utility.LoggedAccount.Id)).OrderBy(x => x.CreateTime));
+                        ps = new ObservableCollection<ExercisePlanDTO>((await App.Database.ExercisePlans.Where(x => !x.IsRemoved && x.AccountId == Utility.LoggedAccount.Id).ToListAsync()).OrderBy(x => x.CreateTime));
 
                         foreach (ExercisePlanDTO plan in ps)
                         {
-                            plan.PlanEachDays = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == plan.Id && !x.IsRemoved)).ToObservableCollection() ;
+                            plan.PlanEachDays = await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == plan.Id && !x.IsRemoved).ToListAsync() ;
                         }
                         this.Plans = ps;
                     }
@@ -104,7 +105,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             GotoPlanDetailCommand = new Command<object>(async obj=> {
                 if (obj is Guid planId)
                 {
-                    var plan = await App.Database.GetAsync<ExercisePlanDTO>(x=>x.Id == planId);
+                    var plan = await App.Database.ExercisePlans.FirstOrDefaultAsync(x=>x.Id == planId);
                     if (plan == null)
                     {
                         await this.Message("该计划不存在!");

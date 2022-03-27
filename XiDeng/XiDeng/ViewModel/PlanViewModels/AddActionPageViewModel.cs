@@ -8,6 +8,7 @@ using XiDeng.Models.SkillModels;
 using System.Linq;
 using XiDeng.Common;
 using XiDeng.Common.Converts;
+using Microsoft.EntityFrameworkCore;
 
 namespace XiDeng.ViewModel.PlanViewModels
 {
@@ -74,7 +75,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     this.RaisePropertyChanged(nameof(SelectedStyle));
                     return;
                 }
-                if(selectedStyle.Standards.Count == 3)
+                if(selectedStyle.Standards.Count() == 3)
                 {
                     selectedStyle.Standards.Add(new StandardDTO() { 
                         Style = SelectedStyle,
@@ -178,7 +179,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     if (PlanID != planId)
                     {
                         PlanID = planId;
-                        PlanActions = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == PlanID)).ToObservableCollection();
+                        PlanActions = (await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == PlanID).ToListAsync()).ToObservableCollection();
                         UpdateGroupList();
                     }
                 }, obj, true);
@@ -218,7 +219,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 int orderNumer = PlanActions == null || PlanActions.Count == 0 ? 1 : PlanActions.Max(x => x.OrderNumber);
                 PlanEachDayDTO DayAction = new PlanEachDayDTO()
                 {
-                    PlanId = PlanID,
+                    ExercisePlanDTOId = PlanID,
                     DayNumber = SelectedDayNumber,
                     Id = Guid.NewGuid(),
                     StyleID = SelectedStyle.Id,
@@ -251,7 +252,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.PlanActions.Add(new PlanEachDayDTO
                 {
                     Id = Guid.NewGuid(),
-                    PlanId = PlanID,
+                    ExercisePlanDTOId = PlanID,
                     DayNumber = SelectedDayNumber,
                     IsRestDay = true,
                     StyleID = null,

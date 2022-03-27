@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -76,13 +77,9 @@ namespace XiDeng.ViewModel.PlanViewModels
                     //remove from sqlite
                     this.Plan.IsRemoved = true;
 
-                    int rows = await App.Database.UpdateAsync(this.Plan);
+                    App.Database.ExercisePlans.Update(this.Plan);
+                    await App.Database.SaveChangesAsync();
 
-                    await this.Message(rows.ToString());
-                    if (rows > 0)
-                    {
-                        IsStarted = true;
-                    }
                 }, obj, true);
             });
 
@@ -97,11 +94,11 @@ namespace XiDeng.ViewModel.PlanViewModels
                     await this.Message(this.PublishPlanText == "发布" ? "发布成功！\n 待审核通过后即可在公共计划列表中看见。" : "操作成功！");
 
                     this.Plan.PublishStatus = Plan.PublishStatus == 1 || Plan.PublishStatus == 2 ? 3 : 2;
-                    int row = await App.Database.UpdateAsync(this.Plan);
-#if DEBUG
-                    await this.Message(row.ToString());
-#endif
+                    App.Database.ExercisePlans.Update(this.Plan);
+                    await App.Database.SaveChangesAsync();
+
                     this.PublishPlanText = this.PublishPlanText == "发布" ? "取消发布" : "发布";
+
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
                 {
@@ -121,7 +118,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             StartPlanCommand = new Command<object>(async obj=> {
                 await this.Try(async o => {
                     
-                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x=>x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
+                    var model = await App.Database.AccountRunningPlans.FirstOrDefaultAsync(x=>x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     if (model == null)
                     {
                         model = new AccountRunningPlanDTO
@@ -155,13 +152,13 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
 
                     //pause other plan
-                    var otherPlans = await App.Database.GetAllAsync<AccountRunningPlanDTO>(x=>x.AccountId == Utility.LoggedAccount.Id && x.Id != model.Id);
+                    var otherPlans = await App.Database.AccountRunningPlans.Where(x=>x.AccountId == Utility.LoggedAccount.Id && x.Id != model.Id).ToListAsync();
                     otherPlans.ForEach(x => x.IsPause = true) ;
-                    int otherRows = await App.Database.SaveAllAsync(otherPlans);
+                    int rows = await App.Database.AccountRunningPlans.AddOrUpdateRangeAsync(otherPlans);
                     //start this plan
-                    int rows = await App.Database.SaveAsync(model);
-                    
-                    await this.Message($"Insert rows:{rows}\nOther:{otherRows}");
+                    rows += await App.Database.AccountRunningPlans.AddOrUpdateAsync(model);
+
+                    await this.Message($"Insert rows:{rows}");
                     IsStarted = rows > 0;
                 },obj,true);
             });
@@ -182,9 +179,10 @@ namespace XiDeng.ViewModel.PlanViewModels
                         return;
                     }
 
-                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x=>x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
+                    var model = await App.Database.AccountRunningPlans.FirstOrDefaultAsync(x=>x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     model.IsPause = true;
-                    int rows = await App.Database.UpdateAsync(model);
+                    App.Database.AccountRunningPlans.Update(model);
+                    int rows = await App.Database.SaveChangesAsync();
                     await this.Message($"Update rows:{rows}");
                     if (rows > 0)
                     {
@@ -206,10 +204,11 @@ namespace XiDeng.ViewModel.PlanViewModels
                         return;
                     }
                     //update sqlite
-                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
+                    var model = await App.Database.AccountRunningPlans.FirstOrDefaultAsync(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     model.IsPause = false;
                     model.StartTime = DateTime.Now.Date;
-                    int rows = await App.Database.UpdateAsync(model);
+                    App.Database.AccountRunningPlans.Update(model);
+                    int rows = await App.Database.SaveChangesAsync();
                     await this.Message($"Update rows:{rows}");
                     if (rows > 0)
                     {
@@ -249,10 +248,10 @@ namespace XiDeng.ViewModel.PlanViewModels
         public async Task Init()
         {
             //Load from local database
-            this.Plan = await App.Database.GetAsync<ExercisePlanDTO>(x => x.Id == PlanId);
+            this.Plan = await App.Database.ExercisePlans.FirstOrDefaultAsync(x => x.Id == PlanId);
             if (this.Plan != null)
             {
-                this.Plan.PlanEachDays = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == Plan.Id)).ToObservableCollection();
+                this.Plan.PlanEachDays = await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == Plan.Id).ToListAsync();
             }
             //await this.Message("数据丢失！");
             //await ShellApp.Current.GoToAsync("../");
@@ -281,7 +280,7 @@ namespace XiDeng.ViewModel.PlanViewModels
 
             IsOwner = Plan.AccountId == Utility.LoggedAccount.Id;
 
-            var model = (await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.PlanId == Plan.Id && x.AccountId == Utility.LoggedAccount.Id));
+            var model = await App.Database.AccountRunningPlans.FirstOrDefaultAsync(x => x.PlanId == Plan.Id && x.AccountId == Utility.LoggedAccount.Id);
             IsStarted = model == null ? false : !model.IsPause;
             UpdateGroupList();
 

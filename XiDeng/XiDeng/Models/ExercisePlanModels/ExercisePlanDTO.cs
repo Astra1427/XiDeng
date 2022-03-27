@@ -1,7 +1,6 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Xamarin.Forms;
 using XiDeng.Common;
@@ -106,28 +105,42 @@ namespace XiDeng.Models.ExercisePlanModels
             }
         }
 
-        private ObservableCollection<PlanEachDayDTO> planEachDays;
-        [SQLite.Ignore]
-        public ObservableCollection<PlanEachDayDTO> PlanEachDays
+        //private ObservableCollection<PlanEachDayDTO> planEachDays;
+        //[SQLite.Ignore]
+        //public ObservableCollection<PlanEachDayDTO> PlanEachDays
+        //{
+        //    get { return planEachDays; }
+        //    set
+        //    {
+        //        planEachDays = value;
+        //        this.RaisePropertyChanged(nameof(PlanEachDays));
+        //    }
+        //}
+        private IList<PlanEachDayDTO> planEachDays;
+        public IList<PlanEachDayDTO> PlanEachDays
         {
-            get { return planEachDays; }
-            set
-            {
-                planEachDays = value;
-                this.RaisePropertyChanged(nameof(PlanEachDays));
+            get {
+                if (planEachDays == null)
+                {
+                    planEachDays = App.Database.PlanEachDays.Where(x=>x.ExercisePlanDTOId == this.Id).ToList();
+                }
+                return planEachDays; 
             }
+            set { planEachDays = value; }
         }
+
 
         [Newtonsoft.Json.JsonIgnore]
         private int? dayNumber;
         [Newtonsoft.Json.JsonIgnore]
+        [NotMapped]
         public int? DayNumber
         {
             get {
 
                 if (dayNumber == null)
                 {
-                    dayNumber = PlanEachDays?.OrderByDescending(x => x.DayNumber).FirstOrDefault()?.DayNumber;
+                    dayNumber = PlanEachDays?.OrderByDescending(x => x.DayNumber).FirstOrDefault()?.DayNumber ?? 0;
                 }
                 return dayNumber; 
             }
@@ -156,6 +169,7 @@ namespace XiDeng.Models.ExercisePlanModels
         }
 
         public bool IsCollect { get; set; }
+        [NotMapped]
         public ImageSource CollectIcon => Utility.GetImage(IsCollect ? "star_3_240" : "star_5_240");
 
     }

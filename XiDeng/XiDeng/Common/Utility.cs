@@ -11,6 +11,7 @@ using XiDeng.Models;
 using System.Collections.ObjectModel;
 using XiDeng.Views.AccountViews;
 using System.Threading;
+using Microsoft.EntityFrameworkCore;
 
 namespace XiDeng.Common
 {
@@ -307,6 +308,55 @@ namespace XiDeng.Common
         }
         #endregion
 
+        #region DbSet Extensions
+        public static async Task<int> AddOrUpdateAsync<TEntity>(this DbSet<TEntity> set, TEntity model) where TEntity : ModelBase, new ()
+        {
+            App.Database.DetachAllEntities();
+            if (await set.AnyAsync(x => x.Id == model.Id))
+            {
+                set.Update(model);
+            }
+            else
+            {
+                await set.AddAsync(model);
+            }
+            return await App.Database.SaveChangesAsync();
+        }
+
+        public static async Task<int> AddOrUpdateRangeAsync<TEntity>(this DbSet<TEntity> set, IEnumerable<TEntity> models) where TEntity : ModelBase, new()
+        {
+            App.Database.DetachAllEntities();
+            foreach (var item in models)
+            {
+                await set.AddOrUpdateAsync(item);
+                //if (await set.AnyAsync(x => x.Id == item.Id))
+                //{
+                //    App.Database.Entry(item).State = EntityState.Modified;
+                //}
+                //else
+                //{
+                //    await set.AddAsync(item);
+                //}
+            }
+            return await App.Database.SaveChangesAsync();
+        }
+
+        public static async Task<bool> CheckConflictAsync<TEntity>(this DbSet<TEntity> set, TEntity t) where TEntity : ModelBase, new()
+        {
+            if (t == null)
+            {
+                return false;
+            }
+
+            return await set.AnyAsync(x => x.Id == t.Id && (!x.Updated || x.IsRemoved));
+        }
+
+        public static async Task SetDataUpdated<TEntity>(this DbSet<TEntity> set) where TEntity : ModelBase, new()
+        {
+            (await set.ToListAsync())?.ForEach(x=>x.Updated = true);
+            await App.Database.SaveChangesAsync();
+        }
+        #endregion
 
     }
 }

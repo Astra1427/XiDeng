@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -130,10 +131,11 @@ namespace XiDeng.ViewModel.PlanViewModels
 
                     //save to native
                     newPlan.Updated = Updated;
-                    int rows = await App.Database.SaveAsync(newPlan);
+                    int rows = await App.Database.ExercisePlans.AddOrUpdateAsync(newPlan);
                     await this.Message("Save new plan rows:" + rows);
                     newPlan.PlanEachDays.ForEach(x => x.Updated = Updated);
-                    rows = await App.Database.database.InsertAllAsync(newPlan.PlanEachDays);
+                    await App.Database.PlanEachDays.AddRangeAsync(newPlan.PlanEachDays);
+                    rows = await App.Database.SaveChangesAsync();
                     await this.Message("Save actions rows:" + rows);
                 }, obj, true);
             });
@@ -180,13 +182,14 @@ namespace XiDeng.ViewModel.PlanViewModels
 
                     //save to native
                     newPlan.Updated = Updated;
-                    int rows = await App.Database.SaveAsync(newPlan);
+                    int rows = await App.Database.ExercisePlans.AddOrUpdateAsync(newPlan);
                     await this.Message(rows.ToString());
                     
-                    rows = await App.Database.DeleteAllAsync(await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == newPlan.Id));
+                    App.Database.PlanEachDays.RemoveRange(await App.Database.PlanEachDays.Where(x => x.ExercisePlanDTOId == newPlan.Id).ToListAsync());
+                    rows = await App.Database.SaveChangesAsync();
                     await this.Message("Delete rows:"+rows);
                     newPlan.PlanEachDays.ForEach(x=>x.Updated = Updated);
-                    rows = await App.Database.SaveAllAsync(newPlan.PlanEachDays);
+                    rows = await App.Database.PlanEachDays.AddOrUpdateRangeAsync(newPlan.PlanEachDays);
                     await this.Message("Save rows:"+rows);
                 },obj,true);
             });

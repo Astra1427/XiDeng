@@ -170,14 +170,14 @@ namespace XiDeng
         {
         }
 
-        private static SQLiteDatabase database;
-        public static SQLiteDatabase Database
+        private static XiDengContext database;
+        public static XiDengContext Database
         {
             get
             {
                 if (database == null)
                 {
-                    database = new SQLiteDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"xdDB.db3"));
+                    database = new XiDengContext();
                 }
                 return database;
             }

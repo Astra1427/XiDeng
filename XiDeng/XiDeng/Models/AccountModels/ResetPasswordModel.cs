@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace XiDeng.Models.AccountModels
+﻿namespace XiDeng.Models.AccountModels
 {
     public class ResetPasswordModel
     {

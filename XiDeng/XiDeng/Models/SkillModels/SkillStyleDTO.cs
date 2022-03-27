@@ -1,7 +1,6 @@
-﻿using SQLite;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using Xamarin.Forms;
 using XiDeng.Command;
 using XiDeng.Common;
@@ -15,11 +14,11 @@ namespace XiDeng.Models.SkillModels
         public Guid SkillId { get; set; }
         public string Name { get; set; } 
         public string Img1Url { get; set; }
-        [SQLite.Ignore]
+        [NotMapped]
         [Newtonsoft.Json.JsonIgnore]
         public ImageSource Img1 => Uri.CheckSchemeName(Img1Url) ? ImageSource.FromUri(new Uri(Img1Url)) : Utility.GetImage(Img1Url);
         public string Img2Url { get; set; }
-        [SQLite.Ignore]
+        [NotMapped]
         [Newtonsoft.Json.JsonIgnore]
         public ImageSource Img2 => Uri.CheckSchemeName(Img2Url) ? ImageSource.FromUri(new Uri(Img2Url)) : Utility.GetImage(Img2Url);
         public string VideoUrl { get; set; }
@@ -41,14 +40,12 @@ namespace XiDeng.Models.SkillModels
         /// </summary>
         public bool IsSingle { get; set; }
 
-
-        [SQLite.Ignore]
-        public ObservableCollection<StandardDTO> Standards { get; set; }
+        public IList<StandardDTO> Standards { get; set; }
 
         public string SkillName { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]
-        [SQLite.Ignore]
+        [NotMapped]
         public DelegateCommand SkillStyleCommand { get { return new DelegateCommand { ExecuteAction = new Action<object>(SkillStyleFunc) }; } }
 
         private async void SkillStyleFunc(object obj)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace XiDeng.Models.Collections
 {
@@ -29,7 +29,6 @@ namespace XiDeng.Models.Collections
             }
         }
 
-        [SQLite.Ignore]
         [Newtonsoft.Json.JsonIgnore]
         public IEnumerable<ExercisePlanCollectionDTO> ExercisePlanCollections { get; set; }
 
@@ -37,7 +36,7 @@ namespace XiDeng.Models.Collections
         /// <summary>
         /// Use for CollectionFolderPopupPage
         /// </summary>
-        [SQLite.Ignore]
+        [NotMapped]
         [Newtonsoft.Json.JsonIgnore]
         public bool IsSelected
         {

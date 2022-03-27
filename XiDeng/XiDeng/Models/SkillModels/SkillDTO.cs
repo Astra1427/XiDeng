@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
 using Xamarin.Forms;
 using XiDeng.Command;
-using SQLite;
 
 namespace XiDeng.Models.SkillModels
 {
@@ -18,11 +16,10 @@ namespace XiDeng.Models.SkillModels
         public Guid OwnerId { get; set; }
         public long OrderNumber { get; set; }
         public new DateTime CreateTime { get; set; }
-        [SQLite.Ignore]
         public IEnumerable<SkillStyleDTO> SkillStyles { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]
-        [SQLite.Ignore]
+        [NotMapped]
         public DelegateCommand SkillCommand { get { return new DelegateCommand() { ExecuteAction = new Action<object>(SkillFunc) }; } }
 
         private async void SkillFunc(object obj)

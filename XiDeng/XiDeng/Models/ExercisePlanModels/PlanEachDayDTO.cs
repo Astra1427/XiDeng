@@ -1,6 +1,6 @@
-﻿using SQLite;
+﻿
 using System;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using XiDeng.Models.SkillModels;
 
@@ -8,19 +8,19 @@ namespace XiDeng.Models.ExercisePlanModels
 {
     public class PlanEachDayDTO : ModelBase
     {
-
-        //[PrimaryKey]
         //public new Guid Id { get; set; }
-        private Guid planId;
-        public Guid PlanId
-        {
-            get { return planId; }
-            set
-            {
-                planId = value;
-                this.RaisePropertyChanged(nameof(PlanId));
-            }
-        }
+        //private Guid exercisePlanDTOId;
+        //public Guid ExercisePlanDTOId
+        //{
+        //    get { return exercisePlanDTOId; }
+        //    set
+        //    {
+        //        exercisePlanDTOId = value;
+        //        this.RaisePropertyChanged(nameof(ExercisePlanDTOId));
+        //    }
+        //}
+        [Newtonsoft.Json.JsonProperty("PlanId")]
+        public Guid ExercisePlanDTOId { get; set; }
 
 
         private Guid? styleID;
@@ -95,7 +95,7 @@ namespace XiDeng.Models.ExercisePlanModels
         [Newtonsoft.Json.JsonIgnore]
         private SkillStyleDTO style;
 
-        [SQLite.Ignore]
+        [NotMapped]
         [Newtonsoft.Json.JsonIgnore]
         public SkillStyleDTO Style
         {
@@ -111,6 +111,7 @@ namespace XiDeng.Models.ExercisePlanModels
 
 
         private string disDayNumber;
+        [NotMapped]
         public string DisDayNumber
         {
             get { return disDayNumber; }

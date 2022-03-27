@@ -1,7 +1,9 @@
-﻿using Rg.Plugins.Popup.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -41,7 +43,7 @@ namespace XiDeng.ViewModel.CollectionViewModels
                     {
                         // Offline
                         //Load local data [SQLite]
-                        this.CollectionFolder = (await App.Database.GetAllAsync<CollectionFolderDTO>(x => x.AccountId == Utility.LoggedAccount.Id)).ToObservableCollection();
+                        this.CollectionFolder = (await App.Database.CollectionFolders.Where(x => x.AccountId == Utility.LoggedAccount.Id).ToListAsync()).ToObservableCollection();
                     }
                     else
                     {
