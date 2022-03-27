@@ -29,16 +29,16 @@ namespace XiDeng.Models.Collections
             }
         }
 
-        [SQLite.Ignore]
         [Newtonsoft.Json.JsonIgnore]
+        [SQLite.Ignore]
         public IEnumerable<ExercisePlanCollectionDTO> ExercisePlanCollections { get; set; }
 
         private bool isSelected;
         /// <summary>
         /// Use for CollectionFolderPopupPage
         /// </summary>
-        [SQLite.Ignore]
         [Newtonsoft.Json.JsonIgnore]
+        [SQLite.Ignore]
         public bool IsSelected
         {
             get { return isSelected; }

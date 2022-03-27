@@ -21,15 +21,14 @@ namespace XiDeng.Data
         public SQLiteDatabase(string dbPath)
         {
             database = new SQLiteAsyncConnection(dbPath);
+            database.CreateTableAsync<CollectionFolderDTO>().Wait();
             database.CreateTableAsync<ExercisePlanDTO>().Wait();
             database.CreateTableAsync<PlanEachDayDTO>().Wait();
             database.CreateTableAsync<SkillDTO>().Wait();
             database.CreateTableAsync<SkillStyleDTO>().Wait();
             database.CreateTableAsync<StandardDTO>().Wait();
             database.CreateTableAsync<AccountRunningPlanDTO>().Wait();
-            database.CreateTableAsync<CollectionFolderDTO>().Wait();
             database.CreateTableAsync<ExercisePlanCollectionDTO>().Wait();
-            
         }
 
 
@@ -67,8 +66,11 @@ namespace XiDeng.Data
         /// <returns></returns>
         public async Task<int> SaveAsync<T>(T model) where T : ModelBase, new()
         {
-            T result = await database.FindWithQueryAsync<T>($"SELECT * from {model.GetType().Name} WHERE Id = ?", model.Id);
-            if (result != null)
+            if (model == null)
+            {
+                return 0;
+            }
+            if (await GetAsync<T>(x=>x.Id == model.Id) != null)
             {
                 //update an existing model.
                 
@@ -83,6 +85,10 @@ namespace XiDeng.Data
 
         public async Task<int> SaveAllAsync<T>(IEnumerable<T> models) where T : ModelBase, new()
         {
+            if (models == null || models.Count() == 0)
+            {
+                return 0;
+            }
             int rows = 0;
             foreach (T model in models)
             {

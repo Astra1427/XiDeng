@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using XiDeng.Command;
 using XiDeng.Common;
 using XiDeng.Data;
+using XiDeng.Models.Collections;
 using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Models.SkillModels;
 using XiDeng.Views;
@@ -98,7 +99,6 @@ namespace XiDeng.ViewModel
                     // The plan is finished
                     IsFinished = true;
                 }
-                //
 
 
             });

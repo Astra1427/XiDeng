@@ -109,21 +109,24 @@ namespace XiDeng.Common
                     #endregion
 
                     #region CollectionFolders
-                    model.CollectionFolders.ForEach(async x => {
+                    await model.CollectionFolders.ForEachAsync(async x =>
+                    {
                         x.Updated = true;
                         x.IsRemoved = false;
-                        x.ExercisePlanCollections.ForEach(e => {
+                        x.ExercisePlanCollections?.ForEach(e =>
+                        {
                             e.Updated = true;
                             e.IsRemoved = false;
                         });
+
                         await App.Database.SaveAllAsync(x.ExercisePlanCollections);
                     });
-                    await App.Database.InsertAllAsync(model.CollectionFolders);
+                    await App.Database.SaveAllAsync(model.CollectionFolders);
                     #endregion
 
                     #region PlansOfCollectionFolders
 
-                    model.PlansOfCollectionFolders.ForEach(async x => {
+                    await model.PlansOfCollectionFolders.ForEachAsync(async x => {
                         x.Updated = true;
                         x.IsRemoved = false;
                         x.PlanEachDays.ForEach(p => {

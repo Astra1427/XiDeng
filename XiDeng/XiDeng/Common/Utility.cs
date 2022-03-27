@@ -277,6 +277,14 @@ namespace XiDeng.Common
             }
         }
 
+        public static async Task ForEachAsync<T>(this IEnumerable<T> ts, Func<T,Task> action)
+        {
+            foreach (var item in ts)
+            {
+                await action?.Invoke(item);
+            }
+        }
+
         public static ObservableCollection<T> AddRange<T>(this ObservableCollection<T> ts,IEnumerable<T> ts2)
         {
             if (ts2 == null)
