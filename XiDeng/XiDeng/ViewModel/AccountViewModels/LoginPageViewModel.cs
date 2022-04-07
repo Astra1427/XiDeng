@@ -72,7 +72,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                         Utility.LoggedAccount = loggedAccount;
                         if (await SynchronizationHelper.CloudToLocal())
                         {
-                            await Shell.Current.GoToAsync("../");
+                            await this.GoAsync("../");
                         }
                         return;
 
@@ -106,7 +106,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                     }
 
                     //go to my profile page
-                    await Shell.Current.GoToAsync("../");
+                    await this.GoAsync("../");
                 },obj,true);
                 
 
@@ -114,12 +114,12 @@ namespace XiDeng.ViewModel.AccountViewModels
 
             ForgotPasswordCommand = new Command<object>(async obj =>
             {
-                await Shell.Current.GoToAsync(nameof(ForgotPasswordPage));
+                await this.GoAsync(nameof(ForgotPasswordPage));
             });
 
             RegisterCommand = new Command<object>(async obj =>
             {
-                await Shell.Current.GoToAsync(nameof(RegisterPage));
+                await this.GoAsync(nameof(RegisterPage));
             });
         }
         

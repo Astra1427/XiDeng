@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XiDeng.Common;
@@ -12,6 +13,7 @@ namespace XiDeng.Views.PlanViews
     [QueryProperty("ByWeek", "ByWeek")]
     public partial class PlanDetailPage : ContentPage
     {
+
         private PlanDetailPageViewModel vm;
         private Guid planId;
 
@@ -19,6 +21,7 @@ namespace XiDeng.Views.PlanViews
         {
             set { 
                 planId = Guid.Parse(value);
+                this.vm = new PlanDetailPageViewModel(planId);
             }
         }
         private bool byWeek;
@@ -43,17 +46,23 @@ namespace XiDeng.Views.PlanViews
         {
             base.OnAppearing();
 
-            this.vm = new PlanDetailPageViewModel(planId);
-            await vm.Init();
+            if (BindingContext.GetType() == typeof(PlanDetailPageViewModel))
+            {
+                return;
+            }
             this.BindingContext = vm;
-
-            if (planId != Utility.LoggedAccount?.Id)
+            await vm.Init();
+            if (!this.vm.IsOwner)
             {
                 this.ToolbarItems.RemoveAt(0);
                 this.ToolbarItems.RemoveAt(0);
                 this.ToolbarItems.RemoveAt(0);
             }
+        }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
         }
 
     }

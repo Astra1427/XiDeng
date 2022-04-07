@@ -4,6 +4,7 @@
              x:Class="XiDeng.Views.StatisticsPage"
              Title="统计"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Shell.TabBarIsVisible="False"
              BackgroundColor="#24262b" >
     <ContentPage.Resources>
         <ResourceDictionary>

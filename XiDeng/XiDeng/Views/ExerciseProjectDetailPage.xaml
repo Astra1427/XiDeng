@@ -4,6 +4,7 @@
              x:Class="XiDeng.Views.ExerciseProjectDetailPage"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
             BackgroundColor="#24262b"
+             Shell.TabBarIsVisible="False"
              Title="{Binding Title}">
     <ContentPage.Content>
         <Grid RowDefinitions="*,44">

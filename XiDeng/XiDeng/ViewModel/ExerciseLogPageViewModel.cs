@@ -55,7 +55,7 @@ namespace XiDeng.ViewModel
         private async void ExerciseProjectDateTappedFunc(object obj)
         {
             //obj = ExerciseDatetime
-            await Shell.Current.GoToAsync($"ExerciseDateDetailPage?ExerciseDate={obj}");
+            await this.GoAsync($"ExerciseDateDetailPage?ExerciseDate={obj}");
         }
 
 
@@ -64,11 +64,11 @@ namespace XiDeng.ViewModel
         private async void ExerciseProjectTappedFunc(object obj)
         {
             //obj = ID
-            await Shell.Current.GoToAsync($"ExerciseProjectDetailPage?EID={obj}");
+            await this.GoAsync($"ExerciseProjectDetailPage?EID={obj}");
         }
 
         public DelegateCommand StatisticsCommand { get => new DelegateCommand { ExecuteAction = new Action<object>(async obj=> {
-            await Shell.Current.GoToAsync($"StatisticsPage");
+            await this.GoAsync($"StatisticsPage");
 
         })}; }
 

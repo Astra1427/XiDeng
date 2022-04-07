@@ -47,12 +47,12 @@ namespace XiDeng.ViewModel
         }
         public new DelegateCommand BackCommand { get => new DelegateCommand { ExecuteAction = new Action<object>(BackFunc) }; }
 
-        private void BackFunc(object obj)
+        private async void BackFunc(object obj)
         {
             ClearSound();
             IsBack = true;
             GC.Collect();
-            Shell.Current.GoToAsync("..");
+            await this.GoAsync("..");
         }
 
         public DelegateCommand AgainCommand { get => new DelegateCommand() { ExecuteAction = new Action<object>(AgainFunc) }; }
@@ -185,12 +185,23 @@ namespace XiDeng.ViewModel
             FinishAudio.Dispose();
             RecoveryAudio.Dispose();
         }
+        private bool isShowNavBar = true;
+        public bool IsShowNavBar
+        {
+            get { return isShowNavBar; }
+            set
+            {
+                isShowNavBar = value;
+                this.RaisePropertyChanged(nameof(IsShowNavBar));
+            }
+        }
+
         private bool isStop;
 
         public bool IsStop
         {
             get { return isStop; }
-            set { isStop = value; RaisePropertyChanged("IsStop"); }
+            set { isStop = value; RaisePropertyChanged("IsStop"); IsShowNavBar = value; }
         }
 
 
@@ -619,6 +630,7 @@ namespace XiDeng.ViewModel
             //await Task.Delay(1000);
             //BackAudio.Play();
             await CountDown(Config.StartContinueSecond);
+            IsShowNavBar = false;
             await StartTraning();
 
 

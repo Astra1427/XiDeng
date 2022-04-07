@@ -6,7 +6,17 @@
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
              BackgroundColor="#24262b"
              xmlns:vm="clr-namespace:XiDeng.ViewModel"
-             xmlns:models="clr-namespace:XiDeng.Data">
+             xmlns:models="clr-namespace:XiDeng.Data"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Shell.TabBarIsVisible="False"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="{Binding StatisticsIcon}" Command="{Binding StatisticsCommand}" Text="统计" Order="Default"/>

@@ -6,8 +6,8 @@
              x:DataType="vm:MyProfileViewModel"
              BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
              Shell.NavBarIsVisible="False"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
                 IsEnabled="{Binding IsE}"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              >
 
     <ContentPage.Behaviors>
@@ -24,7 +24,7 @@
     </ContentPage.Resources>
     <RefreshView IsRefreshing="{Binding IsRefresh}">
         <StackLayout BackgroundColor="Transparent">
-            <Frame HeightRequest="100" HasShadow="True" BackgroundColor="#252526">
+            <Frame HeightRequest="100" HasShadow="True" BackgroundColor="#252526" xct:TouchEffect.PressedOpacity="0.7">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ViewMyProfileCommand}"/>
                 </Frame.GestureRecognizers>
@@ -40,13 +40,13 @@
                         </Label.FormattedText>
                     </Label>
 
-                    <Button Text="同步" IsVisible="{Binding IsLogged}" IsEnabled="{Binding IsLogged}" BackgroundColor="#007acc" Command="{Binding SynchronizationCommand}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                    <Button Text="同步" CornerRadius="10" IsVisible="{Binding IsLogged}" IsEnabled="{Binding IsLogged}" BackgroundColor="#007acc" Command="{Binding SynchronizationCommand}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
 
                 </StackLayout>
             </Frame>
 
 
-            <TableView Intent="Menu"  >
+            <TableView Intent="Menu">
                 <TableView.Resources>
                     <Style TargetType="Image">
                         <Setter Property="HeightRequest" Value="25" />
@@ -56,6 +56,9 @@
                         <Setter Property="VerticalOptions" Value="Center" />
                         <Setter Property="Margin" Value="20,0,0,0" />
                         <Setter Property="TextColor" Value="#ACACAC" />
+                    </Style>
+                    <Style TargetType="StackLayout">
+                        <Setter Property="xct:TouchEffect.PressedOpacity" Value="0.7" />
                     </Style>
                 </TableView.Resources>
                 <TableRoot>

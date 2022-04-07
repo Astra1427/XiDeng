@@ -53,13 +53,23 @@ namespace XiDeng.ViewModel
         }
 
         public Command<object> BackCommand => new Command<object>(async obj=> {
-            await Shell.Current.GoToAsync("../");
+            await this.GoAsync("../");
         });
+        public Command<object> AppearingCommand => new Command<object>(Appearing);
+
+        public void Appearing(object obj)
+        {
+            if (!IsRefresh)
+            {
+                IsE = true;
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void RaisePropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(name));
         }
+
     }
 }

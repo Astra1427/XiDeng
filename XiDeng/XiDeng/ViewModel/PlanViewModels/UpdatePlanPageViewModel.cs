@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using XiDeng.Common;
 using XiDeng.Models.ExercisePlanModels;
 
 namespace XiDeng.ViewModel.PlanViewModels
@@ -21,7 +22,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
             });
             CancelCommand = new Command<object>(async delegate {
-                await Shell.Current.GoToAsync("../");
+                await this.GoAsync("../");
             });
 
         }

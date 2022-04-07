@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models.ExercisePlanModels;
@@ -30,6 +31,7 @@ namespace XiDeng.ViewModel.PlanViewModels
 
                 await this.Try(async o =>
                 {
+                    await Task.Delay(200);
 
                     var response = await ActionNames.ExercisePlan.GetAllPlans.GetStringAsync();
                     ObservableCollection<ExercisePlanDTO> ps = null;
@@ -53,22 +55,26 @@ namespace XiDeng.ViewModel.PlanViewModels
                             item.Updated = true;
                             await App.Database.SaveAsync(item);
 
-                            foreach (var day in item.PlanEachDays)
-                            {
-                                if (await App.Database.CheckConflictAsync(day))
-                                {
-                                    IsConflict = true;
-                                    continue;
-                                }
-                                day.Updated = true;
-                                await App.Database.SaveAsync(day);
-                            }
+                            //foreach (var day in item.PlanEachDays)
+                            //{
+                            //    if (await App.Database.CheckConflictAsync(day))
+                            //    {
+                            //        IsConflict = true;
+                            //        continue;
+                            //    }
+                            //    day.Updated = true;
+                            //    await App.Database.SaveAsync(day);
+                            //}
+
+                            await App.Database.DeleteAllAsync<PlanEachDayDTO>(x => x.PlanId == item.Id);
+
+                            await App.Database.InsertAllAsync(item.PlanEachDays);
                         }
 
                         if (IsConflict)
                         {
                             await this.Message("本地数据与云端数据有冲突，请返回个人菜单界面进行同步后再尝试此操作！");
-                            await Shell.Current.GoToAsync("../");
+                            await this.GoAsync("../");
                             return;
                         }
                     }
@@ -96,9 +102,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }, obj, true);
             });
 
-
             GotoAddPlanPageCommand = new Command<object>(async obj=> {
-                await Shell.Current.GoToAsync(nameof(AddPlanPage));
+                await this.GoAsync(nameof(AddPlanPage));
             });
 
             GotoPlanDetailCommand = new Command<object>(async obj=> {
@@ -110,10 +115,9 @@ namespace XiDeng.ViewModel.PlanViewModels
                         await this.Message("该计划不存在!");
                         return;
                     }
-                    await Shell.Current.GoToAsync(nameof(PlanDetailPage)+$"?PlanId={planId}&ByWeek={plan.Cycle == 0}");
+                    await this.GoAsync(nameof(PlanDetailPage)+$"?PlanId={planId}&ByWeek={plan.Cycle == 0}");
                 }
             });
-
 
             LoadPlansCommand?.Execute(null);
         }

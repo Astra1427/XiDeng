@@ -21,60 +21,62 @@
     <TableView Margin="5" >
         <TableRoot>
             <TableSection>
-                <ViewCell>
+                <ViewCell >
                     <StackLayout Orientation="Horizontal">
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GotoEditAccountNameCommand}"/>
+                        </StackLayout.GestureRecognizers>
                         <Label Text="名字"/>
                         <Label Text="{Binding Account.Name}" HorizontalOptions="EndAndExpand" TextColor="#ACACAC"/>
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
                 </ViewCell>
-                <ViewCell>
+                <!--<ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="头像"/>
                         <Image Source="{Binding Account.PhotoUrl}" HorizontalOptions="EndAndExpand"/>
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
-                </ViewCell>
+                </ViewCell>-->
 
                 <ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="邮箱"/>
                         <Label Text="{Binding Account.Email}" HorizontalOptions="EndAndExpand" TextColor="#ACACAC"/>
-                        <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
                 </ViewCell>
 
-                <ViewCell>
+                <!--<ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="手机号"/>
                         <Label Text="{Binding Account.PhoneNumber}" HorizontalOptions="EndAndExpand" TextColor="#ACACAC"/>
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
-                </ViewCell>
+                </ViewCell>-->
 
-                <ViewCell>
+                <!--<ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="个性签名"/>
                         <Label Text="{Binding Account.Introduce}" HorizontalOptions="EndAndExpand" TextColor="#ACACAC"/>
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
-                </ViewCell>
+                </ViewCell>-->
 
-                <ViewCell>
+                <!--<ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="性别"/>
                         <Label Text="{Binding Account.Gender}" HorizontalOptions="EndAndExpand" TextColor="#ACACAC"/>
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
-                </ViewCell>
+                </ViewCell>-->
 
-                <ViewCell>
+                <!--<ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="生日" />
                         <Label Text="{Binding Account.Birthdate}" HorizontalOptions="EndAndExpand" TextColor="#ACACAC"/>
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
-                </ViewCell>
+                </ViewCell>-->
                 <TextCell Text="退出登录" TextColor="Red" Command="{Binding ExitLoginCommand}"/>
             </TableSection>
         </TableRoot>

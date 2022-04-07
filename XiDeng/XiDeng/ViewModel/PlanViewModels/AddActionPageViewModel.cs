@@ -171,8 +171,9 @@ namespace XiDeng.ViewModel.PlanViewModels
 
             this.Skills = SkillDataCommon.Skills;
 
-            OnAppearingCommand = new Command<object>(async obj =>
+            AppearingCommand = new Command<object>(async obj =>
             {
+                base.Appearing(obj);
                 await this.Try(async o =>
                 {
                     if (PlanID != planId)
@@ -186,6 +187,7 @@ namespace XiDeng.ViewModel.PlanViewModels
 
 
             AddDayActionCommand = new Command<object>(async obj=> {
+
                 if (SelectedDayNumber == 0)
                 {
                     await this.Message("请选择一天!");
@@ -283,7 +285,7 @@ namespace XiDeng.ViewModel.PlanViewModels
         public Command<object> AddDayActionCommand { get; set; }
         public Command<object> SetRestDayCommand { get; set; }
         public Command<object> RemoveActionCommand { get; set; }
-        public Command<object> OnAppearingCommand { get; set; }
+        public new Command<object> AppearingCommand { get; set; }
 
 
     }

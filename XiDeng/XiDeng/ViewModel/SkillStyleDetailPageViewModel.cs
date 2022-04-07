@@ -238,7 +238,7 @@ namespace XiDeng.ViewModel
                     CurrentStandard = new StandardDTO { GroupNumber = CustomGroupNumber,Number = CustomNumber, StyleId = SkillStyle.Id, Style = SkillStyle };//TraningType = SkillStyle.Standards[1].TraningType, IsSingle = SkillStyle.Standards[0].IsSingle
                 }
                 string routuri = $"TraningPage?SkillID={this.SkillStyle.SkillId}&StyleID={this.SkillStyle.Id}&StandardJson={Uri.EscapeDataString(JsonConvert.SerializeObject(CurrentStandard))}";
-                await Shell.Current.GoToAsync(routuri,false);
+                await this.GoAsync(routuri,false);
             }
             catch (Exception ex)
             {

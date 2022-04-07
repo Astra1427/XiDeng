@@ -5,9 +5,16 @@
              Title="修改计划"
              BackgroundColor="{StaticResource ContentPageBackGroundColor}"
              xmlns:vm="clr-namespace:XiDeng.ViewModel.PlanViewModels"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="vm:UpdatePlanPageViewModel"
                 IsEnabled="{Binding IsE}"
              >
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
     <ScrollView>
         <RefreshView IsRefreshing="{Binding IsRefresh}">
             <StackLayout Padding="5">

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Forms;
+using static Xamarin.Forms.BindableProperty;
 
 namespace XiDeng.Common.Controls
 {
@@ -35,24 +36,25 @@ namespace XiDeng.Common.Controls
         </StackLayout>
         */
 
-        public static readonly BindableProperty IsCheckedProperty =
-           BindableProperty.Create(nameof(IsChecked),
+        public static readonly BindableProperty IsCustomCheckedProperty =
+           BindableProperty.Create(nameof(IsCustomChecked),
                                    typeof(bool),
                                    typeof(CustomCheckBox),
-                                   true,
-                                   BindingMode.TwoWay
+                                   false,
+                                   BindingMode.TwoWay,
+                                   propertyChanged: IsCustomCheckedChanged
                                    );
-        public bool IsChecked
+        public bool IsCustomChecked
         {
             get
             {
-                return (bool)GetValue(IsCheckedProperty);
+                return (bool)GetValue(IsCustomCheckedProperty);
             }
             set
             {
-                SetValue(IsCheckedProperty, value);
+                SetValue(IsCustomCheckedProperty, value);
                 this.Check.IsChecked = value;
-                this.OnPropertyChanged(nameof(IsChecked));
+                this.OnPropertyChanged(nameof(IsCustomChecked));
             }
         }
 
@@ -66,7 +68,9 @@ namespace XiDeng.Common.Controls
 
         
         private ContentView CustomView = new ContentView();
-
+        private static BindingPropertyChangedDelegate IsCustomCheckedChanged = new BindingPropertyChangedDelegate((source,oldValue,newValue)=> {
+            
+        });
         public CustomCheckBox()
         {
             Content = new StackLayout
@@ -86,8 +90,8 @@ namespace XiDeng.Common.Controls
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            IsChecked = !IsChecked;
-            Check.IsChecked = IsChecked;
+            IsCustomChecked = !IsCustomChecked;
+            Check.IsChecked = IsCustomChecked;
         }
     }
 }

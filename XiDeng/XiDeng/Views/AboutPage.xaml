@@ -4,6 +4,7 @@
              x:Class="XiDeng.Views.AboutPage"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
+             Shell.TabBarIsVisible="False"
              Title="关于">
     
     <ContentPage.Content>

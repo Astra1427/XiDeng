@@ -35,7 +35,8 @@
 
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="20,2*,20,*" Padding="5">
+    <RefreshView IsRefreshing="{Binding IsRefresh}">
+        <Grid RowDefinitions="20,2*,20,*" Padding="5">
         <Label Text="当前进行的计划" TextColor="White" FontSize="16">
             <Label.Triggers>
                 <DataTrigger TargetType="Label"
@@ -113,5 +114,6 @@
 
         </CollectionView>
     </Grid>
+    </RefreshView>
 
 </ContentPage>

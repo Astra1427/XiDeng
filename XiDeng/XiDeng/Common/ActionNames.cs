@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace XiDeng.Common
 {
@@ -16,7 +17,27 @@ namespace XiDeng.Common
             public static readonly string Register = "account/Register";
             public static readonly string SendForgotPasswordEmail = "account/SendForgotPasswordEmail";
             public static readonly string ResetPassword = "account/ResetPassword";
+            /// <summary>
+            /// GET : Guid id
+            /// </summary>
+            public static readonly string GetById = "account/GetById";
+            /// <summary>
+            /// GET : string email
+            /// </summary>
+            public static readonly string GetByEmail = "account/GetByEmail";
+            /// <summary>
+            /// GET : string name
+            /// </summary>
+            public static readonly string GetByName = "account/GetByName";
+            /// <summary>
+            /// GET : Guid id
+            /// </summary>
+            public static readonly string GetVisitAccountInfoById = "account/GetVisitAccountInfoById";
 
+            /// <summary>
+            /// POST : string newName
+            /// </summary>
+            public static readonly string EditAccountName = "account/EditAccountName";
         }
 
         #endregion
@@ -122,6 +143,22 @@ namespace XiDeng.Common
             /// GET : Guid reqeustAccountId, Guid purposeAccountId
             /// </summary>
             public static readonly string GetCollectionFolders = "Collection/GetCollectionFolders";
+            /// <summary>
+            /// POST : CollectionFolderDTO model
+            /// </summary>
+            public static readonly string CreateCollectFolder = "Collection/CreateCollectFolder";
+            /// <summary>
+            /// POST : CollectAndUncollectPlanReqeust model
+            /// </summary>
+            public static readonly string CollectAndUncollectPlan = "Collection/CollectAndUncollectPlan";
+            /// <summary>
+            /// POST : Guid folderId
+            /// </summary>
+            public static readonly string RemoveCollectFolder = "Collection/RemoveCollectFolder";
+            /// <summary>
+            /// POST : CollectionFolderDTO model
+            /// </summary>
+            public static readonly string UpdateCollectFolder = "Collection/UpdateCollectFolder";
         }
         #endregion
     }

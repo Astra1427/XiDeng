@@ -44,6 +44,9 @@ namespace XiDeng.ViewModel.AccountViewModels
         public MyProfileViewModel()
         {
             PrepareAccountDataCommand = new Command<object>(delegate {
+
+                base.Appearing(null);
+
                 this.Account = Utility.LoggedAccount;
                 if (this.Account == null || this.Account.JwtToken == null)
                 {
@@ -63,26 +66,27 @@ namespace XiDeng.ViewModel.AccountViewModels
                 if (this.Account == null || this.Account.JwtToken == null)
                 {
                     //goto login page
-                    await Shell.Current.GoToAsync(nameof(LoginPage));
+                    
+                    await this.GoAsync(nameof(LoginPage));
                     return;
                 }
 
                 //goto user info page
-                await Shell.Current.GoToAsync(nameof(PersonalInfoPage));
+                await this.GoAsync(nameof(PersonalInfoPage));
             });
             GotoMyPlanPageCommand = new Command<object>(async obj=> {
-                await Shell.Current.GoToAsync(nameof(MyPlanPage));
+                await this.GoAsync(nameof(MyPlanPage));
             });
 
             GotoSettingsPage = new Command<object>(async delegate {
-                await Shell.Current.GoToAsync(nameof(SettingPage));
+                await this.GoAsync(nameof(SettingPage));
             });
             TapTableItemCommand = new Command<object>(async tag=> {
                 if (tag == null || tag.ToString().IsEmpty())
                 {
                     return;
                 }
-                await Shell.Current.GoToAsync(tag.ToString());
+                await this.GoAsync(tag.ToString());
             });
 
             SynchronizationCommand = new Command<object>(async obj=> {
@@ -91,7 +95,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                 await this.Try(async o=> {
                     if (selected == "本地数据上传至云端")
                     {
-                        await SynchronizationHelper.CloudToLocal();
+                        await SynchronizationHelper.LocalToCloud();
                     }
                     else if (selected == "云端数据覆盖至本地")
                     {

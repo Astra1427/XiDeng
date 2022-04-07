@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using XiDeng.ViewModel.CollectionViewModels;
+using XiDeng.ViewModel.AccountViewModels;
 
-namespace XiDeng.Views.CollectionViews
+namespace XiDeng.Views.AccountViews
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddCollectFolderPopupPage : PopupPage
+    public partial class EditAccountNamePopupPage : PopupPage
     {
         private TaskCompletionSource<bool> _taskCompletionSource;
         public Task<bool> PopupClosedTask => _taskCompletionSource.Task;
-        private AddCollectFolderPopupPageViewModel vm;
-        public AddCollectFolderPopupPage()
+        EditAccountNamePopupPageViewModel vm { get; set; }
+        public EditAccountNamePopupPage()
         {
             InitializeComponent();
-            vm = new AddCollectFolderPopupPageViewModel();
+            vm = new EditAccountNamePopupPageViewModel();
             this.BindingContext = vm;
         }
 
@@ -30,14 +30,11 @@ namespace XiDeng.Views.CollectionViews
             _taskCompletionSource = new TaskCompletionSource<bool>();
 
         }
-
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
 
             _taskCompletionSource.SetResult(vm.IsSubmitted);
-
         }
-
     }
 }

@@ -13,7 +13,7 @@
     <ContentPage.Behaviors>
         <xct:EventToCommandBehavior
             EventName="Appearing"
-            Command="{Binding OnAppearingCommand}"
+            Command="{Binding AppearingCommand}"
             />
         
     </ContentPage.Behaviors>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XiDeng.Common;
 using XiDeng.Models.Collections;
 
 namespace XiDeng.ViewModel.CollectionViewModels
@@ -21,23 +22,28 @@ namespace XiDeng.ViewModel.CollectionViewModels
                 this.RaisePropertyChanged(nameof(Folder));
             }
         }
-        private bool isPublic;
-        public bool IsPublic
-        {
-            get { return isPublic; }
-            set
-            {
-                isPublic = value;
-                this.RaisePropertyChanged(nameof(IsPublic));
-            }
-        }
 
-
+        public bool IsSubmitted { get; set; }
         public AddCollectFolderPopupPageViewModel()
         {
+            Folder = new CollectionFolderDTO();
             AddCommand = new Command<object>(async delegate {
                 await this.Try<object>(async o=> {
-                    await Task.Delay(3000);
+                    Folder.Id = Guid.NewGuid();
+                    Folder.AccountId = Utility.LoggedAccount.Id;
+                    var response = await ActionNames.Collection.CreateCollectFolder.PostAsync(Folder.ToJson());
+                    if (response.IsSuccessStatusCode)
+                    {
+                        //save to sqlite
+                        int rows = await App.Database.InsertAsync(Folder);
+                        await this.Message("添加成功!");
+                        IsSubmitted = true;
+                        await Shell.Current.Navigation.PopPopupAsync();
+                    }
+                    else
+                    {
+                        await this.Message(response.Message);
+                    }
                 },null,true);
             });
         }

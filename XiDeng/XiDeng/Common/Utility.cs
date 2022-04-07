@@ -11,6 +11,7 @@ using XiDeng.Models;
 using System.Collections.ObjectModel;
 using XiDeng.Views.AccountViews;
 using System.Threading;
+using XiDeng.ViewModel;
 
 namespace XiDeng.Common
 {
@@ -43,6 +44,11 @@ namespace XiDeng.Common
             
             await Shell.Current.DisplayAlert(title,message,button);
         }
+        public static async Task<bool> YesMessage(this Object obj, string message, string title = "提示", string accept = "确定",string cancel = "取消")
+        {
+
+            return await Shell.Current.DisplayAlert(title, message, accept,cancel);
+        }
         public static async Task Message(this string message,string title = "提示",string button = "好的")
         {
             await Shell.Current.DisplayAlert(title,message,button);
@@ -66,12 +72,17 @@ namespace XiDeng.Common
         //将HttpClientHandler放进HttpClient 构造函数中即可
         public static readonly HttpClient Client = new HttpClient(HttpClientHandler) { Timeout = TimeSpan.FromSeconds(DebugTimeout),BaseAddress = new Uri(DebugUrl) };
         
-        public static async Task<ResponseModel> GetStringAsync(this string action,string token = null)
+        public static async Task<ResponseModel> GetStringAsync(this string action,string token = null,params string[] paras)
         {
             
             try
             {
-
+                if (paras != null && paras.Length > 0)
+                {
+                    paras.ForEach(x=> {
+                        action += $"/{x}";
+                    });
+                }
                 //check network state
                 if (App.Config.IsOffline)
                 {
@@ -161,7 +172,7 @@ namespace XiDeng.Common
 
                 //Client.DefaultRequestHeaders.From.cookie.GetValues("refreshToken");
                 var response = await Client.PostAsync(action, content);
-
+                
                 return await ResponseHandler(response, action, content);
             }
             catch (Exception ex)
@@ -180,6 +191,7 @@ namespace XiDeng.Common
         public static async Task<ResponseModel> ResponseHandler(HttpResponseMessage response,string action = null , HttpContent content = null)
         {
             string responseContent = await response.Content.ReadAsStringAsync();
+            
             if (response.IsSuccessStatusCode)
             {
                 return new ResponseModel(response.StatusCode, responseContent, null, response.IsSuccessStatusCode);
@@ -312,6 +324,16 @@ namespace XiDeng.Common
             {
 
             }
+        }
+        #endregion
+
+        #region Shell Extensions
+        public static async Task GoAsync(this BaseViewModel vm,ShellNavigationState navigationState,bool animation = true)
+        {
+            vm.IsE = false;
+            Shell.Current.IsEnabled = false;
+            await Shell.Current.GoToAsync(navigationState,animation);
+            Shell.Current.IsEnabled = true;
         }
         #endregion
 

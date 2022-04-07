@@ -7,7 +7,16 @@
              BackgroundColor="{DynamicResource ContentPageBackGroundColor }"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
              xmlns:vm="clr-namespace:XiDeng.ViewModel"
-             x:DataType="vm:SkillStyleDetailPageViewModel">
+             x:DataType="vm:SkillStyleDetailPageViewModel"
+             Shell.TabBarIsVisible="False"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="{Binding AudioIcon}" Command="{Binding AudioVolumePanelCommand}"/>

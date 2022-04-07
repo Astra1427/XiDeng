@@ -5,16 +5,31 @@
              BackgroundColor="{StaticResource ContentPageBackGroundColor}"
              Title="公开的计划"
                 IsEnabled="{Binding IsE}"
-             x:Name="page">
-    <ListView ItemsSource="{Binding Plans}" IsPullToRefreshEnabled="True" RefreshCommand="{Binding LoadPlansCommand}" IsRefreshing="{Binding IsRefresh}" 
-                  HasUnevenRows="True" SelectionMode="None"
+             x:Name="page"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
+    <RefreshView IsRefreshing="{Binding IsRefresh}" Command="{Binding LoadPlansCommand}">
+        <CollectionView ItemsSource="{Binding Plans}"  
+                  SelectionMode="None" Margin="10"
+                    RemainingItemsThreshold="2"
+                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
+                        Footer=""
                   >
 
-        <ListView.ItemTemplate>
-            <DataTemplate >
-                <ViewCell>
-                    <Frame HasShadow="True" CornerRadius="5" Margin="10,5">
-                        <StackLayout Orientation="Horizontal">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10" Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate >
+                    <Frame HasShadow="True" CornerRadius="5" Margin="10,5" >
+                        <StackLayout Orientation="Horizontal" xct:TouchEffect.PressedOpacity="0.7">
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BindingContext.GotoPlanDetailCommand,Source={x:Reference page}}" CommandParameter="{Binding .}"/>
                             </StackLayout.GestureRecognizers>
@@ -22,6 +37,8 @@
                             <Label FontSize="16">
                                 <Label.FormattedText>
                                     <FormattedString>
+                                        <Span Text="{Binding Id}"/>
+                                        <Span Text="&#10;"/>
                                         <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
                                         <Span Text="&#10;"/>
                                         <Span Text="{Binding Description}" />
@@ -33,15 +50,23 @@
                                 </Label.FormattedText>
                             </Label>
 
-                            <Image Source="{Binding CollectIcon}" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.GotoCollectionFolderPopupPageCommand,Source={x:Reference page}}"/>
-                                </Image.GestureRecognizers>
-                            </Image>
+                            <StackLayout>
+                                <Image Source="{Binding CollectIcon}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Aspect="AspectFit" HeightRequest="50">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.GotoCollectionFolderPopupPageCommand,Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <Label Text="{Binding CollectionCount}" HorizontalOptions="Center"/>
+                            </StackLayout>
                         </StackLayout>
                     </Frame>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.FooterTemplate>
+                <DataTemplate>
+                    <Label Text="{Binding BindingContext.LoadMoreText,Source={x:Reference page}}" HorizontalTextAlignment="Center"/>
+                </DataTemplate>
+            </CollectionView.FooterTemplate>
+        </CollectionView>
+    </RefreshView>
 </ContentPage>

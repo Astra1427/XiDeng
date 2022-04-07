@@ -5,7 +5,17 @@
              BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
              x:Name="page"
              Title="登录"
-             IsEnabled="{Binding IsE}">
+             IsEnabled="{Binding IsE}"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Shell.TabBarIsVisible="False"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
 
 
     <Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rg.Plugins.Popup.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,8 @@ using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models;
 using XiDeng.Models.ExercisePlanModels;
+using XiDeng.Views.AccountViews;
+using XiDeng.Views.CollectionViews;
 using XiDeng.Views.PlanViews;
 
 namespace XiDeng.ViewModel.PlanViewModels
@@ -24,8 +27,8 @@ namespace XiDeng.ViewModel.PlanViewModels
             }
         }
 
-        private List<IGrouping<int,PlanEachDayDTO>> groupPlanActions;
-        public List<IGrouping<int,PlanEachDayDTO>> GroupPlanActions
+        private List<IGrouping<int, PlanEachDayDTO>> groupPlanActions;
+        public List<IGrouping<int, PlanEachDayDTO>> GroupPlanActions
         {
             get { return groupPlanActions; }
             set
@@ -51,11 +54,14 @@ namespace XiDeng.ViewModel.PlanViewModels
         public PlanDetailPageViewModel(Guid planId)
         {
             this.PlanId = planId;
-            OnAppearingCommand = new Command<object>(obj=> {
-                //await Init(PlanId);
-            });
-            DeletePlanCommand = new Command<object>(async obj => {
-                await this.Try(async o => {
+            DeletePlanCommand = new Command<object>(async obj =>
+            {
+                if (!await this.YesMessage("确定删除这个计划？"))
+                {
+                    return;
+                }
+                await this.Try(async o =>
+                {
 
                     //remove from database
                     var response = await (ActionNames.ExercisePlan.DeletePlan + $"?planId={PlanId}").PostAsync("");
@@ -86,10 +92,12 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }, obj, true);
             });
 
-            GotoUpdatePlanCommand = new Command<object>(async delegate {
-                await Shell.Current.GoToAsync(nameof(UpdatePlanPage)+$"?PlanJson={this.Plan.ToJson()}");
+            GotoUpdatePlanCommand = new Command<object>(async delegate
+            {
+                await this.GoAsync(nameof(UpdatePlanPage) + $"?PlanJson={this.Plan.ToJson()}");
             });
-            PublishPlanCommand = new Command<object>(async delegate {
+            PublishPlanCommand = new Command<object>(async delegate
+            {
 
                 var response = await (ActionNames.ExercisePlan.PublishOrCancelPlan + $"?PlanId={Plan.Id}").PostAsync();
                 if (response.IsSuccessStatusCode)
@@ -118,10 +126,12 @@ namespace XiDeng.ViewModel.PlanViewModels
             });
 
 
-            StartPlanCommand = new Command<object>(async obj=> {
-                await this.Try(async o => {
-                    
-                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x=>x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
+            StartPlanCommand = new Command<object>(async obj =>
+            {
+                await this.Try(async o =>
+                {
+
+                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     if (model == null)
                     {
                         model = new AccountRunningPlanDTO
@@ -138,7 +148,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     model.StartTime = DateTime.Now.Date;
                     model.IsPause = false;
 
-                    
+
                     ResponseModel response = await ActionNames.ExercisePlan.StartPlan.PostAsync(model.ToJson());
                     if (response.IsSuccessStatusCode)
                     {
@@ -155,19 +165,21 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
 
                     //pause other plan
-                    var otherPlans = await App.Database.GetAllAsync<AccountRunningPlanDTO>(x=>x.AccountId == Utility.LoggedAccount.Id && x.Id != model.Id);
-                    otherPlans.ForEach(x => x.IsPause = true) ;
+                    var otherPlans = await App.Database.GetAllAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.Id != model.Id);
+                    otherPlans.ForEach(x => x.IsPause = true);
                     int otherRows = await App.Database.SaveAllAsync(otherPlans);
                     //start this plan
                     int rows = await App.Database.SaveAsync(model);
-                    
+
                     await this.Message($"Insert rows:{rows}\nOther:{otherRows}");
                     IsStarted = rows > 0;
-                },obj,true);
+                }, obj, true);
             });
 
-            PausePlanCommand = new Command<object>(async obj=> {
-                await this.Try(async o=> {
+            PausePlanCommand = new Command<object>(async obj =>
+            {
+                await this.Try(async o =>
+                {
                     var response = await (ActionNames.ExercisePlan.PausePlan + $"?PlanId={Plan.Id}").PostAsync();
                     if (response.IsSuccessStatusCode)
                     {
@@ -182,7 +194,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                         return;
                     }
 
-                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x=>x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
+                    var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     model.IsPause = true;
                     int rows = await App.Database.UpdateAsync(model);
                     await this.Message($"Update rows:{rows}");
@@ -190,12 +202,14 @@ namespace XiDeng.ViewModel.PlanViewModels
                     {
                         IsStarted = false;
                     }
-                },obj,true);
+                }, obj, true);
             });
 
-            RestartPlanCommand = new Command<object>(async obj=> {
-                await this.Try(async o=> {
-                    var response = await (ActionNames.ExercisePlan.RestartPlan+$"?PlanId={Plan.Id}").PostAsync();
+            RestartPlanCommand = new Command<object>(async obj =>
+            {
+                await this.Try(async o =>
+                {
+                    var response = await (ActionNames.ExercisePlan.RestartPlan + $"?PlanId={Plan.Id}").PostAsync();
                     if (response.IsSuccessStatusCode)
                     {
 
@@ -216,8 +230,69 @@ namespace XiDeng.ViewModel.PlanViewModels
                         IsStarted = true;
                     }
 
-                },obj,true);
+                }, obj, true);
             });
+            GotoCollectPopupPageCommand = new Command<object>(async obj =>
+            {
+                var popup = new CollectPopupPage(planId);
+                await Shell.Current.Navigation.PushPopupAsync(popup);
+
+                bool? isCollect = await popup.PopupClosedTask;
+                if (!isCollect.HasValue)
+                {
+                    return;
+                }
+
+                if (Plan.IsCollect)
+                {
+                    if (!isCollect.Value)
+                    {
+                        Plan.CollectionCount--;
+                    }
+                }
+                else
+                {
+                    if (isCollect.Value)
+                    {
+                        plan.CollectionCount++;
+                    }
+                }
+
+                Plan.IsCollect = isCollect.Value;
+
+                if (Plan.IsCollect)
+                {
+                    await this.Try(async o =>
+                    {
+                        await App.Database.SaveAsync(this.Plan);
+                        await App.Database.DeleteAllAsync<PlanEachDayDTO>(x => x.PlanId == this.PlanId);
+                        await App.Database.InsertAllAsync(this.Plan.PlanEachDays);
+                    }, obj, false);
+                }
+
+                MessagingCenter.Send<object, Tuple<Guid, bool, int>>(this, "UpdateCollect", new Tuple<Guid, bool, int>(PlanId, Plan.IsCollect, Plan.CollectionCount));
+
+            });
+
+            RefreshCommand = new Command<object>(async delegate
+            {
+                await Task.Delay(200);
+                await this.Try<object>(async o =>
+                {
+                    await LoadPlanFromCloud();
+                    if (Plan == null)
+                    {
+                        await this.Message("计划数据丢失");
+                        return;
+                    }
+                    await SetPlan();
+                }, null, true);
+            });
+
+            GotoAuthorVisitorPageCommand = new Command<object>(async delegate {
+                await this.GoAsync(nameof(VisitorPage)+$"?AuthorId={this.Plan.AccountId}");
+            });
+            //OnAppearingCommand?.Execute(null);
         }
         private void UpdateGroupList()
         {
@@ -248,46 +323,71 @@ namespace XiDeng.ViewModel.PlanViewModels
 
         public async Task Init()
         {
-            //Load from local database
-            this.Plan = await App.Database.GetAsync<ExercisePlanDTO>(x => x.Id == PlanId);
             if (this.Plan != null)
+            {
+                return;
+            }
+            await Task.Delay(200);
+            await this.Try<object>(async obj =>
+            {
+                //Load from local database
+                this.Plan = await App.Database.GetAsync<ExercisePlanDTO>(x => x.Id == PlanId);
+
+                //await this.Message("数据丢失！");
+                //await ShellApp.Current.GoAsync("../");
+                //return;
+
+
+                //load from cloud database
+                if (Plan == null)
+                {
+                    await LoadPlanFromCloud();
+                }
+
+                if (Plan == null)
+                {
+                    await this.Message("计划数据丢失");
+                    return;
+                }
+                await SetPlan();
+
+            }, null, true);
+        }
+
+        private async Task LoadPlanFromCloud()
+        {
+            var response = await (ActionNames.ExercisePlan.GetPlanByID + $"?planId={PlanId}").GetStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                Plan = response.Content.To<ExercisePlanDTO>();
+                
+            }
+            else
+            {
+                await this.Message($"加载数据失败：\n{response.Message}");
+                if (Shell.Current.Title != "登录")
+                {
+                    await this.GoAsync("../");
+                }
+                return;
+            }
+
+        }
+        private async Task SetPlan()
+        {
+            if (this.Plan.PlanEachDays == null || this.Plan.PlanEachDays.Count == 0)
             {
                 this.Plan.PlanEachDays = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == Plan.Id)).ToObservableCollection();
             }
-            //await this.Message("数据丢失！");
-            //await ShellApp.Current.GoToAsync("../");
-            //return;
-
-
-            //load from cloud database
-
-            await this.Try(async obj => {
-
-                var response = await (ActionNames.ExercisePlan.GetPlanByID + $"?planId={Plan.Id}").GetStringAsync();
-                if (response.IsSuccessStatusCode)
-                {
-                    Plan = response.Content.To<ExercisePlanDTO>();
-                }
-                else
-                {
-                    await this.Message($"加载数据失败：\n{response.Message}");
-                    if (Shell.Current.Title != "登录")
-                    {
-                        await Shell.Current.GoToAsync("../");
-                    }
-                }
-            }, new object(), true);
-
 
             IsOwner = Plan.AccountId == Utility.LoggedAccount.Id;
 
-            var model = (await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.PlanId == Plan.Id && x.AccountId == Utility.LoggedAccount.Id));
+            var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.PlanId == Plan.Id && x.AccountId == Utility.LoggedAccount.Id);
             IsStarted = model == null ? false : !model.IsPause;
             UpdateGroupList();
 
 
             PublishPlanText = this.Plan.PublishStatus == 1 || this.plan.PublishStatus == 2 ? "取消发布" : "发布";
-
         }
 
 
@@ -298,5 +398,8 @@ namespace XiDeng.ViewModel.PlanViewModels
         public Command<object> StartPlanCommand { get; set; }
         public Command<object> PausePlanCommand { get; set; }
         public Command<object> RestartPlanCommand { get; set; }
+        public Command<object> GotoCollectPopupPageCommand { get; set; }
+        public Command<object> RefreshCommand { get; set; }
+        public Command<object> GotoAuthorVisitorPageCommand { get; set; }
     }
 }

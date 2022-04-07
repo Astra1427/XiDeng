@@ -54,6 +54,7 @@ namespace XiDeng
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage)) ;
             Routing.RegisterRoute(nameof(ForgotPasswordPage), typeof(ForgotPasswordPage)) ;
             Routing.RegisterRoute(nameof(PersonalInfoPage), typeof(PersonalInfoPage)) ;
+            Routing.RegisterRoute(nameof(VisitorPage), typeof(VisitorPage)) ;
             #endregion
 
             #region Plan Pages

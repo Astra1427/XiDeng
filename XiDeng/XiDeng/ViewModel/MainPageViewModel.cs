@@ -72,34 +72,77 @@ namespace XiDeng.ViewModel
         public MainPageViewModel()
         {
             OnAppearingCommand = new Command<object>(async obj=> {
+                base.Appearing(obj);
                 if (Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty())
                 {
                     return;
                 }
-                RunningPlan = await App.Database.GetAsync<AccountRunningPlanDTO>(x=>!x.IsPause && x.AccountId == Utility.LoggedAccount.Id);
-                if (RunningPlan == null)
-                {
-                    Plan = null;
-                    return;
-                }
-                Plan = await App.Database.GetAsync <ExercisePlanDTO>(x=>x.Id == RunningPlan.PlanId);
-                if (Plan == null)
-                {
-                    //need download plan data
-                    await this.Message("计划数据丢失，请联网并重试。");
-                }
 
-                CurrentDay = RunningPlan.StartTime.HasValue ? (int)(DateTime.Now - RunningPlan.StartTime).Value.TotalDays + 1 : 1;
-                if (CurrentDay > (Plan.DayNumber ?? 0) && Plan.IsLoop)
+                await this.Try(async o =>
                 {
-                    CurrentDay = (CurrentDay % Plan.DayNumber.Value) == 0 ? Plan.DayNumber.Value : (CurrentDay % Plan.DayNumber.Value);
-                }
-                else
-                {
-                    // The plan is finished
-                    IsFinished = true;
-                }
+                    RunningPlan = await App.Database.GetAsync<AccountRunningPlanDTO>(x => !x.IsPause && x.AccountId == Utility.LoggedAccount.Id);
 
+                    if (RunningPlan == null)
+                    {
+                        Plan = null;
+                        return;
+                    }
+                    Plan = await App.Database.GetAsync<ExercisePlanDTO>(x => x.Id == RunningPlan.PlanId);
+
+                    if (Plan == null)
+                    {
+                        //need download plan data
+
+                        var response = await (ActionNames.ExercisePlan.GetPlanByID + $"?planId={RunningPlan.PlanId}").GetStringAsync();
+                        if (response.IsSuccessStatusCode)
+                        {
+                            Plan = response.Content.To<ExercisePlanDTO>();
+                            if (Plan == null)
+                            {
+                                await this.Message("计划数据丢失");
+                                return;
+                            }
+                            await App.Database.SaveAsync(Plan);
+                            await App.Database.DeleteAllAsync<PlanEachDayDTO>(x=>x.PlanId == Plan.Id);
+                            await App.Database.InsertAllAsync(Plan.PlanEachDays);
+                        }
+                        else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
+                        {
+                            await this.Message($"加载计划数据失败!\n{response.Message}");
+                            return;
+                        }
+                        else
+                        {
+                            await this.Message("计划数据丢失");
+                            return;
+                        }
+
+                    }
+                    if (Plan.IsRemoved)
+                    {
+                        await this.Message("该计划已被作者删除!");
+                        Plan = null;
+                        return;
+                    }
+
+                    Plan.PlanEachDays = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == Plan.Id)).ToObservableCollection();
+
+
+                    CurrentDay = RunningPlan.StartTime.HasValue ? (int)(DateTime.Now - RunningPlan.StartTime).Value.TotalDays + 1 : 1;
+
+                    if (CurrentDay > (Plan.DayNumber ?? 0))
+                    {
+                        if (Plan.IsLoop)
+                        {
+                            CurrentDay = (CurrentDay % Plan.DayNumber.Value) == 0 ? Plan.DayNumber.Value : (CurrentDay % Plan.DayNumber.Value);
+                        }
+                        else
+                        {
+                            // The plan is finished
+                            IsFinished = true;
+                        }
+                    }
+                }, obj, true);
 
             });
 
@@ -108,7 +151,7 @@ namespace XiDeng.ViewModel
                 {
                     return;
                 }
-                await Shell.Current.GoToAsync(nameof(PlanDetailPage) + $"?PlanId={Plan.Id}&ByWeek={Plan.Cycle == 0}");
+                await this.GoAsync(nameof(PlanDetailPage) + $"?PlanId={Plan.Id}&ByWeek={Plan.Cycle == 0}");
             });
             StartPlanTraningCommand = new Command<object>(async obj=> {
                 if (IsFinished)
@@ -116,7 +159,7 @@ namespace XiDeng.ViewModel
                     await this.Message("该计划已完成！");
                     return;
                 }
-                await Shell.Current.GoToAsync(nameof(TraningPlanPage)+$"?RunningPlanID={RunningPlan.Id}");
+                await this.GoAsync(nameof(TraningPlanPage)+$"?RunningPlanID={RunningPlan.Id}");
             });
             Init();
         }

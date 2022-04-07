@@ -110,7 +110,7 @@ namespace XiDeng.Models.ExercisePlanModels
         [SQLite.Ignore]
         public ObservableCollection<PlanEachDayDTO> PlanEachDays
         {
-            get { return planEachDays; }
+            get {return planEachDays; }
             set
             {
                 planEachDays = value;
@@ -155,8 +155,33 @@ namespace XiDeng.Models.ExercisePlanModels
             }
         }
 
-        public bool IsCollect { get; set; }
-        public ImageSource CollectIcon => Utility.GetImage(IsCollect ? "star_3_240" : "star_5_240");
-
+        private bool isCollect;
+        [Newtonsoft.Json.JsonIgnore]
+        [SQLite.Ignore]
+        public bool IsCollect
+        {
+            get { return isCollect; }
+            set
+            {
+                isCollect = value;
+                CollectIcon = Utility.GetImage(value ? "star_3_240" : "star_5_240");
+                this.RaisePropertyChanged(nameof(IsCollect));
+            }
+        }
+        private ImageSource collectIcon;
+        [SQLite.Ignore]
+        [Newtonsoft.Json.JsonIgnore]
+        public ImageSource CollectIcon
+        {
+            get { return collectIcon; }
+            set
+            {
+                
+                collectIcon = value;
+                this.RaisePropertyChanged(nameof(CollectIcon));
+            }
+        }
+        public string AuthorImg { get; set; }
+        public string AuthorName { get; set; }
     }
 }

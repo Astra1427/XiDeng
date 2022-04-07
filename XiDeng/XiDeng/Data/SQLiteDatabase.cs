@@ -115,6 +115,10 @@ namespace XiDeng.Data
 
         public async Task<int> InsertAllAsync<T>(IEnumerable<T> models) where T : ModelBase
         {
+            if (models == null || models.Count() == 0)
+            {
+                return 0;
+            }
             return await database.InsertAllAsync(models);
         }
 

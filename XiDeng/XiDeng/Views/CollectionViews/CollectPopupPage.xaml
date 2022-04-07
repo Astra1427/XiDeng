@@ -12,8 +12,16 @@
             HasSystemPadding="True"
             SystemPaddingSides="All"
             Padding="30,70"
-                IsEnabled="{Binding IsE}"
-           >
+            IsEnabled="{Binding IsE}"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation 
             PositionIn="Center"
@@ -26,29 +34,51 @@
             EasingOut="SinIn"
             HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
-    <Frame HasShadow="True" BackgroundColor="White">
-        <StackLayout>
-            <Label Text="添加到收藏夹" HorizontalOptions="Center" Margin="0,10,0,0"/>
-            <Line Margin="0,5,0,0"/>
-            <ListView ItemsSource="{Binding CollectionFolders}" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None" Footer="" Margin="5">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <custom:CustomCheckBox IsChecked="{Binding IsSelected}">
-                                    <custom:CustomCheckBox.Content>
-                                        <Label Text="{Binding Name}"/>
-                                    </custom:CustomCheckBox.Content>
-                                </custom:CustomCheckBox>
+    <RefreshView IsRefreshing="{Binding IsRefresh}">
+        <Frame HasShadow="True">
+            <StackLayout>
+                <Label Text="添加到收藏夹" HorizontalOptions="Center" Margin="0,10,0,0" FontSize="18"/>
+                <Line/>
+                <CollectionView VerticalOptions="FillAndExpand" ItemsSource="{Binding CollectionFolders}" Margin="5" EmptyView="" SelectionMode="Multiple" Footer="" SelectedItems="{Binding SelectedFolders}">
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="你还没有收藏夹，要新建一个吗？" FontSize="16"/>
+                                <Button Text="新建文件夹" Command="{Binding BindingContext.GotoAddFolderCommand,Source={x:Reference page}}"/>
                             </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                
-            </ListView>
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <custom:CustomCheckBox IsCustomChecked="{Binding IsSelected}">
+                                <StackLayout Orientation="Horizontal">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.TapFolderCommand,Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Center"/>
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" FontSize="16"/>
+                                    <Label Text="隐藏">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsPublic}" Value="True">
+                                                <Setter Property="Text" Value="公开"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </StackLayout>
+                            </custom:CustomCheckBox>
 
-            <Line/>
-            <Button Text="确定" Margin="10,0"/>
-        </StackLayout>
-    </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.FooterTemplate>
+                        <DataTemplate>
+                            <Button Text="新建文件夹" Command="{Binding BindingContext.GotoAddFolderCommand,Source={x:Reference page}}"/>
+                        </DataTemplate>
+                    </CollectionView.FooterTemplate>
+                </CollectionView>
+
+                <Line/>
+                <Button Text="确定" Margin="10,0" Command="{Binding SubmitCommand}"/>
+            </StackLayout>
+        </Frame>
+    </RefreshView>
 </pages:PopupPage>

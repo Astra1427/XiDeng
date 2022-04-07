@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XiDeng.Views.PlanViews.TraningPlanPage"
              BackgroundColor="{StaticResource ContentPageBackGroundColor}"
-             Shell.NavBarIsVisible="{Binding IsStop}"
+             Shell.NavBarIsVisible="{Binding IsShowNavBar}"
              Shell.TabBarIsVisible="False"
              xmlns:vm="clr-namespace:XiDeng.ViewModel.PlanViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Name="page"
                 IsEnabled="{Binding IsE}"
+             Title="{Binding PlanTitle}"
              >
 
 
@@ -101,9 +102,9 @@
             </Grid>
 
             <StackLayout VerticalOptions="End" HeightRequest="100">
-                <Label Text="动作列表:"/>
+                <Label Text="动作列表:" IsVisible="{Binding IsShowNavBar}"/>
                 <CollectionView
-                    IsVisible="{Binding IsStop}"
+                    IsVisible="{Binding IsShowNavBar}"
                     ItemsSource="{Binding Plan.PlanEachDays}"
                     SelectedItem="{Binding CurrentAction}"  
                     SelectionMode="Single"

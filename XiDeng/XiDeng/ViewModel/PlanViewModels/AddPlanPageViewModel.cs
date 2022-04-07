@@ -116,7 +116,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
             });
             CancelCommand = new Command<object>(async delegate {
-                await Shell.Current.GoToAsync("../");
+                await this.GoAsync("../");
             });
 
 
@@ -128,7 +128,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             //        await this.Message("天数必须大于0!");
             //        return;
             //    }
-            //    await Shell.Current.GoToAsync(nameof(AddActionPage)+$"?PlanID={Plan.Id}&DayNumber={DayNumber}&ByWeek={ByWeek}");
+            //    await Shell.Current.GoAsync(nameof(AddActionPage)+$"?PlanID={Plan.Id}&DayNumber={DayNumber}&ByWeek={ByWeek}");
 
             //});
             /*SubmitCommand = new Command<object>(async obj=> {

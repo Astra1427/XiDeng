@@ -9,10 +9,13 @@ using XiDeng.Views.CollectionViews;
 using XiDeng.Views.PlanViews;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Extensions;
+using System.Threading.Tasks;
+using System.Linq;
+using XiDeng.Models.Collections;
 
 namespace XiDeng.ViewModel.PlanViewModels
 {
-    public class PublicPlanPageViewModel:BaseViewModel
+    public class PublicPlanPageViewModel : BaseViewModel
     {
         private ObservableCollection<ExercisePlanDTO> plans;
         public ObservableCollection<ExercisePlanDTO> Plans
@@ -25,7 +28,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             }
         }
         public int pageIndex = 0;
-        public int pageSize = 10;
+        public int pageSize = 15;
         private int orderPriority;
         public int OrderPriority
         {
@@ -38,38 +41,181 @@ namespace XiDeng.ViewModel.PlanViewModels
         }
 
 
-
+        public bool IsAppearing { get; set; }
+        public bool IsLoadPlan { get; set; }
         public PublicPlanPageViewModel()
         {
-            Plans = new ObservableCollection<ExercisePlanDTO>();
-            LoadPlansCommand = new Command<object>(async obj=> {
-                await this.Try(async o=> {
-                    var response = await (ActionNames.ExercisePlan.GetAllPublishPlansByPage+$"?pageIndex={pageIndex}&pageSize={pageSize}&orderPriority={OrderPriority}").GetStringAsync();
-                    if (response.IsSuccessStatusCode)
+            MessagingCenter.Subscribe<object, Tuple<Guid, bool, int>>(this, "UpdateCollect", (s, e) =>
+            {
+                UpdateCollect(e.Item1, e.Item2, e.Item3);
+            });
+            AppearingCommand = new Command<object>(async obj =>
+            {
+                IsAppearing = true;
+                base.Appearing(obj);
+                if (this.Plans != null)
+                {
+                    return;
+                }
+                Plans = new ObservableCollection<ExercisePlanDTO>();
+                pageIndex = 0;
+                await LoadPlans();
+                IsAppearing = false;
+            });
+
+            LoadPlansCommand = new Command<object>(async obj =>
+            {
+                if (IsAppearing)
+                {
+                    return;
+                }
+                IsLoadPlan = true;
+                LoadMoreText = "加载中...";
+                if (this.Plans == null)
+                    this.Plans = new ObservableCollection<ExercisePlanDTO>();
+                else
+                    this.Plans.Clear();
+
+                Plans = new ObservableCollection<ExercisePlanDTO>();
+                pageIndex = 0;
+                await LoadPlans();
+                IsLoadPlan = false;
+            });
+
+            GotoPlanDetailCommand = new Command<object>(async obj =>
+            {
+                if (obj is ExercisePlanDTO plan)
+                {
+
+                    await this.GoAsync(nameof(PlanDetailPage) + $"?PlanId={plan.Id}&ByWeek={plan.Cycle == 0}");
+
+                }
+            });
+
+            GotoCollectionFolderPopupPageCommand = new Command<object>(async obj =>
+            {
+                if (obj is Guid planId)
+                {
+                    var popup = new CollectPopupPage(planId);
+                    await Shell.Current.Navigation.PushPopupAsync(popup);
+
+                    bool? isCollect = await popup.PopupClosedTask;
+
+                    UpdateCollect(planId, isCollect);
+
+                }
+            });
+
+            LoadMoreCommand = new Command<object>(async obj =>
+            {
+                if (IsAppearing || IsLoadPlan || IsLoadMore || LoadMoreText == "到底了")
+                {
+                    return;
+                }
+                IsLoadMore = true;
+                LoadMoreText = "加载中...";
+                if (Plans == null)
+                {
+                    Plans = new ObservableCollection<ExercisePlanDTO>();
+                }
+                await LoadPlans(false);
+                IsLoadMore = false;
+            });
+        }
+        private string loadMoreText = "加载中...";
+        public string LoadMoreText
+        {
+            get { return loadMoreText; }
+            set
+            {
+                loadMoreText = value;
+                this.RaisePropertyChanged(nameof(LoadMoreText));
+            }
+        }
+
+        public bool IsLoadMore { get; set; }
+        private async Task LoadPlans(bool isAnimate = true)
+        {
+            await this.Try<object>(async o =>
+            {
+                await Task.Delay(200);
+                var response = await (ActionNames.ExercisePlan.GetAllPublishPlansByPage + $"?pageIndex={pageIndex++}&pageSize={pageSize}&orderPriority={OrderPriority}").GetStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    var ps = response.Content.To<ObservableCollection<ExercisePlanDTO>>();
+                    
+                    if (ps == null || ps.Count == 0)
                     {
-                        Plans.AddRange(response.Content.To<ObservableCollection<ExercisePlanDTO>>());
+                        pageIndex--;
+                        LoadMoreText = "到底了";
+                        return;
+                    }
+
+                    //防止初始Scroll Position 等于最后一个Item的位置
+                    if (Plans == null || Plans.Count == 0)
+                    {
+                        Plans = ps;
                     }
                     else
                     {
-                        await this.Message(response.Message);
+                        Plans.AddRange(ps);
                     }
-                },obj,true);
-            });
-            GotoPlanDetailCommand = new Command<object>(async obj=> {
-                if (obj is ExercisePlanDTO plan)
-                {
-                    await Shell.Current.GoToAsync(nameof(PlanDetailPage)+$"?PlanId={plan.Id}&ByWeek={plan.Cycle==0}");
-                }
-            });
-            GotoCollectionFolderPopupPageCommand = new Command<object>(async delegate {
-                await Shell.Current.Navigation.PushPopupAsync(new CollectPopupPage());
-            });
-            LoadPlansCommand?.Execute(null);
-        }
 
+                    var folders = (await App.Database.GetAllAsync<CollectionFolderDTO>(f => f.AccountId == Utility.LoggedAccount.Id)).Select(x => x.Id);
+                    await Plans.ForEachAsync(async x =>
+                    {
+                        x.IsCollect = (await App.Database.GetAsync<ExercisePlanCollectionDTO>(epc => epc.ExercisePlanId == x.Id && folders.Contains(epc.CollectionFolderId))) != null;
+
+                    });
+                }
+                else
+                {
+                    await this.Message(response.Message);
+                }
+            }, null, isAnimate);
+        }
+        private void UpdateCollect(Guid planId, bool? isCollect = null, int? collectCount = null)
+        {
+            var plan = Plans.FirstOrDefault(x => x.Id == planId);
+            if (plan == null)
+            {
+                return;
+            }
+
+            if (collectCount.HasValue)
+            {
+                plan.CollectionCount = collectCount.Value;
+                plan.IsCollect = isCollect.Value;
+            }
+            else if (isCollect.HasValue)
+            {
+                if (plan.IsCollect)
+                {
+                    if (!isCollect.Value)
+                    {
+                        //之前收藏了，但这次操作后没有收藏，则-1
+                        plan.CollectionCount--;
+                    }
+                }
+                else
+                {
+                    if (isCollect.Value)
+                    {
+                        //之前没收藏，但这次操作后收藏了，则+1
+                        plan.CollectionCount++;
+                    }
+                }
+                plan.IsCollect = isCollect.Value;
+            }
+
+
+        }
         public Command<object> LoadPlansCommand { get; set; }
+        public Command<object> LoadMoreCommand { get; set; }
         public Command<object> GotoPlanDetailCommand { get; set; }
         public Command<object> GotoCollectionFolderPopupPageCommand { get; set; }
+        public new Command<object> AppearingCommand { get; set; }
+
 
     }
 

@@ -5,6 +5,7 @@
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
              Padding="5"
             BackgroundColor="#24262b"
+             Shell.TabBarIsVisible="False"
              >
     <ContentPage.Content>
         <CollectionView x:Name="cvExerciseDateLogs" ItemsSource="{Binding ExerciseLogs}">

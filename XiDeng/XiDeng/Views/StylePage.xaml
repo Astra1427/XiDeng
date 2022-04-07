@@ -4,7 +4,17 @@
              x:Class="XiDeng.Views.StylePage"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
-             Title="{Binding Skill.Name}">
+             Title="{Binding Skill.Name}"
+             Shell.TabBarIsVisible="False"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
     <ContentPage.Resources>
         <Style TargetType="Frame">
             <Setter Property="Padding" Value="0"/>

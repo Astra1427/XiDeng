@@ -68,12 +68,23 @@ namespace XiDeng.ViewModel.PlanViewModels
             set { isSleep = value; this.RaisePropertyChanged("IsSleep"); }
         }
 
+        private bool isShowNavBar = true;
+        public bool IsShowNavBar
+        {
+            get { return isShowNavBar; }
+            set
+            {
+                isShowNavBar = value;
+                this.RaisePropertyChanged(nameof(IsShowNavBar));
+            }
+        }
+
         private bool isStop;
 
         public bool IsStop
         {
             get { return isStop; }
-            set { isStop = value; RaisePropertyChanged("IsStop"); }
+            set { isStop = value; RaisePropertyChanged("IsStop"); IsShowNavBar = value; }
         }
         private int countDownNumber;
 
@@ -273,6 +284,17 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(StopTaskCancelTokenSource));
             }
         }
+        private string planTitle;
+        public string PlanTitle
+        {
+            get { return planTitle; }
+            set
+            {
+                planTitle = value;
+                this.RaisePropertyChanged(nameof(PlanTitle));
+            }
+        }
+
 
 
         public TraningPlanPageViewModel(Guid runningPlanId)
@@ -286,7 +308,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             });
 
             InitCommand = new Command<object>(async obj=> {
-
+                base.Appearing(null);
 
                 #region init config
                 Config = JsonConvert.DeserializeObject<ConfigModel>(FileHelper.ReadFile(FileHelper.SettingFile));
@@ -355,7 +377,7 @@ namespace XiDeng.ViewModel.PlanViewModels
 
                 #endregion
 
-
+                PlanTitle = Plan.Name + $"第 {Plan.DayNumber} 天";
 
                 Device.StartTimer(new TimeSpan(0, 0, 1), () =>
                 {
@@ -437,12 +459,12 @@ namespace XiDeng.ViewModel.PlanViewModels
 
         public new DelegateCommand BackCommand { get => new DelegateCommand { ExecuteAction = new Action<object>(BackFunc) }; }
 
-        private void BackFunc(object obj)
+        private async void BackFunc(object obj)
         {
             ClearSound();
             IsBack = true;
             GC.Collect();
-            Shell.Current.GoToAsync("..");
+            await this.GoAsync("..");
         }
         #endregion
 
@@ -768,6 +790,7 @@ namespace XiDeng.ViewModel.PlanViewModels
         public async Task CountDownPlay()
         {
             await CountDown(Config.StartContinueSecond);
+            IsShowNavBar = false;
             await StartTraning();
 
         }

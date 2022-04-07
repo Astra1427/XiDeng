@@ -8,13 +8,20 @@
              xmlns:vm="clr-namespace:XiDeng.ViewModel.PlanViewModels"
              x:DataType="vm:AddPlanPageViewModel"
                 IsEnabled="{Binding IsE}"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:custom="clr-namespace:XiDeng.Common.Controls">
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
     <ScrollView>
         <RefreshView IsRefreshing="{Binding IsRefresh}"
             >
             <StackLayout Padding="5">
-                <Entry Text="{Binding Plan.Name}" Placeholder="计划名字"/>
-                <Editor Placeholder="简介" HeightRequest="75" Text="{Binding Plan.Description}"/>
+                <Entry Text="{Binding Plan.Name}" Placeholder="计划名字（最长可输入20个字）" MaxLength="20"/>
+                <Editor Placeholder="简介" HeightRequest="75" Text="{Binding Plan.Description}" MaxLength="200"/>
                 <StackLayout Orientation="Horizontal">
                     <RadioButton IsChecked="{Binding ByDay}">
                         <RadioButton.Content >
@@ -29,17 +36,17 @@
                 </StackLayout>
 
                 <Label Text="天数"/>
-                <Entry Keyboard="Numeric" Text="{Binding DayNumber}" IsReadOnly="{Binding ByWeek}"/>
+                <Entry Keyboard="Numeric" Text="{Binding DayNumber}" IsReadOnly="{Binding ByWeek}" MaxLength="2"/>
 
                 <Button Text="设置动作" Command="{Binding GotoAddActionPageCommand}"/>
                 <StackLayout Orientation="Horizontal">
 
-                    <custom:CustomCheckBox IsChecked="{Binding Plan.IsPublic}" x:Name="cc1">
+                    <custom:CustomCheckBox IsCustomChecked="{Binding Plan.IsPublic}" x:Name="cc1">
                         <custom:CustomCheckBox.CustomContent>
                             <Label Text="是否公开" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="16"/>
                         </custom:CustomCheckBox.CustomContent>
                     </custom:CustomCheckBox>
-                    <custom:CustomCheckBox IsChecked="{Binding Plan.IsLoop}">
+                    <custom:CustomCheckBox IsCustomChecked="{Binding Plan.IsLoop}">
                         <custom:CustomCheckBox.CustomContent>
                             <Label Text="是否循环" VerticalOptions="CenterAndExpand" TextColor="White" FontSize="16"/>
                         </custom:CustomCheckBox.CustomContent>

@@ -5,11 +5,12 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 using XiDeng.Command;
+using XiDeng.Common;
 using XiDeng.ViewModel;
 
 namespace XiDeng.DataTest
 {
-    public class Skill
+    public class Skill:BaseViewModel
     {
         public int ID { get; set; }
         [Newtonsoft.Json.JsonIgnore]
@@ -24,12 +25,12 @@ namespace XiDeng.DataTest
 
         private async void SkillFunc(object obj)
         {
-            await Shell.Current.GoToAsync($"StylePage?id={this.ID}");
+            await this.GoAsync($"StylePage?id={this.ID}");
         }
 
     }
 
-    public class SkillStyle
+    public class SkillStyle:BaseViewModel
     {
         public int ID { get; set; }
         public int SkillID { get; set; }
@@ -81,7 +82,7 @@ namespace XiDeng.DataTest
 
         private async void SkillStyleFunc(object obj)
         {
-            await Shell.Current.GoToAsync($"SkillStyleDetailPage?SkillID={this.SkillID}&SkillStyleID={this.ID}");
+            await this.GoAsync($"SkillStyleDetailPage?SkillID={this.SkillID}&SkillStyleID={this.ID}");
         }
 
         

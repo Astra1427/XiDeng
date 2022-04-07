@@ -4,10 +4,19 @@
              x:Class="XiDeng.Views.TraningPage"
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
-             Shell.NavBarIsVisible="{Binding IsStop}"
+             Shell.NavBarIsVisible="{Binding IsShowNavBar}"
              Shell.TabBarIsVisible="False"
                 IsEnabled="{Binding IsE}"
+                xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Title="{Binding SkillStyle.Name}"
              >
+
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackCommand}"/>
     </Shell.BackButtonBehavior>

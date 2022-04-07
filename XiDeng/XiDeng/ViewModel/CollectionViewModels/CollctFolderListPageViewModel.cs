@@ -14,44 +14,34 @@ namespace XiDeng.ViewModel.CollectionViewModels
     public class CollctFolderListPageViewModel:BaseViewModel
     {
         private ObservableCollection<CollectionFolderDTO> collectionFolders;
-        public ObservableCollection<CollectionFolderDTO> CollectionFolder
+        public ObservableCollection<CollectionFolderDTO> CollectionFolders
         {
             get { return collectionFolders; }
             set
             {
                 collectionFolders = value;
-                this.RaisePropertyChanged(nameof(CollectionFolder));
+                this.RaisePropertyChanged(nameof(CollectionFolders));
             }
         }
         public ImageSource FolderIcon { get; set; }
         public CollctFolderListPageViewModel()
         {
             FolderIcon = Utility.GetImage("layer_21_240");
+            AppearingCommand = new Command<object>(async obj => {
+                base.Appearing(obj);
+                if (CollectionFolders != null)
+                {
+                    return;
+                }
+                await LoadFolders();
+            });
             LoadFoldersCommand = new Command<object>(async delegate
             {
-                await this.Try<object>(async o=> {
-
-                    await Task.Delay(200);
-                    var response = await (ActionNames.Collection.GetCollectionFolders + $"/{Utility.LoggedAccount.Id}/{Utility.LoggedAccount.Id}").GetStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        this.CollectionFolder = response.Content.To<ObservableCollection<CollectionFolderDTO>>();
-                    }
-                    else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
-                    {
-                        // Offline
-                        //Load local data [SQLite]
-                        this.CollectionFolder = (await App.Database.GetAllAsync<CollectionFolderDTO>(x => x.AccountId == Utility.LoggedAccount.Id)).ToObservableCollection();
-                    }
-                    else
-                    {
-                        await this.Message($"获取收藏列表失败!\n{response.Message}");
-                    }
-                },null,true);
+                await LoadFolders();
             });
 
             GotoFolderDetailCommand = new Command<object>(async obj=> {
-                await Shell.Current.GoToAsync(nameof(CollectFolderDetailPage));
+                await this.GoAsync(nameof(CollectFolderDetailPage)+$"?FolderId={obj}");
             });
             GotoAddFolderCommand = new Command<object>(async delegate {
                 if (App.Config.IsOffline)
@@ -64,11 +54,37 @@ namespace XiDeng.ViewModel.CollectionViewModels
 
         }
 
+        private async Task LoadFolders()
+        {
+            await this.Try<object>(async o => {
 
+                await Task.Delay(200);
+                var response = await (ActionNames.Collection.GetCollectionFolders + $"/{Utility.LoggedAccount.Id}/{Utility.LoggedAccount.Id}").GetStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    this.CollectionFolders = response.Content.To<ObservableCollection<CollectionFolderDTO>>();
+
+                    //save data to sqlite [update&insert]
+                    await App.Database.SaveAllAsync(this.CollectionFolders);
+
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
+                {
+                    // Offline
+                    //Load local data [SQLite]
+                    this.CollectionFolders = (await App.Database.GetAllAsync<CollectionFolderDTO>(x => x.AccountId == Utility.LoggedAccount.Id && !x.IsRemoved)).ToObservableCollection();
+                }
+                else
+                {
+                    await this.Message($"获取收藏列表失败!\n{response.Message}");
+                }
+            }, null, true);
+        }
         public Command<object> InitCommand { get; set; }
         public Command<object> LoadFoldersCommand { get; set; }
         public Command<object> GotoFolderDetailCommand { get; set; }
         public Command<object> GotoAddFolderCommand { get; set; }
+        public new Command<object> AppearingCommand { get; set; }
 
 
     }

@@ -252,7 +252,7 @@ namespace XiDeng.ViewModel
 
             BackCommand = new Command<object>(async obj=> {
                 App.Config = this.Config;
-                await Shell.Current.GoToAsync("../",true);
+                await this.GoAsync("../");
             });
 
             //read second

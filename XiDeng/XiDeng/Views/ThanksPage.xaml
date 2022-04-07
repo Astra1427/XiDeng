@@ -5,6 +5,7 @@
              BackgroundColor="{DynamicResource ContentPageBackGroundColor}"
              Shell.BackgroundColor="{DynamicResource ShellBackGroundColor}"
                 IsEnabled="{Binding IsE}"
+             Shell.TabBarIsVisible="False"
              Title="特别鸣谢">
     <Grid>
         <CollectionView x:Name="cvUsers">

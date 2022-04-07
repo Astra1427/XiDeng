@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AccountViews.VisitorPage"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             Title="{Binding Title}"
+             IsEnabled="{Binding IsE}"
+             x:Name="page"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False"
+             >
+    <ContentPage.Behaviors>
+        <xct:EventToCommandBehavior
+            EventName="Appearing"
+            Command="{Binding AppearingCommand}"
+            />
+    </ContentPage.Behaviors>
+    <RefreshView IsRefreshing="{Binding IsRefresh}" Command="{Binding RefreshPageCommand}">
+        <StackLayout Padding="5" Spacing="10">
+
+            <Frame HeightRequest="100" HasShadow="True" BackgroundColor="#252526" xct:TouchEffect.PressedOpacity="0.7">
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="{Binding VisitInfo.Account.PhotoUrl}" WidthRequest="50" HeightRequest="50" BackgroundColor="LightBlue"/>
+                    <Label HorizontalOptions="StartAndExpand">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding VisitInfo.Account.Name}"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="{Binding VisitInfo.Account.Introduce}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </StackLayout>
+            </Frame>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="发布的计划" VerticalOptions="Center" TextColor="White"/>
+                <Label Text="查看更多" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <CollectionView ItemsSource="{Binding DisPlans}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout HorizontalItemSpacing="8" VerticalItemSpacing="8" Orientation="Vertical" Span="2"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="True" CornerRadius="5">
+                            <StackLayout Orientation="Horizontal" xct:TouchEffect.PressedOpacity="0.7">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.GotoPlanDetailCommand,Source={x:Reference page}}" CommandParameter="{Binding .}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Image Source="{Binding CoverUrl}"/>
+                                <Label FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding Description}" />
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding DayNumber}"/>
+                                            <Span Text="天 / "/>
+                                            <Span Text="{Binding DisIsLoop}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding BindingContext.CollectIcon,Source={x:Reference page}}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" Aspect="AspectFit" HeightRequest="15"/>
+                                    <Label Text="{Binding CollectionCount}" VerticalOptions="Center"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="收藏夹" VerticalOptions="Center" TextColor="White"/>
+                <Label Text="查看更多" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <CollectionView ItemsSource="{Binding DisFolders}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" HorizontalItemSpacing="8" VerticalItemSpacing="8" Span="2"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="True" CornerRadius="5">
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.GotoFolderDetailCommand,Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
+                                </StackLayout.GestureRecognizers>
+                                <Image Source="{Binding BindingContext.FolderIcon,Source={x:Reference page}}" Aspect="AspectFit" HeightRequest="25"/>
+                                <Label FontSize="16">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+    </RefreshView>
+</ContentPage>
