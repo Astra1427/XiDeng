@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.FeedbackEmailPage"
+             xmlns:cb="clr-namespace:XiDeng.Common.Controls"
+             Title="建议与反馈错误"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False">
+    <ContentPage.Content>
+        <StackLayout Padding="8">
+            <Label FontSize="16">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="请向"/>
+                        <Span Text="xideng_xd@foxmail.com" FontAttributes="Italic" TextColor="#007acc">
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CopyEmailCommand}"/>
+                            </Span.GestureRecognizers>
+                        </Span>
+                        <Span Text="发送邮件"/>
+                        <Span Text="&#10;"/>
+                        <Span Text="(点按蓝色文字即可复制邮件地址)"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <DatePicker Date="{Binding ExportDate}" TextColor="White"/>
+
+            <Button Text="导出错误日志" Command="{Binding ExportErrorLogCommand}"/>
+
+            <Button Text="发送邮件" Command="{Binding SendEmailCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

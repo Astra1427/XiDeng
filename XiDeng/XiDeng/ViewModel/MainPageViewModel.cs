@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using XiDeng.Command;
 using XiDeng.Common;
@@ -11,6 +12,7 @@ using XiDeng.Models.Collections;
 using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Models.SkillModels;
 using XiDeng.Views;
+using XiDeng.Views.ExerciseLogViews;
 using XiDeng.Views.PlanViews;
 
 namespace XiDeng.ViewModel
@@ -71,8 +73,9 @@ namespace XiDeng.ViewModel
         public bool IsFinished { get; set; }
         public MainPageViewModel()
         {
-            OnAppearingCommand = new Command<object>(async obj=> {
-                base.Appearing(obj);
+            OnAppearingCommand = new AsyncCommand<object>(async obj=> {
+                await base.Appearing(obj);
+
                 if (Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty())
                 {
                     return;
@@ -146,20 +149,23 @@ namespace XiDeng.ViewModel
 
             });
 
-            GotoPlanDetailCommand = new Command<object>(async obj=> {
+            GotoPlanDetailCommand = new AsyncCommand<object>(async obj=> {
                 if (Plan == null)
                 {
                     return;
                 }
                 await this.GoAsync(nameof(PlanDetailPage) + $"?PlanId={Plan.Id}&ByWeek={Plan.Cycle == 0}");
             });
-            StartPlanTraningCommand = new Command<object>(async obj=> {
+            StartPlanTraningCommand = new AsyncCommand<object>(async obj=> {
                 if (IsFinished)
                 {
                     await this.Message("该计划已完成！");
                     return;
                 }
                 await this.GoAsync(nameof(TraningPlanPage)+$"?RunningPlanID={RunningPlan.Id}");
+            });
+            GotoExerciseCalendarLogCommand = new AsyncCommand(async delegate {
+                await this.GoAsync(nameof(ExerciseCalendarLogPage));
             });
             Init();
         }
@@ -168,7 +174,6 @@ namespace XiDeng.ViewModel
         /// </summary>
         private void Init()
         {
-            OnAppearingCommand?.Execute(null);
             Skills = SkillDataCommon.Skills;
             InitImage();
         }
@@ -178,10 +183,11 @@ namespace XiDeng.ViewModel
             BookIcon = Utility.GetImage("book_64");
         }
 
-        public Command<object> OnAppearingCommand { get; set; }
-        public Command<object> GotoPlanDetailCommand { get; set; }
-        public Command<object> StartPlanTraningCommand { get; set; }
-        public Command<object> ShareCommand { get; set; }
+        public AsyncCommand<object> OnAppearingCommand { get; set; }
+        public AsyncCommand<object> GotoPlanDetailCommand { get; set; }
+        public AsyncCommand<object> StartPlanTraningCommand { get; set; }
+        public AsyncCommand<object> ShareCommand { get; set; }
+        public AsyncCommand GotoExerciseCalendarLogCommand { get; set; }
 
     }
 }

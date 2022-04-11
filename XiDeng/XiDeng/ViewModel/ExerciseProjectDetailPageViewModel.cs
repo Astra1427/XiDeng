@@ -7,6 +7,8 @@ using XiDeng.Data;
 using System.Linq;
 using XiDeng.Common;
 using Newtonsoft.Json;
+using Xamarin.CommunityToolkit.ObjectModel;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng.ViewModel
 {
@@ -14,9 +16,9 @@ namespace XiDeng.ViewModel
     {
 
 
-        private ExerciseLog exercise;
+        private ExerciseLogDTO exercise;
 
-        public ExerciseLog Exercise
+        public ExerciseLogDTO Exercise
         {
             get { return exercise; }
             set { exercise = value;RaisePropertyChanged("Exercise"); }
@@ -37,21 +39,7 @@ namespace XiDeng.ViewModel
         }
 
 
-        public DelegateCommand SaveFeelingCommand { get => new DelegateCommand { ExecuteAction = new Action<object>((obj)=> {
-            try
-            {
-                this.Exercise.Feeling = Feeling;
-                this.Exercise.DisFeeling = Feeling.Length > 9 ? Feeling.Substring(0, 9) + "……" : Feeling;
-                ExerciseLogPageViewModel.IsChanged = true;
 
-                App.Current.MainPage.DisplayAlert("提示","成功！","好");
-                FileHelper.WriteFile(FileHelper.ExerciseLogFile,JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
-            }
-            catch (Exception ex)
-            {
-                App.Current.MainPage.DisplayAlert("提示","更改失败！","好");
-            }
-        }) }; }
         /// <summary>
         /// ctor    
         /// </summary>
@@ -60,7 +48,26 @@ namespace XiDeng.ViewModel
             Exercise = DataCommon.ExerciseLogs.First(a => a.Id == eid);
             Title = Exercise.SkillName + "-" + Exercise.ToString();
             Feeling = Exercise.Feeling;
+
+            SaveFeelingCommand = new AsyncCommand(async ()=> {
+                try
+                {
+                    this.Exercise.Feeling = Feeling;
+                    this.Exercise.DisFeeling = Feeling.Length > 9 ? Feeling.Substring(0, 9) + "……" : Feeling;
+                    this.Exercise.Updated = false;
+                    ExerciseLogPageViewModel.IsChanged = true;
+
+                    await App.Current.MainPage.DisplayAlert("提示", "成功！", "好");
+                    //FileHelper.WriteFile(FileHelper.ExerciseLogFile,JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+                    await App.Database.SaveAsync(this.Exercise);
+                }
+                catch (Exception ex)
+                {
+                    await App.Current.MainPage.DisplayAlert("提示", "更改失败！", "好");
+                }
+            });
         }
+        public AsyncCommand SaveFeelingCommand { get; set; }
 
     }
 }

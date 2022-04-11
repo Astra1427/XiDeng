@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AccountViews.AccountSettingPage"
+             Title="账号设置"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False">
+
+    <TableView Intent="Menu">
+        <TableView.Resources>
+            <Style TargetType="Image">
+                <Setter Property="HeightRequest" Value="25" />
+                <Setter Property="Margin" Value="0,0,10,0" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="Margin" Value="20,0,0,0" />
+                <Setter Property="TextColor" Value="#ACACAC" />
+            </Style>
+        </TableView.Resources>
+        <TableRoot>
+            <TableSection>
+                <TextCell Text="修改密码" Command="{Binding GotoResetPasswordPageCommand}" TextColor="White"/>
+            </TableSection>
+            <TableSection>
+                <TextCell Text="退出登录" Command="{Binding LogoutComamnd}" TextColor="White"/>
+            </TableSection>
+            <TableSection>
+                <TextCell Text="账号注销" Command="{Binding GotoDestroyAccountPageCommand}" TextColor="White"/>
+            </TableSection>
+        </TableRoot>
+    </TableView>
+</ContentPage>

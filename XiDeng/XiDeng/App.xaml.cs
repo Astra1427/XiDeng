@@ -13,6 +13,7 @@ using XiDeng.Models.SkillModels;
 using System.Text;
 using System.IO;
 using XiDeng.Models.AccountModels;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng
 {
@@ -30,7 +31,7 @@ namespace XiDeng
             }
 
             InitSettingFile();
-            InitData();
+            //InitData();
             LoadAccountInfo();
             MainPage = new ShellApp();
         }
@@ -94,16 +95,16 @@ namespace XiDeng
                 string exerciseJson = FileHelper.ReadFile(FileHelper.ExerciseLogFile);
                 if (exerciseJson == null)
                 {
-                    DataCommon.ExerciseLogs = new List<ExerciseLog>();
+                    DataCommon.ExerciseLogs = new List<ExerciseLogDTO>();
                     return;
                 }
-                DataCommon.ExerciseLogs = JsonConvert.DeserializeObject<List<ExerciseLog>>(exerciseJson);
+                DataCommon.ExerciseLogs = JsonConvert.DeserializeObject<List<ExerciseLogDTO>>(exerciseJson);
             }
             catch (Exception ex)
             {
                 //Load Feiled
                 App.Current.MainPage.DisplayAlert("Error","加载锻炼日志失败！\n请检查日志文件是否损坏或者缺失","OK");
-                DataCommon.ExerciseLogs = new List<ExerciseLog>();
+                DataCommon.ExerciseLogs = new List<ExerciseLogDTO>();
             }
             #endregion
         }

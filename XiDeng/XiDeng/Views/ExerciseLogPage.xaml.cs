@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XiDeng.Data;
+using XiDeng.Models.ExerciseLogs;
 using XiDeng.ViewModel;
 
 namespace XiDeng.Views
@@ -15,7 +16,7 @@ namespace XiDeng.Views
     public partial class ExerciseLogPage : ContentPage
     {
         public ExerciseLogPageViewModel ViewModel { get; set; }
-        public List<IGrouping<string,Data.ExerciseLog>> GroupExerciseLogList { get; set; }
+        public List<IGrouping<string,ExerciseLogDTO>> GroupExerciseLogList { get; set; }
         public ExerciseLogPage()
         {
             InitializeComponent();

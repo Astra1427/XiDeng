@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using XiDeng.Models.AccountModels;
 using XiDeng.Models.Collections;
+using XiDeng.Models.ExerciseLogs;
 using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Models.SkillModels;
 
@@ -22,5 +23,6 @@ namespace XiDeng.Models
         /// Only CTL
         /// </summary>
         public IEnumerable<ExercisePlanDTO> PlansOfCollectionFolders { get; set; }
+        public IEnumerable<ExerciseLogDTO> ExerciseLogs { get; set; }
     }
 }

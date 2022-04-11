@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AccountViews.DestroyAccountPage"
+             Title="账号注销"
+             xmlns:cb="clr-namespace:XiDeng.Common.Controls"
+             IsEnabled="{Binding IsE}"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False">
+    <RefreshView IsRefreshing="{Binding IsRefresh}">
+        
+        <StackLayout>
+        <Label Text="请确认你将要注销的账号：" FontSize="Title"/>
+        <Label Text="{Binding AccountName}" FontSize="Caption"/>
+        <Label Text="{Binding Email}" FontSize="Caption"/>
+        <Label Text="账号使用时间:"/>
+        <Label>
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{Binding UseDay}"/>
+                    <Span Text="天"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+
+
+
+        <StackLayout Orientation="Horizontal">
+            <Entry Placeholder="验证码" HorizontalOptions="FillAndExpand" Text="{Binding AuthCode}"/>
+            <Button Text="{Binding SendEmailButtonText}" Command="{Binding SendCodeToEmailCommand}" IsEnabled="{Binding CanExecuteSendEmail}" Grid.Column="1"/>
+        </StackLayout>
+
+        <cb:CustomCheckBox IsCustomChecked="{Binding IsDestroyData}">
+            <cb:CustomCheckBox.CustomContent>
+                <Label Text="同时删除账号数据（包括 创建的计划、动作、收藏夹、锻炼日志等账号使用期间产生的数据）"/>
+            </cb:CustomCheckBox.CustomContent>
+        </cb:CustomCheckBox>
+        <Button Text="确定注销" Command="{Binding DestroyCommand}"/>
+    </StackLayout>
+    </RefreshView>
+</ContentPage>

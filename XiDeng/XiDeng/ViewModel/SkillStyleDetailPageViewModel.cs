@@ -11,6 +11,7 @@ using System.Web;
 using XiDeng.IService;
 using Xamarin.Essentials;
 using XiDeng.Models.SkillModels;
+using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace XiDeng.ViewModel
 {
@@ -296,29 +297,43 @@ namespace XiDeng.ViewModel
         /// <param name="SkillStyleID"></param>
         public SkillStyleDetailPageViewModel(Guid SkillID,Guid SkillStyleID)
         {
-            try
-            {
-                //Init data
-                Config = JsonConvert.DeserializeObject<ConfigModel>(FileHelper.ReadFile(FileHelper.SettingFile));
-                BackAudioVolume = Config.BackAudioVolume;
-                PersonAudioVolume = Config.PersonAudioVolume;
+            //Temp 01
+            SkillStyle = SkillDataCommon.Skills.Where(a => a.Id == SkillID).FirstOrDefault().SkillStyles.Where(a => a.Id == SkillStyleID).FirstOrDefault();
 
-                SkillStyle = SkillDataCommon.Skills.Where(a => a.Id == SkillID).FirstOrDefault().SkillStyles.Where(a => a.Id == SkillStyleID).FirstOrDefault();
-                if (SkillStyle == null)
+            AppearingCommand = new AsyncCommand(async ()=> {
+                try
                 {
-                    App.Current.MainPage.DisplayAlert("Error", "获取数据失败,请检查数据是否存在！", "OK");
+                    //Init data
                     
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                App.Current.MainPage.DisplayAlert("Error", "获取数据失败,请检查数据是否存在！", "OK");
-            }
+                    Config = App.Config;
+                    BackAudioVolume = Config.BackAudioVolume;
+                    PersonAudioVolume = Config.PersonAudioVolume;
+                    //Temp 01
 
-            InitImage();
-            InitStandard();
-            ShowInfo = SkillStyle.TraningType ? "秒" : "次";
+                    if (SkillStyle == null)
+                    {
+                        await this.Message("获取数据失败,请检查数据是否存在！");
+
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await this.Message("获取数据失败,请检查数据是否存在！");
+                }
+
+                InitImage();
+                if (DataCommon.ExerciseLogs == null)
+                {
+                    await DataCommon.LoadLog();
+                }
+                if (DataCommon.ExerciseLogs == null)
+                {
+                    await this.Message("获取上一次训练的记录失败！");
+                }
+                InitStandard();
+                ShowInfo = SkillStyle.TraningType ? "秒" : "次";
+            });
         }
 
         private void InitImage()
@@ -330,7 +345,8 @@ namespace XiDeng.ViewModel
 
         private void InitStandard()
         {
-            var Last = DataCommon.ExerciseLogs.LastOrDefault(a => a.Style.SkillId == this.SkillStyle.SkillId && a.StyleID == this.SkillStyle.Id);
+            //记忆上次训练的组数和次数并自动填充
+            var Last = DataCommon.ExerciseLogs?.LastOrDefault(a => a.Style.SkillId == this.SkillStyle.SkillId && a.StyleId == this.SkillStyle.Id);
             if (Last == null)
             {
                 return;
@@ -338,7 +354,7 @@ namespace XiDeng.ViewModel
             StandardDTO standard = new StandardDTO() { 
                 GroupNumber = Last.GroupNumber,
                 Number = Last.Number,
-                StyleId = Last.StyleID
+                StyleId = Last.StyleId
             };
             if (standard == null)
             {
@@ -351,5 +367,7 @@ namespace XiDeng.ViewModel
             CurrentStandard = new StandardDTO { GroupNumber = standard.GroupNumber, Number = standard.Number,StyleId = SkillStyle.Id,Style = SkillStyle };//TraningType = SkillStyle.Standards[1].TraningType, IsSingle = SkillStyle.Standards[1].IsSingle
 
         }
+
+        public new AsyncCommand AppearingCommand { get; set; }
     }
 }

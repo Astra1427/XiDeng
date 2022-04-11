@@ -6,14 +6,15 @@ using XiDeng.Data;
 using System.Linq;
 using XiDeng.Command;
 using Xamarin.Forms;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng.ViewModel
 {
     class ExerciseDateDetailPageViewModel:BaseViewModel
     {
-        private IList<ExerciseLog> exerciseLogs;
+        private IList<ExerciseLogDTO> exerciseLogs;
 
-        public IList<ExerciseLog> ExerciseLogs
+        public IList<ExerciseLogDTO> ExerciseLogs
         {
             get { return exerciseLogs; }
             set { exerciseLogs = value; RaisePropertyChanged("ExerciseLogs"); }

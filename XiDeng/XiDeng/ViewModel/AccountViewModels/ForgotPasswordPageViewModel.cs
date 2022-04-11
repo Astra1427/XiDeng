@@ -12,7 +12,7 @@ namespace XiDeng.ViewModel.AccountViewModels
     public class ForgotPasswordPageViewModel:BaseViewModel
     {
 
-        private string email = "1978855028@qq.com";
+        private string email;
         public string Email
         {
             get { return email; }
@@ -23,7 +23,7 @@ namespace XiDeng.ViewModel.AccountViewModels
             }
         }
 
-        private string password = "123";
+        private string password;
         public string Password
         {
             get { return password; }
@@ -33,7 +33,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(Password));
             }
         }
-        private string confirmPassword = "123";
+        private string confirmPassword;
         public string ConfirmPassword
         {
             get { return confirmPassword; }
@@ -80,7 +80,7 @@ namespace XiDeng.ViewModel.AccountViewModels
         }
 
 
-        private string sendEmailButtonText = "发送验证码到邮箱";
+        private static string sendEmailButtonText = "发送验证码到邮箱";
         public string SendEmailButtonText
         {
             get { return sendEmailButtonText; }
@@ -91,11 +91,32 @@ namespace XiDeng.ViewModel.AccountViewModels
             }
         }
 
-        public ForgotPasswordPageViewModel()
+        private bool isInputEmail = true;
+        public bool IsInputEmail
         {
+            get { return isInputEmail; }
+            set
+            {
+                isInputEmail = value;
+                this.RaisePropertyChanged(nameof(IsInputEmail));
+            }
+        }
+
+
+
+        public ForgotPasswordPageViewModel(string accountEmail = null)
+        {
+            if (!accountEmail.IsEmpty())
+            {
+                this.Email = accountEmail;
+                IsInputEmail = false;
+            }
+            if (IsTimer)
+            {
+                CanExecuteSendEmail = false;
+            }
 
             SendCodeToEmailCommand = new Command<object>(async obj => {
-
 
                 //this.IsRefresh = true;
                 CanExecuteSendEmail = false;
@@ -147,14 +168,16 @@ namespace XiDeng.ViewModel.AccountViewModels
             });
         }
 
-
+        public static bool IsTimer { get; set; }
         private void SetCountDown()
         {
+            IsTimer = true;
             Device.StartTimer(TimeSpan.FromSeconds(1), () => {
                 SendEmailButtonText = $"{--SendEmailCountDown} 秒后可再次发送";
                 if (SendEmailCountDown == 0 || SendEmailCountDown == 60)
                 {
                     CanExecuteSendEmail = true;
+                    IsTimer = false;
                     return false;
                 }
                 CanExecuteSendEmail = false;

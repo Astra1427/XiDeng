@@ -18,6 +18,14 @@ namespace XiDeng.Common
             public static readonly string SendForgotPasswordEmail = "account/SendForgotPasswordEmail";
             public static readonly string ResetPassword = "account/ResetPassword";
             /// <summary>
+            /// POST : string email
+            /// </summary>
+            public static readonly string SendDestroyAccountEmail = "account/SendDestroyAccountEmail";
+            /// <summary>
+            /// POST : string email,string code
+            /// </summary>
+            public static readonly string DestroyAccount = "account/DestroyAccount";
+            /// <summary>
             /// GET : Guid id
             /// </summary>
             public static readonly string GetById = "account/GetById";

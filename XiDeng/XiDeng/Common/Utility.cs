@@ -328,8 +328,14 @@ namespace XiDeng.Common
         #endregion
 
         #region Shell Extensions
-        public static async Task GoAsync(this BaseViewModel vm,ShellNavigationState navigationState,bool animation = true)
+        public static async Task GoAsync(this BaseViewModel vm,string navigationState,bool animation = true)
         {
+            if ((Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty()) && navigationState != nameof(LoginPage))
+            {
+                await "请登录".Message();
+                await Shell.Current.GoToAsync(nameof(LoginPage));
+            }
+
             vm.IsE = false;
             Shell.Current.IsEnabled = false;
             await Shell.Current.GoToAsync(navigationState,animation);

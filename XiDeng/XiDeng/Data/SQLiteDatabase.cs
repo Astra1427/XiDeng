@@ -11,6 +11,7 @@ using System.IO;
 using XiDeng.Models.SkillModels;
 using XiDeng.Models.Collections;
 using XiDeng.Common;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng.Data
 {
@@ -29,6 +30,7 @@ namespace XiDeng.Data
             database.CreateTableAsync<StandardDTO>().Wait();
             database.CreateTableAsync<AccountRunningPlanDTO>().Wait();
             database.CreateTableAsync<ExercisePlanCollectionDTO>().Wait();
+            database.CreateTableAsync<ExerciseLogDTO>().Wait();
         }
 
 

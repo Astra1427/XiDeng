@@ -12,6 +12,7 @@ using XiDeng.Data;
 using XiDeng.Views;
 using XiDeng.Views.AccountViews;
 using XiDeng.Views.CollectionViews;
+using XiDeng.Views.ExerciseLogViews;
 using XiDeng.Views.PlanViews;
 
 namespace XiDeng
@@ -48,6 +49,9 @@ namespace XiDeng
             Routing.RegisterRoute("StatisticsPage",typeof(StatisticsPage));
             Routing.RegisterRoute("StretchGuidancePage", typeof(StretchGuidancePage));
             Routing.RegisterRoute("DonationPage", typeof(DonationPage)) ;
+            Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage)) ;
+            Routing.RegisterRoute(nameof(FeedbackEmailPage), typeof(FeedbackEmailPage)) ;
+
 
             #region Account Pages
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage)) ;
@@ -55,6 +59,8 @@ namespace XiDeng
             Routing.RegisterRoute(nameof(ForgotPasswordPage), typeof(ForgotPasswordPage)) ;
             Routing.RegisterRoute(nameof(PersonalInfoPage), typeof(PersonalInfoPage)) ;
             Routing.RegisterRoute(nameof(VisitorPage), typeof(VisitorPage)) ;
+            Routing.RegisterRoute(nameof(AccountSettingPage), typeof(AccountSettingPage)) ;
+            Routing.RegisterRoute(nameof(DestroyAccountPage), typeof(DestroyAccountPage)) ;
             #endregion
 
             #region Plan Pages
@@ -71,6 +77,10 @@ namespace XiDeng
             Routing.RegisterRoute(nameof(CollectFolderListPage), typeof(CollectFolderListPage));
             Routing.RegisterRoute(nameof(CollectFolderDetailPage), typeof(CollectFolderDetailPage));
 
+            #endregion
+
+            #region Exercise Log
+            Routing.RegisterRoute(nameof(ExerciseCalendarLogPage),typeof(ExerciseCalendarLogPage));
             #endregion
         }
 

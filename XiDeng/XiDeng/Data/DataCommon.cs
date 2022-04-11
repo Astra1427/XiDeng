@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using XiDeng.Common;
 using XiDeng.DataTest;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng.Data
 {
     
-    class DataCommon
+    public class DataCommon
     {
-        public static List<ExerciseLog> ExerciseLogs { get; set; }
+        public static List<ExerciseLogDTO> ExerciseLogs = new List<ExerciseLogDTO>();
 
         public static ObservableCollection<Skill> SkillsTest = new ObservableCollection<Skill>();
         public static void InitDatas()
         {
+            
             SkillsTest.Add(new Skill()
             {
                 ID = 1,
@@ -1646,5 +1650,25 @@ namespace XiDeng.Data
             }) ;
 
         }
+
+        public static async Task LoadLog()
+        {
+            //先加载有记录的日期（DateTime）
+            //var logDates = await App.Database.database.QueryAsync<DateTime>("SELECT CreateTime from \"ExercisePlans\" GROUP BY DATE(CreateTime)");
+
+
+            var logs = (await App.Database.GetAllAsync<ExerciseLogDTO>(x => x.AccountId == Utility.LoggedAccount.Id))?.ToList();
+
+            if (logs == null)
+            {
+                await "加载锻炼日志失败！\n请检查日志文件是否损坏或者缺失".Message();
+                return;
+            }
+            logs.ForEach(x => x.DisFeeling = x.Feeling.Length > 9 ? x.Feeling.Substring(0, 9) + "……" : x.Feeling);
+            ExerciseLogs.AddRange(logs);
+            ExerciseLogs = ExerciseLogs.Distinct().ToList();
+
+        }
+
     }
 }

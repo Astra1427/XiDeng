@@ -12,6 +12,7 @@ using Rg.Plugins.Popup.Extensions;
 using System.Threading.Tasks;
 using System.Linq;
 using XiDeng.Models.Collections;
+using Xamarin.CommunityToolkit.Extensions;
 
 namespace XiDeng.ViewModel.PlanViewModels
 {
@@ -167,6 +168,9 @@ namespace XiDeng.ViewModel.PlanViewModels
                         x.IsCollect = (await App.Database.GetAsync<ExercisePlanCollectionDTO>(epc => epc.ExercisePlanId == x.Id && folders.Contains(epc.CollectionFolderId))) != null;
 
                     });
+                }
+                else if(response.StatusCode == System.Net.HttpStatusCode.SeeOther){
+                    await Shell.Current.DisplayToastAsync("当前处于离线模式");
                 }
                 else
                 {

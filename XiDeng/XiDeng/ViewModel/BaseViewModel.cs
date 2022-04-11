@@ -1,8 +1,10 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using XiDeng.Common;
 
@@ -31,6 +33,7 @@ namespace XiDeng.ViewModel
                 this.RaisePropertyChanged(nameof(IsE));
             }
         }
+        public virtual Logger logger { get; set; }
 
 
         public async Task Try<T>(Func<T,Task> func,T obj,bool isRefresh)
@@ -44,6 +47,11 @@ namespace XiDeng.ViewModel
             catch (Exception ex)
             {
                 //logger
+                if (logger == null)
+                {
+                    logger = LogManager.GetCurrentClassLogger();
+                }
+                logger.Error(ex);
                 await this.Message(ex.Message);
             }
             finally
@@ -55,14 +63,17 @@ namespace XiDeng.ViewModel
         public Command<object> BackCommand => new Command<object>(async obj=> {
             await this.GoAsync("../");
         });
-        public Command<object> AppearingCommand => new Command<object>(Appearing);
+        public AsyncCommand<object> AppearingCommand => new AsyncCommand<object>(Appearing);
 
-        public void Appearing(object obj)
+        public async Task Appearing(object obj)
         {
-            if (!IsRefresh)
-            {
-                IsE = true;
-            }
+            await Task.Run(()=> {
+                if (!IsRefresh)
+                {
+                    IsE = true;
+                }
+            });
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

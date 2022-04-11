@@ -81,7 +81,7 @@
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <!-- 哈行吧，这只是热身…… -->
+                            <!-- 还行吧，这只是热身…… -->
                             <Label Text="{Binding DisFeeling}" TextColor="Gray" MaxLines="1" LineBreakMode="TailTruncation" Margin="10,0" VerticalOptions="End"/>
                         </StackLayout>
                     </DataTemplate>

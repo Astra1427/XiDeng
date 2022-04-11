@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.FeedbackPage"
+             Title="问题与建议"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False">
+    <ContentPage.Content>
+        <StackLayout Padding="8">
+            <Button Text="向开发者发送邮件（建议或者是反馈程序错误）" Clicked="GotoFeedbackEmailPage_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

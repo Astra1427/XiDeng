@@ -14,6 +14,7 @@ using System.IO;
 using XiDeng.Common;
 using Xamarin.Essentials;
 using XiDeng.Models.SkillModels;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng.ViewModel
 {
@@ -80,7 +81,8 @@ namespace XiDeng.ViewModel
                     }
                     DataCommon.ExerciseLogs.Last().Feeling += "\n" + feeling;
                     DataCommon.ExerciseLogs.Last().DisFeeling = feeling.Length > 9 ? feeling.Substring(0, 9) + "……" : feeling;
-                    FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+                    //FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+                    await App.Database.SaveAsync(DataCommon.ExerciseLogs?.LastOrDefault());
                 })
             };
         }
@@ -245,7 +247,7 @@ namespace XiDeng.ViewModel
 
         #endregion
 
-        public double ExerciseTime { get; set; }
+        public long ExerciseTime { get; set; }
 
         private SkillStyleDTO skillStyle;
 
@@ -316,6 +318,7 @@ namespace XiDeng.ViewModel
             Device.StartTimer(new TimeSpan(0, 0, 1), () =>
             {
                 ReallySecond++;
+                ExerciseTime++;
                 return true;
             });
             CountDownPlay();
@@ -403,7 +406,7 @@ namespace XiDeng.ViewModel
                     IsImg2 = !IsImg2;
                     await Task.Delay(DownNumberSecond);
                     //record Exercise Time
-                    ExerciseTime += DownNumberSecond / 1000;
+                    //ExerciseTime += DownNumberSecond / 1000;
 
                     //2
                     if (SkillStyle.TraningType)
@@ -421,7 +424,7 @@ namespace XiDeng.ViewModel
                     await Task.Delay(UpNumberSecond);
 
                     //record Exercise Time
-                    ExerciseTime += UpNumberSecond / 1000;
+                    //ExerciseTime += UpNumberSecond / 1000;
                     //Is Complete
                     if (CurrentNumber >= Standard.Number)
                     {
@@ -436,7 +439,7 @@ namespace XiDeng.ViewModel
                     IsImg2 = false;
                     await TextToSpeech.SpeakAsync("换边", new SpeechOptions() { Volume = 1 });
                     await CountDown(Config.StartContinueSecond);
-                    ExerciseTime += Config.StartContinueSecond;
+                    //ExerciseTime += Config.StartContinueSecond;
 
                     CurrentNumber = 0;
                     while (true)
@@ -453,14 +456,14 @@ namespace XiDeng.ViewModel
                         IsImg2 = !IsImg2;
                         await Task.Delay(DownNumberSecond);
                         //record Exercise Time
-                        ExerciseTime += DownNumberSecond / 1000;
+                        //ExerciseTime += DownNumberSecond / 1000;
                         //2
                         TwoAudio.Play();
                         IsImg1 = !IsImg1;
                         IsImg2 = !IsImg2;
                         await Task.Delay(UpNumberSecond);
                         //record Exercise Time
-                        ExerciseTime += UpNumberSecond / 1000;
+                        //ExerciseTime += UpNumberSecond / 1000;
                         //Is Complete
                         if (CurrentNumber >= Standard.Number)
                         {
@@ -487,7 +490,7 @@ namespace XiDeng.ViewModel
             FinishAudio.Play();
 
             #region record Exercise 
-            RecordExercise();
+            await RecordExercise();
 
             #endregion
 
@@ -501,7 +504,7 @@ namespace XiDeng.ViewModel
         /// <summary>
         /// record Exercise
         /// </summary>
-        private void RecordExercise()
+        private async Task RecordExercise()
         {
             if (IsBack)
             {
@@ -516,18 +519,21 @@ namespace XiDeng.ViewModel
             {
 
             }
-            DataCommon.ExerciseLogs.Add(new ExerciseLog()
+            DataCommon.ExerciseLogs.Add(new ExerciseLogDTO()
             {
                 Id = Guid.NewGuid(),
                 SkillName = SkillName,
-                StyleID = this.SkillStyle.Id,
+                AccountId = Utility.LoggedAccount.Id,
+                StyleId = this.SkillStyle.Id,
                 ExerciseDateTime = DateTime.Now,
                 ExerciseTime = this.ExerciseTime,
                 GroupNumber = this.Standard.GroupNumber,
                 Number = this.Standard.Number,
                 Feeling = "",
+                Updated = false,
             });
-            FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+            await App.Database.SaveAsync(DataCommon.ExerciseLogs?.LastOrDefault());
+            //FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
         }
 
 
@@ -565,7 +571,7 @@ namespace XiDeng.ViewModel
                 }
 
                 await Task.Delay(1000);
-                ExerciseTime++;
+                //ExerciseTime++;
                 sleepSecond--;
                 CountDownNumber--;
                 if (sleepSecond <= 3)

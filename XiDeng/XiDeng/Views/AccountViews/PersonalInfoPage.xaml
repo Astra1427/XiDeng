@@ -6,7 +6,8 @@
              BackgroundColor="{x:DynamicResource ContentPageBackGroundColor}"
              xmlns:vm="clr-namespace:XiDeng.ViewModel.AccountViewModels"
              IsEnabled="{Binding IsE}"
-             x:DataType="vm:PersonalInfoPageViewModel">
+             x:DataType="vm:PersonalInfoPageViewModel"
+             Shell.TabBarIsVisible="False">
     <ContentPage.Resources>
         <Style TargetType="Image">
             <Setter Property="HeightRequest" Value="20" />
@@ -77,7 +78,7 @@
                         <Image Source="{Binding ImgRight}"/>
                     </StackLayout>
                 </ViewCell>-->
-                <TextCell Text="退出登录" TextColor="Red" Command="{Binding ExitLoginCommand}"/>
+                <!--<TextCell Text="退出登录" TextColor="Red" Command="{Binding ExitLoginCommand}"/>-->
             </TableSection>
         </TableRoot>
     </TableView>

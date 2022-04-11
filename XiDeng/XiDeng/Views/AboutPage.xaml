@@ -32,7 +32,7 @@
                     </Label.FormattedText>
                 </Label>
                 <Label Text="————保罗·威德" HorizontalOptions="End" TextColor="White"/>
-                <Label Text="本程序" TextColor="White" HorizontalOptions="Center" Margin="0,50,0,0"/>
+                <!--<Label Text="本程序" TextColor="White" HorizontalOptions="Center" Margin="0,50,0,0"/>
                 <Label HorizontalOptions="Center" TextColor="White">
                     <Label.FormattedText>
                         <FormattedString>
@@ -45,10 +45,10 @@
                             <Span Text="界面为原型设计，基于《囚徒健身》的内容开发而成。&#10;所有代码均由我一人编写，制作不易，如遇bug，还请多多担待。您可以加群反馈问题或者提供建议。帮助熄灯APP更好的发展下去。"/>
                         </FormattedString>
                     </Label.FormattedText>
-                </Label>
+                </Label>-->
                 <Label x:Name="lVersion" Text="当前版本：V0.0.0" TextColor="White" HorizontalOptions="Center"/>
 
-                <Frame Padding="0" WidthRequest="250" HeightRequest="50" CornerRadius="10" BackgroundColor="LightGray" HorizontalOptions="Center">
+                <!--<Frame Padding="0" WidthRequest="250" HeightRequest="50" CornerRadius="10" BackgroundColor="LightGray" HorizontalOptions="Center">
                     <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
@@ -58,15 +58,18 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                </Frame>
+                </Frame>-->
 
-                <Frame Padding="0" WidthRequest="250" HeightRequest="50" CornerRadius="10" BackgroundColor="LightGray" HorizontalOptions="Center">
+                <Frame Padding="0" WidthRequest="250" HeightRequest="50" CornerRadius="10" HorizontalOptions="Center">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CopyQQ_Tapped"/>
+                    </Frame.GestureRecognizers>
                     <Label VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="熄灯APP QQ群：" TextColor="Red"/>
+                                <Span Text="熄灯APP QQ群："/>
                                 <Span Text="&#10;"/>
-                                <Span Text="745872311" TextColor="Black"/>
+                                <Span Text="745872311" TextColor="White"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>

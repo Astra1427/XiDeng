@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models.ExercisePlanModels;
@@ -80,7 +81,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
                     else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
                     {
-                        await this.Message(response.Message);
+                        //await this.Message(response.Message);
+                        await Shell.Current.DisplayToastAsync("当前处于离线模式");
                         //load offline data
                         ps = new ObservableCollection<ExercisePlanDTO>((await App.Database.GetAllAsync<ExercisePlanDTO>(x => !x.IsRemoved && x.AccountId == Utility.LoggedAccount.Id)).OrderBy(x => x.CreateTime));
 

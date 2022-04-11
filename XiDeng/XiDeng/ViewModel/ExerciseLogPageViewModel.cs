@@ -13,23 +13,24 @@ using Xamarin.Essentials;
 using System.IO;
 using Plugin.FilePicker;
 using Plugin.FilePicker.Abstractions;
+using XiDeng.Models.ExerciseLogs;
 
 namespace XiDeng.ViewModel
 {
     public class ExerciseLogPageViewModel:BaseViewModel
     {
         public static bool IsChanged = false;
-        private List<ExerciseLog> exerciseLogs;
+        private IEnumerable<ExerciseLogDTO> exerciseLogs;
 
-        public List<ExerciseLog> ExerciseLogs
+        public IEnumerable<ExerciseLogDTO> ExerciseLogs
         {
             get { return exerciseLogs; }
             set { exerciseLogs = value; this.RaisePropertyChanged("ExerciseLogs"); }
         }
 
-        private IEnumerable<IGrouping<string, ExerciseLog>> groupExerciseLogs;
+        private IEnumerable<IGrouping<string, ExerciseLogDTO>> groupExerciseLogs;
 
-        public IEnumerable<IGrouping<string, ExerciseLog>> GroupExerciseLogs
+        public IEnumerable<IGrouping<string, ExerciseLogDTO>> GroupExerciseLogs
         {
             get { return groupExerciseLogs; }
             set { 

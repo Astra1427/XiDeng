@@ -22,7 +22,7 @@ namespace XiDeng.ViewModel.AccountViewModels
         //    }
         //}
 
-        private string name = "test";
+        private string name;
 
         public string Name
         {
@@ -34,7 +34,7 @@ namespace XiDeng.ViewModel.AccountViewModels
             }
         }
 
-        private string email = "1978855028@qq.com";
+        private string email;
         public string Email
         {
             get { return email; }
@@ -45,7 +45,7 @@ namespace XiDeng.ViewModel.AccountViewModels
             }
         }
 
-        private string password = "123";
+        private string password;
         public string Password
         {
             get { return password; }
@@ -55,7 +55,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(Password));
             }
         }
-        private string confirmPassword = "123";
+        private string confirmPassword;
         public string ConfirmPassword
         {
             get { return confirmPassword; }
@@ -102,7 +102,7 @@ namespace XiDeng.ViewModel.AccountViewModels
         }
 
         
-        private string sendEmailButtonText = "发送验证码到邮箱";
+        private static string sendEmailButtonText = "发送验证码到邮箱";
         public string SendEmailButtonText
         {
             get { return sendEmailButtonText; }
@@ -117,6 +117,10 @@ namespace XiDeng.ViewModel.AccountViewModels
 
         public RegisterPageViewModel()
         {
+            if (IsTimer)
+            {
+                CanExecuteSendEmail = false;
+            }
 
             SendCodeToEmailCommand = new Command<object>(async obj=> {
 
@@ -156,7 +160,14 @@ namespace XiDeng.ViewModel.AccountViewModels
                         ));
                     if (!response.IsSuccessStatusCode)
                     {
-                        await this.Message($"失败:\n{response.Message}");
+                        if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                        {
+                            await this.Message("该邮箱已注册！");
+                        }
+                        else
+                        {
+                            await this.Message($"失败：\n{response.Message}");
+                        }
                     }
                     else
                     {
@@ -167,14 +178,16 @@ namespace XiDeng.ViewModel.AccountViewModels
                 },obj,true);
             });
         }
-
+        public static bool IsTimer { get; set; }
         private void SetCountDown()
         {
+            IsTimer = true;
             Device.StartTimer(TimeSpan.FromSeconds(1), () => {
                 SendEmailButtonText = $"{--SendEmailCountDown} 秒后可再次发送";
                 if (SendEmailCountDown == 0 || SendEmailCountDown == 60)
                 {
                     CanExecuteSendEmail = true;
+                    IsTimer = false;
                     return false;
                 }
                 CanExecuteSendEmail = false;

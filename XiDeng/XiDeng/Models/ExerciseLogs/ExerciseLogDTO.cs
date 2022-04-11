@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using XiDeng.DataTest;
-using XiDeng.Models;
 using XiDeng.Models.SkillModels;
 
-namespace XiDeng.Data
+namespace XiDeng.Models.ExerciseLogs
 {
-    public class ExerciseLog:ModelBase
+    public class ExerciseLogDTO:ModelBase
     {
-        [Newtonsoft.Json.JsonIgnore]
+        [SQLite.Ignore]
         public string SkillName { get; set; }
-        public Guid AccountID { get; set; }
+        public Guid AccountId { get; set; }
         /// <summary>
         /// Exercise Project
         /// </summary>
-        public Guid StyleID { get; set; }
+        public Guid StyleId { get; set; }
         /// <summary>
         /// Exersice Date 
         /// </summary>
@@ -24,7 +22,7 @@ namespace XiDeng.Data
         /// <summary>
         /// Exercise Time
         /// </summary>
-        public double ExerciseTime { get; set; }
+        public long ExerciseTime { get; set; }
         /// <summary>
         /// Feeling
         /// </summary>
@@ -33,7 +31,6 @@ namespace XiDeng.Data
         /// Dis Feeling max char : 11
         /// </summary>
         [SQLite.Ignore]
-        [Newtonsoft.Json.JsonIgnore]
         public string DisFeeling { get; set; }
         public int GroupNumber { get; set; }
         public int Number { get; set; }
@@ -46,9 +43,9 @@ namespace XiDeng.Data
         {
             get
             {
-                if (style == null )
+                if (style == null)
                 {
-                    style = SkillDataCommon.Skills.FirstOrDefault(x => x.SkillStyles.Any(s => s.Id == StyleID)).SkillStyles.FirstOrDefault(x => x.Id == StyleID);
+                    style = SkillDataCommon.Skills.FirstOrDefault(x => x.SkillStyles.Any(s => s.Id == StyleId)).SkillStyles.FirstOrDefault(x => x.Id == StyleId);
                 }
                 return style;
             }
@@ -57,7 +54,6 @@ namespace XiDeng.Data
 
         public override string ToString()
         {
-
             if (!Style.TraningType)
             {
                 return $"{GroupNumber} 组 {Number}次";
@@ -66,8 +62,6 @@ namespace XiDeng.Data
             {
                 return $"{GroupNumber} 组 {Number}秒";
             }
-
         }
     }
 }
-

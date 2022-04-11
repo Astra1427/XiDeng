@@ -18,5 +18,6 @@ namespace XiDeng.Models.AccountModels
         public string Introduce { get; set; }
         public string JwtToken { get; set; }
         public string RefreshToken { get; set; }
+        public DateTime CreateTime { get; set; }
     }
 }

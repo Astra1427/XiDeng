@@ -11,7 +11,7 @@ using XiDeng.ViewModel;
 namespace XiDeng.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    [QueryProperty("Eid", "EID")]
+    [QueryProperty("EID", "EID")]
     public partial class ExerciseProjectDetailPage : ContentPage
     {
         public string Eid

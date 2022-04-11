@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XiDeng.Models;
 using XiDeng.Models.Collections;
+using XiDeng.Models.ExerciseLogs;
 using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Models.SkillModels;
 
@@ -34,12 +35,16 @@ namespace XiDeng.Common
             }
 
             var runningPlans = await App.Database.GetAllAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id);
+
+            var exerciseLogs = await App.Database.GetAllAsync<ExerciseLogDTO>(x=>x.AccountId == Utility.LoggedAccount.Id);
+
             var response = await ActionNames.Synchronization.LocalToCloud.PostAsync(new SynchronizationDTO
             {
                 //Account = Utility.LoggedAccount,
                 ExercisePlans = plans,
                 Skill = skill,
-                RunningPlans = runningPlans
+                RunningPlans = runningPlans,
+                ExerciseLogs = exerciseLogs
             }.ToJson());
 
             if (response.IsSuccessStatusCode)
@@ -158,6 +163,10 @@ namespace XiDeng.Common
                     });
                     RecordCountInfo.AppendLine($"PlansOfCollectionFolders: Delete:{deleteRows}___Insert:{rows}");
                     await App.Database.InsertAllAsync(model.PlansOfCollectionFolders?.Where(pocf => !model.ExercisePlans.Any(ep => ep.Id == pocf.Id)));
+                    #endregion
+
+                    #region Exercise Logs
+                    rows = await App.Database.SaveAllAsync(model.ExerciseLogs);
                     #endregion
 
                     await "同步成功".Message();

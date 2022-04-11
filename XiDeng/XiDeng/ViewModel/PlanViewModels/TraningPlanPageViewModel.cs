@@ -13,6 +13,7 @@ using Xamarin.Forms;
 using XiDeng.Command;
 using XiDeng.Common;
 using XiDeng.Data;
+using XiDeng.Models.ExerciseLogs;
 using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Models.SkillModels;
 
@@ -382,6 +383,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 Device.StartTimer(new TimeSpan(0, 0, 1), () =>
                 {
                     ReallySecond++;
+                    ExerciseTime++;
                     return true;
                 });
 
@@ -470,7 +472,7 @@ namespace XiDeng.ViewModel.PlanViewModels
 
 
         #region Traning
-        public double ExerciseTime { get; set; }
+        public long ExerciseTime { get; set; }
         private bool isEnd;
 
         public bool IsEnd
@@ -492,6 +494,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             {
                 await Traning();
 
+                await RecordExercise();
                 //action and action sleep second
                 if (i+1 == Plan.PlanEachDays.Count)
                 {
@@ -511,7 +514,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             FinishAudio.Play();
 
             #region record Exercise 
-            RecordExercise();
+            //await RecordExercise();
 
             #endregion
 
@@ -554,7 +557,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     IsImg2 = !IsImg2;
                     await Task.Delay(DownNumberSecond);
                     //record Exercise Time
-                    ExerciseTime += DownNumberSecond / 1000;
+                    //ExerciseTime += DownNumberSecond / 1000;
 
                     //2
                     if (CurrentAction.Style.TraningType)
@@ -572,7 +575,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     await Task.Delay(UpNumberSecond);
 
                     //record Exercise Time
-                    ExerciseTime += UpNumberSecond / 1000;
+                    //ExerciseTime += UpNumberSecond / 1000;
                     //Is Complete
                     if (CurrentNumber >= CurrentAction.Number)
                     {
@@ -587,7 +590,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     IsImg2 = false;
                     await TextToSpeech.SpeakAsync("换边", new SpeechOptions() { Volume = 1 });
                     await CountDown(Config.StartContinueSecond);
-                    ExerciseTime += Config.StartContinueSecond;
+                    //ExerciseTime += Config.StartContinueSecond;
 
                     CurrentNumber = 0;
                     while (true)
@@ -609,14 +612,14 @@ namespace XiDeng.ViewModel.PlanViewModels
                         IsImg2 = !IsImg2;
                         await Task.Delay(DownNumberSecond);
                         //record Exercise Time
-                        ExerciseTime += DownNumberSecond / 1000;
+                        //ExerciseTime += DownNumberSecond / 1000;
                         //2
                         TwoAudio.Play();
                         IsImg1 = !IsImg1;
                         IsImg2 = !IsImg2;
                         await Task.Delay(UpNumberSecond);
                         //record Exercise Time
-                        ExerciseTime += UpNumberSecond / 1000;
+                        //ExerciseTime += UpNumberSecond / 1000;
                         //Is Complete
                         if (CurrentNumber >= CurrentAction.Number)
                         {
@@ -719,7 +722,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
 
                 await Task.Delay(1000);
-                ExerciseTime++;
+                //ExerciseTime++;
                 sleepSecond--;
                 CountDownNumber--;
                 if (sleepSecond <= 3)
@@ -757,7 +760,7 @@ namespace XiDeng.ViewModel.PlanViewModels
         /// <summary>
         /// record Exercise
         /// </summary>
-        private void RecordExercise()
+        private async Task RecordExercise()
         {
             if (IsBack)
             {
@@ -773,18 +776,22 @@ namespace XiDeng.ViewModel.PlanViewModels
             {
 
             }
-            DataCommon.ExerciseLogs.Add(new ExerciseLog()
+            DataCommon.ExerciseLogs.Add(new ExerciseLogDTO()
             {
                 Id = Guid.NewGuid(),
+                AccountId = Utility.LoggedAccount.Id,
                 SkillName = SkillName,
-                StyleID = CurrentAction.Style.Id,
+                StyleId = CurrentAction.Style.Id,
                 ExerciseDateTime = DateTime.Now,
                 ExerciseTime = this.ExerciseTime,
                 GroupNumber = CurrentAction.GroupNumber.Value,
                 Number = CurrentAction.Number.Value,
                 Feeling = "",
+                Updated = false,
             });
-            FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+            await App.Database.SaveAsync(DataCommon.ExerciseLogs?.LastOrDefault());
+            //FileHelper.WriteFile(FileHelper.ExerciseLogFile, JsonConvert.SerializeObject(DataCommon.ExerciseLogs));
+
         }
 
         public async Task CountDownPlay()
