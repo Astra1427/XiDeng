@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.LicenseFragmentPage"
+             Title="开源许可"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             Shell.TabBarIsVisible="False">
+    <ListView x:Name="lvLicense" HasUnevenRows="True" Header="" Margin="5" SelectionMode="None"
+               >
+        <ListView.HeaderTemplate>
+            <DataTemplate>
+                <StackLayout>
+                    <Label Text="License Fragment" TextColor="White" FontSize="Title"/>
+                </StackLayout>
+            </DataTemplate>
+        </ListView.HeaderTemplate>
+        
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Label Margin="5">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span TextColor="White" Text="{Binding Name}" FontSize="Large"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="{Binding Info}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+    
+    
+</ContentPage>

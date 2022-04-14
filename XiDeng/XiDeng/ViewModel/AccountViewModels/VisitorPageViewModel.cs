@@ -121,8 +121,8 @@ namespace XiDeng.ViewModel.AccountViewModels
 
                 Title = $"{VisitInfo.Account.Name} 的主页";
 
-                DisPlans = VisitInfo.PublishPlans.OrderByDescending(x=>x.CollectionCount).Take(4);
-                DisFolders = VisitInfo.PublicFolders.Take(4);
+                DisPlans = VisitInfo.PublishPlans.OrderByDescending(x=>x.CollectionCount);
+                DisFolders = VisitInfo.PublicFolders;
             }
             else
             {

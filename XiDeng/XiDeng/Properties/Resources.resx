@@ -133,6 +133,9 @@
   <data name="book_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\book_64.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="chart_4_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\chart_4_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="finish" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\finish.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -159,6 +162,9 @@
   </data>
   <data name="one" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\one.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="pexels_evgeny_tchebotarev_4101555" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pexels-evgeny-tchebotarev-4101555.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="plus_5_240" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\plus_5_240.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -69,6 +69,16 @@ namespace XiDeng.ViewModel
                 this.RaisePropertyChanged(nameof(CurrentDay));
             }
         }
+        private ImageSource tempCover = Utility.GetImage("pexels_evgeny_tchebotarev_4101555");
+        public ImageSource TempCover
+        {
+            get { return tempCover; }
+            set
+            {
+                tempCover = value;
+                this.RaisePropertyChanged(nameof(TempCover));
+            }
+        }
 
         public bool IsFinished { get; set; }
         public MainPageViewModel()
@@ -145,9 +155,20 @@ namespace XiDeng.ViewModel
                             IsFinished = true;
                         }
                     }
+
+                    if (!Plan.CoverUrl.IsEmpty())
+                    {
+                        Uri CoverUri = null;
+                        if (Uri.TryCreate(Plan.CoverUrl, UriKind.Absolute, out CoverUri))
+                        {
+                            TempCover = ImageSource.FromUri(CoverUri);
+                        }
+                    }
                 }, obj, true);
 
             });
+
+
 
             GotoPlanDetailCommand = new AsyncCommand<object>(async obj=> {
                 if (Plan == null)

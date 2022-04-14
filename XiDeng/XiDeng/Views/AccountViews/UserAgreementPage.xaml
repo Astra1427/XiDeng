@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.AccountViews.UserAgreementPage"
+             Title="用户协议"
+             Shell.TabBarIsVisible="False"
+             Padding="8"
+             BackgroundColor="{StaticResource ContentPageBackGroundColor}">
+    <RefreshView x:Name="rvView" Refreshing="rvView_Refreshing">
+        <ScrollView>
+            <StackLayout>
+                <Label Text="熄灯APP用户使用协议" FontSize="Title" FontAttributes="Bold" TextColor="White"/>
+
+                <Label x:Name="lContent" MaxLines="999999"/>
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

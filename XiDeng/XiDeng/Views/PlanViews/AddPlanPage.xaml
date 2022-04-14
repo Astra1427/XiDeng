@@ -57,12 +57,12 @@
                     <Label Text="是否循环" VerticalOptions="Center" TextColor="White" FontSize="16"/>-->
                 </StackLayout>
 
-                <Label Text="封面" FontSize="16" TextColor="White"/>
-                <Image HeightRequest="200" BackgroundColor="LightBlue" Source="{Binding Cover}">
+                <!--<Label Text="封面" FontSize="16" TextColor="White" IsVisible="False"/>
+                <Image HeightRequest="200" BackgroundColor="LightBlue" Source="{Binding Cover}" IsVisible="False">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectCoverCommand}"/>
                     </Image.GestureRecognizers>
-                </Image>
+                </Image>-->
                 <Button Text="添加" Command="{Binding AddSubmitCommand}"/>
                 <Button Text="取消" Command="{Binding CancelCommand}"/>
             </StackLayout>

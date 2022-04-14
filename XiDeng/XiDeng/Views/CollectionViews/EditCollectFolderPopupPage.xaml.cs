@@ -21,6 +21,7 @@ namespace XiDeng.Views.CollectionViews
         public EditCollectFolderPopupPage(CollectionFolderDTO model)
         {
             InitializeComponent();
+            cbCheck.IsCustomChecked = model.IsPublic;
             vm = new EditCollectFolderPopupPageViewModel(model);
             this.BindingContext = vm;
 

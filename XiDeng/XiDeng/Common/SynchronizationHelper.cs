@@ -170,7 +170,10 @@ namespace XiDeng.Common
                     #endregion
 
                     await "同步成功".Message();
+#if DEBUG
                     await RecordCountInfo.ToString().Message();
+#endif
+
                     return true;
                 }
                 else

@@ -12,6 +12,7 @@ using XiDeng.IService;
 using Xamarin.Essentials;
 using XiDeng.Models.SkillModels;
 using Xamarin.CommunityToolkit.ObjectModel;
+using XiDeng.Views;
 
 namespace XiDeng.ViewModel
 {
@@ -334,6 +335,16 @@ namespace XiDeng.ViewModel
                 InitStandard();
                 ShowInfo = SkillStyle.TraningType ? "秒" : "次";
             });
+            GotoVideoPageCommand = new AsyncCommand(async delegate {
+                //await this.Message(this.SkillStyle.Id.ToString());
+                
+                if (this.skillStyle.VideoUrl == null || this.SkillStyle.SkillName == "倒立撑")
+                {
+                    await this.Message("暂无视频！");
+                    return;
+                }
+                await this.GoAsync(nameof(WebViewPage) + $"?WebUrl={Uri.EscapeDataString(this.SkillStyle.VideoUrl)}");
+            });
         }
 
         private void InitImage()
@@ -369,5 +380,6 @@ namespace XiDeng.ViewModel
         }
 
         public new AsyncCommand AppearingCommand { get; set; }
+        public AsyncCommand GotoVideoPageCommand { get; set; }
     }
 }

@@ -19,6 +19,8 @@ namespace XiDeng.ViewModel.ExerciseLogViewModels
 {
     public class ExerciseCalendarLogPageViewModel:BaseViewModel
     {
+        
+
         private EventCollection logEvents = new EventCollection();
         public EventCollection LogEvents
         {
@@ -69,7 +71,7 @@ namespace XiDeng.ViewModel.ExerciseLogViewModels
         {
             //Set Icons
             SaveIcon = Utility.GetImage("save_128");
-            StatisticsIcon = Utility.GetImage("statistics_128");
+            StatisticsIcon = Utility.GetImage("chart_4_240");
             LocalCulture = CultureInfo.CurrentCulture;
 
             AppearingCommand = new AsyncCommand<object>(async obj=> {
@@ -122,6 +124,9 @@ namespace XiDeng.ViewModel.ExerciseLogViewModels
                 await Share.RequestAsync(new ShareFileRequest(new ShareFile(FileHelper.BasePath + "/" + FileHelper.ExerciseLogFile + ".txt")));
 
             });
+            GotoStatisticsPageCommand = new AsyncCommand(async delegate { 
+                await this.GoAsync($"StatisticsPage");
+            });
         }
 
         
@@ -149,6 +154,7 @@ namespace XiDeng.ViewModel.ExerciseLogViewModels
         public new AsyncCommand<object> AppearingCommand { get; set; }
         public AsyncCommand<object> GotoExerciseProjectDetailCommand { get; set; }
         public AsyncCommand ExportExerciseLogCommand { get; set; }
+        public AsyncCommand GotoStatisticsPageCommand { get; set; }
 
     }
 }

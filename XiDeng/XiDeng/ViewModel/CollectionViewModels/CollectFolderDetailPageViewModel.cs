@@ -70,7 +70,7 @@ namespace XiDeng.ViewModel.CollectionViewModels
                 }
             });
             DeleteCommand = new Command<object>(async obj=> {
-                if (!await this.YesMessage("确定删除这个文件夹？"))
+                if (!await this.YesMessage("确定删除这个收藏夹？"))
                 {
                     return;
                 }

@@ -59,8 +59,9 @@ namespace XiDeng.ViewModel.CollectionViewModels
             {
                 await this.Try<object>(async o =>
                 {
+#if DEBUG
                     await this.Message($"Added:{CollectionFolders.Count(x => x.IsAdded)}\nDeleted:{CollectionFolders.Count(x => x.IsDeleted)}");
-
+#endif
                     var model = new CollectAndUncollectPlanReqeust
                     {
                         PlanId = planId,
@@ -85,7 +86,10 @@ namespace XiDeng.ViewModel.CollectionViewModels
                         );
 
                         int rows = await App.Database.DeleteAllAsync(deletedDatas);
+#if DEBUG
                         await this.Message($"Deleted : {rows}");
+#endif
+
                         //set "Collect"
                         rows = await App.Database.InsertAllAsync(model.CollectFolderIds.Select(x => new ExercisePlanCollectionDTO
                         {
@@ -94,7 +98,9 @@ namespace XiDeng.ViewModel.CollectionViewModels
                             ExercisePlanId = planId,
                             Updated = true,
                         }));
+#if DEBUG
                         await this.Message($"Added : {rows}");
+#endif
 
                         IsSubmitted = true;
                         await Shell.Current.Navigation.PopPopupAsync();

@@ -28,7 +28,7 @@
                 <Label Text="修改收藏夹" HorizontalOptions="Center" Margin="0,10,0,0" FontSize="18"/>
                 <Line Margin="0,5,0,0"/>
                 <Entry Placeholder="最长可输入20个字" MaxLength="5" Text="{Binding Folder.Name}"/>
-                <custom:CustomCheckBox IsCustomChecked="{Binding Folder.IsPublic}">
+                <custom:CustomCheckBox IsCustomChecked="{Binding Folder.IsPublic}" x:Name="cbCheck">
                     <custom:CustomCheckBox.CustomContent>
                         <Label Text="是否公开" VerticalOptions="Center"/>
                     </custom:CustomCheckBox.CustomContent>

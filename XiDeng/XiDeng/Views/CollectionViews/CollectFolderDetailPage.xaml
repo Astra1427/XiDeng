@@ -20,7 +20,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="修改" Order="Primary" Command="{Binding BindingContext.GotoEditCommand,Source={x:Reference page}}"/>
         <ToolbarItem Text="删除" Order="Secondary" Command="{Binding BindingContext.DeleteCommand,Source={x:Reference page}}"/>
-        <ToolbarItem Text="分享" Order="Secondary" Command="{Binding BindingContext.ShareCommand,Source={x:Reference page}}"/>
+        <!--<ToolbarItem Text="分享" Order="Secondary" Command="{Binding BindingContext.ShareCommand,Source={x:Reference page}}"/>-->
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefresh}" Command="{Binding LoadPlansCommand}">
 

@@ -27,8 +27,12 @@ namespace XiDeng
             BindingContext = new MainPageViewModel();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+        }
 
-        
+
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             App.Current.UserAppTheme = App.Current.UserAppTheme == OSAppTheme.Dark ? OSAppTheme.Light : OSAppTheme.Dark;

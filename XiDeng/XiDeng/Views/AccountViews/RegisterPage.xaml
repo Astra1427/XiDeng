@@ -6,7 +6,8 @@
              xmlns:vm="clr-namespace:XiDeng.ViewModel.AccountViewModels"
              x:DataType="vm:RegisterPageViewModel"
              Title="注册"
-            IsEnabled="{Binding IsE}">
+            IsEnabled="{Binding IsE}"
+             Shell.TabBarIsVisible="False">
     <Grid>
         <Frame BorderColor="White" Margin="10" Padding="10" BackgroundColor="Transparent">
             <StackLayout>

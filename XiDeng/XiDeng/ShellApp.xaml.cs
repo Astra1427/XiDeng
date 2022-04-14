@@ -47,10 +47,11 @@ namespace XiDeng
             Routing.RegisterRoute("ExerciseProjectDetailPage",typeof(ExerciseProjectDetailPage));
             Routing.RegisterRoute("ExerciseDateDetailPage",typeof(ExerciseDateDetailPage));
             Routing.RegisterRoute("StatisticsPage",typeof(StatisticsPage));
-            Routing.RegisterRoute("StretchGuidancePage", typeof(StretchGuidancePage));
+            Routing.RegisterRoute(nameof(WebViewPage), typeof(WebViewPage));
             Routing.RegisterRoute("DonationPage", typeof(DonationPage)) ;
             Routing.RegisterRoute(nameof(FeedbackPage), typeof(FeedbackPage)) ;
             Routing.RegisterRoute(nameof(FeedbackEmailPage), typeof(FeedbackEmailPage)) ;
+            Routing.RegisterRoute(nameof(LicenseFragmentPage), typeof(LicenseFragmentPage)) ;
 
 
             #region Account Pages
@@ -61,6 +62,7 @@ namespace XiDeng
             Routing.RegisterRoute(nameof(VisitorPage), typeof(VisitorPage)) ;
             Routing.RegisterRoute(nameof(AccountSettingPage), typeof(AccountSettingPage)) ;
             Routing.RegisterRoute(nameof(DestroyAccountPage), typeof(DestroyAccountPage)) ;
+            Routing.RegisterRoute(nameof(UserAgreementPage), typeof(UserAgreementPage)) ;
             #endregion
 
             #region Plan Pages

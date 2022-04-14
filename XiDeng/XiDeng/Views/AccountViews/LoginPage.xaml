@@ -8,6 +8,7 @@
              IsEnabled="{Binding IsE}"
             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Shell.TabBarIsVisible="False"
+             xmlns:cb="clr-namespace:XiDeng.Common.Controls"
              >
 
     <ContentPage.Behaviors>
@@ -23,9 +24,7 @@
             <StackLayout>
                 <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,50,0,0" BackgroundColor="LightBlue"/>
                 <Entry Placeholder="邮箱" Text="{Binding Email}" TextColor="White" PlaceholderColor="Gray"/>
-                <Frame BorderColor="White" BackgroundColor="Transparent" Padding="0">
-                    <Entry Placeholder="密码" Text="{Binding Password}" IsPassword="True" TextColor="White" PlaceholderColor="Gray"/>
-                </Frame>
+                <Entry Placeholder="密码" Text="{Binding Password}" IsPassword="True" TextColor="White" PlaceholderColor="Gray"/>
                 <Label Text="忘记密码了？" TextColor="LightBlue" HorizontalOptions="Center">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
@@ -34,6 +33,18 @@
                 <Button HorizontalOptions="Center" Text="登录" Command="{Binding LoginCommand}"/>
                 <Button HorizontalOptions="Center" Text="注册" Command="{Binding RegisterCommand}"/>
                 <Button HorizontalOptions="Center" Text="返回" Command="{Binding BackCommand}"/>
+                <Label VerticalOptions="EndAndExpand" HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="登录或完成注册即代表你同意"/>
+                            <Span Text="用户协议" TextColor="#00a1d6" >
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GotoUserAgreementCommand}"/>
+                                </Span.GestureRecognizers>
+                            </Span>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </StackLayout>
         </Frame>
         <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center" IsRunning="{Binding IsRefresh}" IsVisible="{Binding IsRefresh}"/>

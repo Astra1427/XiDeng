@@ -8,6 +8,7 @@
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="vm:UpdatePlanPageViewModel"
                 IsEnabled="{Binding IsE}"
+             Shell.TabBarIsVisible="False"
              >
     <ContentPage.Behaviors>
         <xct:EventToCommandBehavior
@@ -44,12 +45,12 @@
                     <Label Text="是否循环" VerticalOptions="Center" TextColor="White" FontSize="16"/>
                 </StackLayout>
 
-                <Label Text="封面" FontSize="16" TextColor="White"/>
+                <!--<Label Text="封面" FontSize="16" TextColor="White"/>
                 <Image HeightRequest="200" BackgroundColor="LightBlue" Source="{Binding Cover}">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SelectCoverCommand}"/>
                     </Image.GestureRecognizers>
-                </Image>
+                </Image>-->
                 <Button Text="添加" Command="{Binding UpdateSubmitCommand}"/>
                 <Button Text="取消" Command="{Binding CancelCommand}"/>
             </StackLayout>

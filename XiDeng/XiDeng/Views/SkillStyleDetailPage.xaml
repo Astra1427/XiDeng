@@ -29,7 +29,13 @@
     <Grid Padding="5,0" RowDefinitions="*,50">
         <ScrollView>
             <StackLayout Padding="5,0">
-                <xct:MediaElement x:Name="meVideo" HeightRequest="200" Focused="meVideo_Focused" Unfocused="MediaElement_Unfocused" Aspect="AspectFit" BackgroundColor="Black" Margin="-5,0" Source="{Binding SkillStyle.VideoUrl}" IsLooping="True" AutoPlay="False" KeepScreenOn="True" MediaFailed="MediaElement_MediaFailed"/>
+                <!--<xct:MediaElement x:Name="meVideo" HeightRequest="200" Focused="meVideo_Focused" Unfocused="MediaElement_Unfocused" Aspect="AspectFit" BackgroundColor="Black" Margin="-5,0" Source="{Binding SkillStyle.VideoUrl}" IsLooping="True" AutoPlay="False" KeepScreenOn="True" MediaFailed="MediaElement_MediaFailed"/>-->
+                <Frame HeightRequest="200" Margin="-5,0" Opacity="0.7">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GotoVideoPageCommand}"/>
+                    </Frame.GestureRecognizers>
+                    <Label Text="观看视频" TextColor="White" FontSize="Title" VerticalOptions="Center" HorizontalOptions="Center"/>
+                </Frame>
 
                 <Label Text="训练部位" TextColor="LightGray" Margin="0,10,0,0"/>
                 <Label Text="{Binding SkillStyle.TraningPart}" TextColor="White"/>
@@ -44,7 +50,7 @@
             </StackLayout>
         </ScrollView>
 
-        <Button Grid.Row="1" Text="开始训练" Command="{Binding GoTraningCommand}" Focused="Button_Focused" Clicked="Button_Clicked" TextColor="White" BackgroundColor="Red" FontSize="16"/>
+        <Button Grid.Row="1" Text="开始训练" Command="{Binding GoTraningCommand}" TextColor="White" BackgroundColor="Red" FontSize="16"/>
 
 
 
@@ -97,7 +103,7 @@
 
 
                 </StackLayout>
-                <Button Text="开始" Grid.Row="1" TextColor="White" BackgroundColor="Black" Clicked="Button_Clicked" WidthRequest="200" HorizontalOptions="Center" Command="{Binding GotoTraningCommand}"/>
+                <Button Text="开始" Grid.Row="1" TextColor="White" BackgroundColor="Black" WidthRequest="200" HorizontalOptions="Center" Command="{Binding GotoTraningCommand}"/>
             </Grid>
         </Frame>
 

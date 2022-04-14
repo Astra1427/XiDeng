@@ -7,6 +7,7 @@ using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XiDeng.Common;
 
 namespace XiDeng.Views
 {
@@ -32,6 +33,16 @@ namespace XiDeng.Views
         {
             await Clipboard.SetTextAsync("745872311");
             await Shell.Current.DisplayToastAsync("已复制群号");
+        }
+
+        private async void GotoLicenseFragment_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(LicenseFragmentPage));
+        }
+
+        private async void CheckUpdate_Clicked(object sender, EventArgs e)
+        {
+            await VersionHelper.CheckUpdate();
         }
     }
 }

@@ -113,6 +113,16 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] chart_4_240 {
+            get {
+                object obj = ResourceManager.GetObject("chart_4_240", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] finish {
             get {
                 object obj = ResourceManager.GetObject("finish", resourceCulture);
@@ -196,6 +206,16 @@ namespace XiDeng.Properties {
         internal static byte[] one {
             get {
                 object obj = ResourceManager.GetObject("one", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] pexels_evgeny_tchebotarev_4101555 {
+            get {
+                object obj = ResourceManager.GetObject("pexels_evgeny_tchebotarev_4101555", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -23,8 +23,8 @@
         <ToolbarItem Text="修改" Order="Primary" Command="{Binding BindingContext.GotoUpdatePlanCommand,Source={x:Reference page}}" IsEnabled="{Binding IsOwner}"/>
         <ToolbarItem Text="{Binding PublishPlanText}" Order="Secondary" Command="{Binding BindingContext.PublishPlanCommand,Source={x:Reference page}}" IsEnabled="{Binding IsOwner}"/>
         <ToolbarItem Text="删除" Order="Secondary" Command="{Binding BindingContext.DeletePlanCommand,Source={x:Reference page}}" IsDestructive="True" IsEnabled="{Binding IsOwner}" />
-        <ToolbarItem IconImageSource="{Binding BindingContext.Plan.CollectIcon,Source={x:Reference page}}" Order="Primary" Command="{Binding BindingContext.GotoCollectPopupPageCommand,Source={x:Reference page}}"/>
-        <ToolbarItem Text="分享" Order="Secondary" />
+        <ToolbarItem Text="收藏" IconImageSource="{Binding BindingContext.Plan.CollectIcon,Source={x:Reference page}}" Order="Primary" Command="{Binding BindingContext.GotoCollectPopupPageCommand,Source={x:Reference page}}"/>
+        <!--<ToolbarItem Text="分享" Order="Secondary" />-->
 
     </ContentPage.ToolbarItems>
     
@@ -44,7 +44,7 @@
             <ListView.HeaderTemplate>
                 <DataTemplate>
                     <StackLayout>
-                        <Image HeightRequest="200" BackgroundColor="LightBlue"/>
+                        <Image HeightRequest="200" BackgroundColor="LightBlue" Aspect="AspectFill" IsOpaque="True" Source="{Binding TempCover}"/>
 
                         <Frame HasShadow="True" HeightRequest="60"  BackgroundColor="Black" Margin="20,-30,20,0" Padding="10">
                             <Grid ColumnDefinitions="*,100">
@@ -56,7 +56,16 @@
                                     <Image Source="{Binding Plan.AuthorName}" Aspect="AspectFit" xct:CornerRadiusEffect.CornerRadius="30" WidthRequest="30" HeightRequest="30" VerticalOptions="CenterAndExpand" Margin="10,0,0,0" BackgroundColor="LightBlue"/>
                                     <Label Text="{Binding Plan.AuthorName}" VerticalOptions="CenterAndExpand"/>
                                 </StackLayout>
-                                <Label Text ="天数" Grid.Column="1"  FontSize="18" TextColor="White"/>
+                                <Label Grid.Column="1" FontSize="18" TextColor="White">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="天数"/>
+                                            <Span Text="&#10;"/>
+                                            <Span Text="{Binding Plan.DayNumber}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                
                             </Grid>
                         </Frame>
 

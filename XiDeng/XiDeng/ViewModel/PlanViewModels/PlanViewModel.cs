@@ -131,10 +131,15 @@ namespace XiDeng.ViewModel.PlanViewModels
                     //save to native
                     newPlan.Updated = Updated;
                     int rows = await App.Database.SaveAsync(newPlan);
+#if DEBUG
                     await this.Message("Save new plan rows:" + rows);
+#endif
                     newPlan.PlanEachDays.ForEach(x => x.Updated = Updated);
                     rows = await App.Database.database.InsertAllAsync(newPlan.PlanEachDays);
-                    await this.Message("Save actions rows:" + rows);
+#if DEBUG
+
+                     await this.Message("Save actions rows:" + rows);
+#endif
                 }, obj, true);
             });
 
@@ -181,13 +186,19 @@ namespace XiDeng.ViewModel.PlanViewModels
                     //save to native
                     newPlan.Updated = Updated;
                     int rows = await App.Database.SaveAsync(newPlan);
+#if DEBUG
                     await this.Message(rows.ToString());
+#endif
                     
                     rows = await App.Database.DeleteAllAsync(await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == newPlan.Id));
+#if DEBUG
                     await this.Message("Delete rows:"+rows);
+#endif
                     newPlan.PlanEachDays.ForEach(x=>x.Updated = Updated);
                     rows = await App.Database.SaveAllAsync(newPlan.PlanEachDays);
+#if DEBUG
                     await this.Message("Save rows:"+rows);
+#endif
                 },obj,true);
             });
 

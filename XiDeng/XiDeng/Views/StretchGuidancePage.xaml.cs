@@ -9,21 +9,27 @@ using Xamarin.Forms.Xaml;
 
 namespace XiDeng.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile),QueryProperty("SKillID","SkillID")]
+    [XamlCompilation(XamlCompilationOptions.Compile),QueryProperty("VideoUrl", "VideoUrl")]
 
     public partial class StretchGuidancePage : ContentPage
     {
-        public string SkillID { set {
-                switch (value)
-                {
-                    case "1":
-                        
-                        break;
-                }
-            } }
+        private string videoUrl;
+
+        public string VideoUrl
+        {
+            get { return videoUrl; }
+            set { videoUrl = Uri.UnescapeDataString(value); }
+        }
+
         public StretchGuidancePage()
         {
             InitializeComponent();
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.wv.Source = VideoUrl;
+            this.wv.Reload();
         }
     }
 }

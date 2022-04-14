@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models;
@@ -40,7 +41,7 @@ namespace XiDeng.ViewModel.AccountViewModels
 
         public LoginPageViewModel()
         {
-            LoginCommand = new Command<object>(async obj => {
+            LoginCommand = new AsyncCommand<object>(async obj => {
                 await this.Try(async o=> {
                     if (Email.IsEmpty() || Password.IsEmpty())
                     {
@@ -112,20 +113,24 @@ namespace XiDeng.ViewModel.AccountViewModels
 
             });
 
-            ForgotPasswordCommand = new Command<object>(async obj =>
+            ForgotPasswordCommand = new AsyncCommand<object>(async obj =>
             {
                 await this.GoAsync(nameof(ForgotPasswordPage));
             });
 
-            RegisterCommand = new Command<object>(async obj =>
+            RegisterCommand = new AsyncCommand<object>(async obj =>
             {
                 await this.GoAsync(nameof(RegisterPage));
             });
+            GotoUserAgreementCommand = new AsyncCommand<object>(async obj=> {
+                await this.GoAsync(nameof(UserAgreementPage));
+            });
         }
         
-        public Command<object> LoginCommand { get; set; }
-        public Command<object> ForgotPasswordCommand { get; set; }
-        public Command<object> RegisterCommand { get; set; }
+        public AsyncCommand<object> LoginCommand { get; set; }
+        public AsyncCommand<object> ForgotPasswordCommand { get; set; }
+        public AsyncCommand<object> RegisterCommand { get; set; }
+        public AsyncCommand<object> GotoUserAgreementCommand { get; set; }
 
     }
 }

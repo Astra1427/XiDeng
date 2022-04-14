@@ -101,7 +101,7 @@
                     </Frame>
                 </ViewCell>
 
-                <ViewCell>
+                <!--<ViewCell>
                     <Frame>
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ChangeRespiratoryRhythmCommand}"/>
@@ -116,7 +116,7 @@
                             </Label.FormattedText>
                         </Label>
                     </Frame>
-                </ViewCell>
+                </ViewCell>-->
 
                 <ViewCell>
                     <Frame>

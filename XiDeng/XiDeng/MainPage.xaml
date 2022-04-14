@@ -60,7 +60,7 @@
                         </Label.FormattedText>
                     </Label>
                     <Label Text="{Binding Plan.Description}"/>
-                    <Image VerticalOptions="FillAndExpand" BackgroundColor="LightBlue" Source="{Binding Plan.CoverUrl}"/>
+                    <Image HeightRequest="190" BackgroundColor="LightBlue" Source="{Binding TempCover}" Aspect="AspectFill" IsOpaque="True"/>
                     <Grid>
                         <Grid.Triggers>
                             <DataTrigger TargetType="Grid"
@@ -71,7 +71,7 @@
                         </Grid.Triggers>
                         <Button Text="详情" Command="{Binding GotoPlanDetailCommand}"/>
                         <Button Text="开始训练" Grid.Column="1" Command="{Binding StartPlanTraningCommand}"/>
-                        <Button Text="分享" Grid.Column="2" Command="{Binding ShareCommand}"/>
+                        <!--<Button Text="分享" Grid.Column="2" Command="{Binding ShareCommand}"/>-->
                     </Grid>
                 </StackLayout>
             </Frame>

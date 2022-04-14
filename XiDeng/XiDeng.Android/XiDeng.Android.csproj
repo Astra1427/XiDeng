@@ -17,7 +17,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
@@ -149,157 +149,16 @@
     <AndroidResource Include="Resources\drawable\logo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_01.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_02.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_03.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_04.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_05.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_06.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_07.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_08.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_09.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_1_style_10.mp4" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\logo2.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_01.mp4" />
+    <Folder Include="Resources\raw\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_02.mp4" />
+    <AndroidResource Include="Resources\drawable\xd_Logo_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_03.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_04.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_05.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_06.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_07.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_08.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_09.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_2_style_10.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_02.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_03.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_04.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_05.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_06.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_07.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_08.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_09.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_10.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_3_style_01.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_02.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_03.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_04.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_05.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_06.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_07.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_08.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_09.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_10.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_4_style_01.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_02.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_03.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_04.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_05.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_06.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_07.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_08.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_09.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_10.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\raw\skill_5_style_01.mp4" />
+    <AndroidResource Include="Resources\drawable\xd_logo_02.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

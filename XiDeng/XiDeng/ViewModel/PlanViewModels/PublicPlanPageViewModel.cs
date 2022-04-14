@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using XiDeng.Models.Collections;
 using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace XiDeng.ViewModel.PlanViewModels
 {
@@ -50,10 +51,10 @@ namespace XiDeng.ViewModel.PlanViewModels
             {
                 UpdateCollect(e.Item1, e.Item2, e.Item3);
             });
-            AppearingCommand = new Command<object>(async obj =>
+            AppearingCommand = new AsyncCommand<object>(async obj =>
             {
                 IsAppearing = true;
-                base.Appearing(obj);
+                await base.Appearing(obj);
                 if (this.Plans != null)
                 {
                     return;
@@ -64,7 +65,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 IsAppearing = false;
             });
 
-            LoadPlansCommand = new Command<object>(async obj =>
+            LoadPlansCommand = new AsyncCommand<object>(async obj =>
             {
                 if (IsAppearing)
                 {
@@ -83,7 +84,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 IsLoadPlan = false;
             });
 
-            GotoPlanDetailCommand = new Command<object>(async obj =>
+            GotoPlanDetailCommand = new AsyncCommand<object>(async obj =>
             {
                 if (obj is ExercisePlanDTO plan)
                 {
@@ -93,7 +94,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
             });
 
-            GotoCollectionFolderPopupPageCommand = new Command<object>(async obj =>
+            GotoCollectionFolderPopupPageCommand = new AsyncCommand<object>(async obj =>
             {
                 if (obj is Guid planId)
                 {
@@ -107,7 +108,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
             });
 
-            LoadMoreCommand = new Command<object>(async obj =>
+            LoadMoreCommand = new AsyncCommand<object>(async obj =>
             {
                 if (IsAppearing || IsLoadPlan || IsLoadMore || LoadMoreText == "到底了")
                 {
@@ -145,7 +146,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 {
                     var ps = response.Content.To<ObservableCollection<ExercisePlanDTO>>();
                     
-                    if (ps == null || ps.Count == 0)
+                    if (ps == null || ps.Count < pageSize)
                     {
                         pageIndex--;
                         LoadMoreText = "到底了";
@@ -214,11 +215,11 @@ namespace XiDeng.ViewModel.PlanViewModels
 
 
         }
-        public Command<object> LoadPlansCommand { get; set; }
-        public Command<object> LoadMoreCommand { get; set; }
-        public Command<object> GotoPlanDetailCommand { get; set; }
-        public Command<object> GotoCollectionFolderPopupPageCommand { get; set; }
-        public new Command<object> AppearingCommand { get; set; }
+        public AsyncCommand<object> LoadPlansCommand { get; set; }
+        public AsyncCommand<object> LoadMoreCommand { get; set; }
+        public AsyncCommand<object> GotoPlanDetailCommand { get; set; }
+        public AsyncCommand<object> GotoCollectionFolderPopupPageCommand { get; set; }
+        public new AsyncCommand<object> AppearingCommand { get; set; }
 
 
     }

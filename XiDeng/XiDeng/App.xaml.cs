@@ -161,6 +161,7 @@ namespace XiDeng
                 await this.Message("这是你第一次运行熄灯App，请联网并登录一个账号，以便熄灯App从云端下载必备的数据！");
                 await Shell.Current.GoToAsync(nameof(LoginPage));
             }
+            await VersionHelper.CheckUpdate(false);
         }
 
         protected override void OnSleep()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models;
@@ -43,9 +44,9 @@ namespace XiDeng.ViewModel.AccountViewModels
 
         public MyProfileViewModel()
         {
-            PrepareAccountDataCommand = new Command<object>(delegate {
+            PrepareAccountDataCommand = new AsyncCommand(async delegate {
 
-                base.Appearing(null);
+                await base.Appearing(null);
 
                 this.Account = Utility.LoggedAccount;
                 if (this.Account == null || this.Account.JwtToken == null)
@@ -61,7 +62,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                 }
             });
 
-            ViewMyProfileCommand = new Command<object>(async obj => {
+            ViewMyProfileCommand = new AsyncCommand<object>(async obj => {
                 //check login info is valid in server
                 if (this.Account == null || this.Account.JwtToken == null)
                 {
@@ -74,14 +75,14 @@ namespace XiDeng.ViewModel.AccountViewModels
                 //goto user info page
                 await this.GoAsync(nameof(PersonalInfoPage));
             });
-            GotoMyPlanPageCommand = new Command<object>(async obj=> {
+            GotoMyPlanPageCommand = new AsyncCommand<object>(async obj=> {
                 await this.GoAsync(nameof(MyPlanPage));
             });
 
-            GotoSettingsPage = new Command<object>(async delegate {
+            GotoSettingsPage = new AsyncCommand<object>(async delegate {
                 await this.GoAsync(nameof(SettingPage));
             });
-            TapTableItemCommand = new Command<object>(async tag=> {
+            TapTableItemCommand = new AsyncCommand<object>(async tag=> {
                 if (tag == null || tag.ToString().IsEmpty())
                 {
                     return;
@@ -89,7 +90,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                 await this.GoAsync(tag.ToString());
             });
 
-            SynchronizationCommand = new Command<object>(async obj=> {
+            SynchronizationCommand = new AsyncCommand<object>(async obj=> {
                 string selected = await Shell.Current.DisplayActionSheet("同步", "取消", "", "本地数据上传至云端", "云端数据覆盖至本地");
 
                 await this.Try(async o=> {
@@ -119,12 +120,12 @@ namespace XiDeng.ViewModel.AccountViewModels
 
         
 
-        public Command<object> PrepareAccountDataCommand { get; set; }
-        public Command<object> ViewMyProfileCommand { get; set; }
-        public Command<object> GotoMyPlanPageCommand { get; set; }
-        public Command<object> GotoSettingsPage { get; set; }
-        public Command<object> SynchronizationCommand { get; set; }
-        public Command<object> TapTableItemCommand { get; set; }
+        public AsyncCommand PrepareAccountDataCommand { get; set; }
+        public AsyncCommand<object> ViewMyProfileCommand { get; set; }
+        public AsyncCommand<object> GotoMyPlanPageCommand { get; set; }
+        public AsyncCommand<object> GotoSettingsPage { get; set; }
+        public AsyncCommand<object> SynchronizationCommand { get; set; }
+        public AsyncCommand<object> TapTableItemCommand { get; set; }
 
 
 

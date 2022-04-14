@@ -146,15 +146,7 @@
                                 <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
                             </StackLayout>
                         </ViewCell>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal">
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}"/>
-                                </StackLayout.GestureRecognizers>
-                                <Label Text="检查更新"/>
-                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
-                            </StackLayout>
-                        </ViewCell>
+                        
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout.GestureRecognizers>

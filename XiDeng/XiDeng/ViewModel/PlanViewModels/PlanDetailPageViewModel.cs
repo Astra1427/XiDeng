@@ -83,8 +83,10 @@ namespace XiDeng.ViewModel.PlanViewModels
                     this.Plan.IsRemoved = true;
 
                     int rows = await App.Database.UpdateAsync(this.Plan);
+#if DEBUG
 
                     await this.Message(rows.ToString());
+#endif
                     if (rows > 0)
                     {
                         IsStarted = true;
@@ -128,6 +130,12 @@ namespace XiDeng.ViewModel.PlanViewModels
 
             StartPlanCommand = new Command<object>(async obj =>
             {
+                if (!this.Plan.IsPublic && !this.IsOwner)
+                {
+                    await this.Message("该计划已被隐藏！");
+                    return;
+                }
+
                 await this.Try(async o =>
                 {
 
@@ -170,8 +178,9 @@ namespace XiDeng.ViewModel.PlanViewModels
                     int otherRows = await App.Database.SaveAllAsync(otherPlans);
                     //start this plan
                     int rows = await App.Database.SaveAsync(model);
-
+#if DEBUG
                     await this.Message($"Insert rows:{rows}\nOther:{otherRows}");
+#endif
                     IsStarted = rows > 0;
                 }, obj, true);
             });
@@ -197,7 +206,9 @@ namespace XiDeng.ViewModel.PlanViewModels
                     var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     model.IsPause = true;
                     int rows = await App.Database.UpdateAsync(model);
+#if DEBUG
                     await this.Message($"Update rows:{rows}");
+#endif
                     if (rows > 0)
                     {
                         IsStarted = false;
@@ -224,7 +235,10 @@ namespace XiDeng.ViewModel.PlanViewModels
                     model.IsPause = false;
                     model.StartTime = DateTime.Now.Date;
                     int rows = await App.Database.UpdateAsync(model);
+#if DEBUG
                     await this.Message($"Update rows:{rows}");
+#endif
+
                     if (rows > 0)
                     {
                         IsStarted = true;
@@ -373,6 +387,17 @@ namespace XiDeng.ViewModel.PlanViewModels
             }
 
         }
+        private ImageSource tempCover = Utility.GetImage("pexels_evgeny_tchebotarev_4101555");
+        public ImageSource TempCover
+        {
+            get { return tempCover; }
+            set
+            {
+                tempCover = value;
+                this.RaisePropertyChanged(nameof(TempCover));
+            }
+        }
+
         private async Task SetPlan()
         {
             if (this.Plan.PlanEachDays == null || this.Plan.PlanEachDays.Count == 0)
@@ -388,6 +413,17 @@ namespace XiDeng.ViewModel.PlanViewModels
 
 
             PublishPlanText = this.Plan.PublishStatus == 1 || this.plan.PublishStatus == 2 ? "取消发布" : "发布";
+            
+            if (!Plan.CoverUrl.IsEmpty())
+            {
+                Uri CoverUri = null;
+                if (Uri.TryCreate(Plan.CoverUrl, UriKind.Absolute, out CoverUri))
+                {
+                    TempCover = ImageSource.FromUri(CoverUri);
+                }
+                
+            }
+            
         }
 
 

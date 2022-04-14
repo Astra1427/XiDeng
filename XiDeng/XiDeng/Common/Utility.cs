@@ -12,6 +12,10 @@ using System.Collections.ObjectModel;
 using XiDeng.Views.AccountViews;
 using System.Threading;
 using XiDeng.ViewModel;
+using NLog;
+using XiDeng.Views;
+using XiDeng.Views.ExerciseLogViews;
+using System.Linq;
 
 namespace XiDeng.Common
 {
@@ -57,7 +61,7 @@ namespace XiDeng.Common
 
         #region HttpClient
         private static string DebugUrl = "http://192.168.31.131:8001/api/";
-        private static string ReleaseUrl = "http://192.168.137.7:8001/api/";
+        private static string ReleaseUrl = "http://101.33.206.168:8001/api/";
         private static int DebugTimeout = 120;
         private static int ReleaseTimeout = 10;
 
@@ -70,7 +74,7 @@ namespace XiDeng.Common
             UseProxy = false,
         };
         //将HttpClientHandler放进HttpClient 构造函数中即可
-        public static readonly HttpClient Client = new HttpClient(HttpClientHandler) { Timeout = TimeSpan.FromSeconds(DebugTimeout),BaseAddress = new Uri(DebugUrl) };
+        public static readonly HttpClient Client = new HttpClient(HttpClientHandler) { Timeout = TimeSpan.FromSeconds(ReleaseTimeout),BaseAddress = new Uri(ReleaseUrl) };
         
         public static async Task<ResponseModel> GetStringAsync(this string action,string token = null,params string[] paras)
         {
@@ -328,18 +332,34 @@ namespace XiDeng.Common
         #endregion
 
         #region Shell Extensions
+        public static string[] IgnorePreventNavigationKeyWords = new string[] {nameof(LoginPage),"../","..",nameof(ForgotPasswordPage), nameof(RegisterPage),nameof(StylePage),nameof(SkillStyleDetailPage),nameof(TraningPage), nameof(ThanksPage),nameof(DonationPage),nameof(AboutPage),nameof(StatisticsPage), nameof(ExerciseCalendarLogPage),nameof(StretchGuidancePage),nameof(FeedbackEmailPage),nameof(FeedbackPage),nameof(SettingPage), nameof(UserAgreementPage) };
         public static async Task GoAsync(this BaseViewModel vm,string navigationState,bool animation = true)
         {
-            if ((Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty()) && navigationState != nameof(LoginPage))
-            {
-                await "请登录".Message();
-                await Shell.Current.GoToAsync(nameof(LoginPage));
-            }
-
             vm.IsE = false;
             Shell.Current.IsEnabled = false;
-            await Shell.Current.GoToAsync(navigationState,animation);
-            Shell.Current.IsEnabled = true;
+
+            try
+            {
+                string pageName = navigationState.Split('?')[0];
+                if ((Utility.LoggedAccount == null || Utility.LoggedAccount.JwtToken.IsEmpty()) && !IgnorePreventNavigationKeyWords.Any(x=>x.Contains(pageName)))
+                {
+                    await "请登录".Message();
+                    await Shell.Current.GoToAsync(nameof(LoginPage));
+                    return;
+                }
+                await Shell.Current.GoToAsync(navigationState, animation);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().Error(ex);
+            }
+            finally
+            {
+                vm.IsE = true;
+                Shell.Current.IsEnabled = true;
+            }
+
+
         }
         #endregion
 
