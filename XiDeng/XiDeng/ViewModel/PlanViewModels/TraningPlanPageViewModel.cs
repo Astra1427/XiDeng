@@ -339,7 +339,14 @@ namespace XiDeng.ViewModel.PlanViewModels
                     this.BackCommand?.Execute(null);
                     return;
                 }
-                ToDayNumber = (int)(DateTime.Now - (RunningPlan.StartTime ?? DateTime.Now)).TotalDays + 1;
+                if (Plan.Cycle == 1)
+                {
+                    ToDayNumber = (int)(DateTime.Now - (RunningPlan.StartTime ?? DateTime.Now)).TotalDays + 1;
+                }
+                else
+                {
+                    ToDayNumber = (int)DateTime.Now.DayOfWeek == 0 ? 7 : (int)DateTime.Now.DayOfWeek;
+                }
 
                 if (!Plan.IsLoop && ToDayNumber > (Plan.DayNumber ?? 0))
                 {
@@ -378,7 +385,7 @@ namespace XiDeng.ViewModel.PlanViewModels
 
                 #endregion
 
-                PlanTitle = Plan.Name + $"第 {Plan.DayNumber} 天";
+                PlanTitle = Plan.Name + $"第 {ToDayNumber} 天";
 
                 Device.StartTimer(new TimeSpan(0, 0, 1), () =>
                 {

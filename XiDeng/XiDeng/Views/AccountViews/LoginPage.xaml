@@ -22,7 +22,7 @@
     <Grid>
         <Frame BackgroundColor="Transparent" BorderColor="LightGray" Margin="10" Padding="10">
             <StackLayout>
-                <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,50,0,0" BackgroundColor="LightBlue"/>
+                <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,50,0,0" Aspect="AspectFit" x:Name="imgLogo"/>
                 <Entry Placeholder="邮箱" Text="{Binding Email}" TextColor="White" PlaceholderColor="Gray"/>
                 <Entry Placeholder="密码" Text="{Binding Password}" IsPassword="True" TextColor="White" PlaceholderColor="Gray"/>
                 <Label Text="忘记密码了？" TextColor="LightBlue" HorizontalOptions="Center">

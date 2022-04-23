@@ -51,7 +51,7 @@
                         <TapGestureRecognizer Command="{Binding SelectCoverCommand}"/>
                     </Image.GestureRecognizers>
                 </Image>-->
-                <Button Text="添加" Command="{Binding UpdateSubmitCommand}"/>
+                <Button Text="保存" Command="{Binding UpdateSubmitCommand}"/>
                 <Button Text="取消" Command="{Binding CancelCommand}"/>
             </StackLayout>
         </RefreshView>

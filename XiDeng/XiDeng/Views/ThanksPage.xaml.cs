@@ -6,11 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XiDeng.Common;
-
 namespace XiDeng.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -24,12 +22,10 @@ namespace XiDeng.Views
             zm = Utility.GetImage("zm");
             xz = Utility.GetImage("xz");
         }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
             Init();
-
         }
         public ObservableCollection<ThankUser> Users { get; set; }
         /// <summary>
@@ -42,7 +38,6 @@ namespace XiDeng.Views
                 ai.IsRunning = true;
                 var httpClient = new HttpClient() { Timeout = new TimeSpan(0, 0, 6) };
                 var rs = await httpClient.GetStringAsync("https://gitee.com/AC200/turn-off-the-lights/raw/master/ThankList.json");
-
                 Users = Newtonsoft.Json.JsonConvert.DeserializeObject< ObservableCollection<ThankUser>>(rs) ;
                 for (int i = 0; i < Users.Count; i++)
                 {
@@ -57,7 +52,6 @@ namespace XiDeng.Views
                     }
                     catch (Exception ex2)
                     {
-
                     }
                 }
                 cvUsers.ItemsSource = Users;
@@ -67,10 +61,8 @@ namespace XiDeng.Views
                 await this.DisplayAlert("Tips","获取数据失败，请检查网络连接！","OK");
             }
             ai.IsRunning = false;
-
         }
     }
-
     public class ThankUser
     {
         public string name { get; set; }

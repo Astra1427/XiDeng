@@ -10,7 +10,7 @@ namespace XiDeng.Models
     {
         [PrimaryKey]
         public Guid Id { get; set; }
-        public DateTime CreateTime { get; set; } = DateTime.Now;
+        public DateTime CreateTime { get; set; } = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
         public bool IsRemoved { get; set; } = false;
         /// <summary>
         /// false is need update

@@ -33,6 +33,7 @@ namespace XiDeng.Views.AccountViews
             {
                 this.BindingContext = new ForgotPasswordPageViewModel();
             }
+            imgLogo.Source = Utility.GetImage("xd_logo_02");
         }
     }
 }

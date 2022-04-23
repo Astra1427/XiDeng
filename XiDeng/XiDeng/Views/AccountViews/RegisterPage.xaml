@@ -11,7 +11,7 @@
     <Grid>
         <Frame BorderColor="White" Margin="10" Padding="10" BackgroundColor="Transparent">
             <StackLayout>
-                <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,0" BackgroundColor="LightBlue"/>
+                <Image HeightRequest="50" WidthRequest="100" HorizontalOptions="Center" Margin="0,0,0,0" Aspect="AspectFit" x:Name="imgLogo"/>
                 <Entry Placeholder="昵称（最长可输入20个字）" Text="{Binding Name}" MaxLength="20" ClearButtonVisibility="WhileEditing"/>
                 <Entry Placeholder="邮箱" Text="{Binding Email}" ClearButtonVisibility="WhileEditing"/>
                 <Entry Placeholder="密码（最长可输入20个字）" Text="{Binding Password}" IsPassword="True" MaxLength="20" ClearButtonVisibility="WhileEditing"/>

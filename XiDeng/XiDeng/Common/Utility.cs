@@ -16,6 +16,7 @@ using NLog;
 using XiDeng.Views;
 using XiDeng.Views.ExerciseLogViews;
 using System.Linq;
+using Android.App;
 
 namespace XiDeng.Common
 {
@@ -75,7 +76,8 @@ namespace XiDeng.Common
         };
         //将HttpClientHandler放进HttpClient 构造函数中即可
         public static readonly HttpClient Client = new HttpClient(HttpClientHandler) { Timeout = TimeSpan.FromSeconds(ReleaseTimeout),BaseAddress = new Uri(ReleaseUrl) };
-        
+
+
         public static async Task<ResponseModel> GetStringAsync(this string action,string token = null,params string[] paras)
         {
             
@@ -214,6 +216,8 @@ namespace XiDeng.Common
             }
             else
             {
+                LogManager.GetLogger(action).Error(response.StatusCode.ToString());
+
                 return new ResponseModel(response.StatusCode, null, responseContent.IsEmpty() ? response.StatusCode.ToString() : responseContent.To<HttpReponseMessageModel>().Message, response.IsSuccessStatusCode);
 
             }
@@ -254,7 +258,7 @@ namespace XiDeng.Common
         {
             try
             {
-
+                
                 return JsonConvert.DeserializeObject<T>(json);
             }
             catch (Exception ex)
@@ -287,6 +291,10 @@ namespace XiDeng.Common
         #region ObservableCollection Extensions
         public static void ForEach<T>(this IEnumerable<T> ts, Action<T> action)
         {
+            if (ts == null)
+            {
+                return;
+            }
             foreach (var item in ts)
             {
                 action?.Invoke(item);
@@ -295,6 +303,10 @@ namespace XiDeng.Common
 
         public static async Task ForEachAsync<T>(this IEnumerable<T> ts, Func<T,Task> action)
         {
+            if (ts == null)
+            {
+                return;
+            }
             foreach (var item in ts)
             {
                 await action?.Invoke(item);

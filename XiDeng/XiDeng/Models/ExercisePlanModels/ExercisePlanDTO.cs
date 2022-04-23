@@ -183,5 +183,8 @@ namespace XiDeng.Models.ExercisePlanModels
         }
         public string AuthorImg { get; set; }
         public string AuthorName { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        [SQLite.Ignore]
+        public string DisDescription => Description.Length > 8 ? Description.Substring(0, 8)+"……" : Description;
     }
 }

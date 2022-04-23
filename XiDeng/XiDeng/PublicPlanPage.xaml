@@ -41,7 +41,7 @@
                                         <Span Text="&#10;"/>-->
                                         <Span Text="{Binding Name}" FontSize="20" TextColor="White"/>
                                         <Span Text="&#10;"/>
-                                        <Span Text="{Binding Description}" />
+                                        <Span Text="{Binding DisDescription}" />
                                         <Span Text="&#10;"/>
                                         <Span Text="{Binding DayNumber}"/>
                                         <Span Text="天 / "/>

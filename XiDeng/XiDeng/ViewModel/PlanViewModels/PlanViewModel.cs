@@ -7,7 +7,6 @@ using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Views.PlanViews;
-
 namespace XiDeng.ViewModel.PlanViewModels
 {
     public class PlanViewModel:BaseViewModel
@@ -22,8 +21,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(Plan));
             }
         }
-
-
         private bool byDay = true;
         public bool ByDay
         {
@@ -31,7 +28,10 @@ namespace XiDeng.ViewModel.PlanViewModels
             set
             {
                 byDay = value;
-                this.Plan.Cycle = 1;
+                if (value)
+                {
+                    this.Plan.Cycle = 1;
+                }
                 this.RaisePropertyChanged(nameof(ByDay));
             }
         }
@@ -42,13 +42,14 @@ namespace XiDeng.ViewModel.PlanViewModels
             set
             {
                 byWeek = value;
-                this.Plan.Cycle = 0;
-                DayNumber = 7;
+                if (value)
+                {
+                    this.Plan.Cycle = 0;
+                    DayNumber = 7;
+                }
                 this.RaisePropertyChanged(nameof(ByWeek));
             }
         }
-
-
         private int dayNumber = 1;
         public int DayNumber
         {
@@ -59,7 +60,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(DayNumber));
             }
         }
-
         private ImageSource cover;
         public ImageSource Cover
         {
@@ -70,7 +70,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(Cover));
             }
         }
-
         public PlanViewModel(ExercisePlanDTO _plan = null)
         {
             GotoAddActionPageCommand = new Command<object>(async delegate {
@@ -80,17 +79,13 @@ namespace XiDeng.ViewModel.PlanViewModels
                     return;
                 }
                 await this.GoAsync(nameof(AddActionPage) + $"?PlanID={Plan.Id}&DayNumber={DayNumber}&ByWeek={ByWeek}");
-
             });
-
             AddSubmitCommand = new Command<object>(async obj =>
             {
-
                 if (!await CheckPlanData())
                 {
                     return;
                 }
-
                 await this.Try(async o =>
                 {
                     ExercisePlanDTO newPlan = new ExercisePlanDTO()
@@ -104,9 +99,10 @@ namespace XiDeng.ViewModel.PlanViewModels
                         Name = Plan.Name,
                         Description = Plan.Description,
                         CoverUrl = null,
-                        PlanEachDays = AddActionPageViewModel.planActions.Where(x => x.DayNumber <= DayNumber).OrderBy(x=>x.DayNumber).ThenBy(x=>x.OrderNumber).ToObservableCollection()
+                        PlanEachDays = AddActionPageViewModel.planActions.Where(x => x.DayNumber <= DayNumber).OrderBy(x=>x.DayNumber).ThenBy(x=>x.OrderNumber).ToObservableCollection(),
+                        AuthorImg = Utility.LoggedAccount.PhotoUrl,
+                        AuthorName = Utility.LoggedAccount.Name
                     };
-
                     //if online
                     //submit to datbase and save to native
                     bool Updated = false;
@@ -120,14 +116,13 @@ namespace XiDeng.ViewModel.PlanViewModels
                     else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
                     {
                         //offline 
+                        await this.Message("提交成功！\n请注意：\n当前处于离线模式，所有操作都不会上传云端！");
                     }
                     else
                     {
                         await this.Message(response.Message);
                         return;
                     }
-
-
                     //save to native
                     newPlan.Updated = Updated;
                     int rows = await App.Database.SaveAsync(newPlan);
@@ -137,19 +132,17 @@ namespace XiDeng.ViewModel.PlanViewModels
                     newPlan.PlanEachDays.ForEach(x => x.Updated = Updated);
                     rows = await App.Database.database.InsertAllAsync(newPlan.PlanEachDays);
 #if DEBUG
-
                      await this.Message("Save actions rows:" + rows);
 #endif
+                    await this.GoAsync("..");
                 }, obj, true);
             });
-
             UpdateSubmitCommand = new Command<object>(async obj=> {
                 if(!await CheckPlanData())
                 {
                     return;
                 }
                 await this.Try(async o=> {
-
                     ExercisePlanDTO newPlan = new ExercisePlanDTO
                     {
                         Id = Plan.Id,
@@ -163,7 +156,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                         CoverUrl = null,
                         PlanEachDays = AddActionPageViewModel.planActions.Where(x => x.DayNumber <= DayNumber).ToObservableCollection()
                     };
-
                     //if online 
                     //submit to database and save to native 
                     bool Updated = false;
@@ -176,13 +168,13 @@ namespace XiDeng.ViewModel.PlanViewModels
                     else if (response.StatusCode == System.Net.HttpStatusCode.SeeOther)
                     {
                         //offline
+                        await this.Message("修改成功！\n请注意：\n当前处于离线模式，所有操作都不会上传云端！");
                     }
                     else
                     {
                         await this.Message("失败：\n"+response.Message);
                         return;
                     }
-
                     //save to native
                     newPlan.Updated = Updated;
                     int rows = await App.Database.SaveAsync(newPlan);
@@ -199,24 +191,23 @@ namespace XiDeng.ViewModel.PlanViewModels
 #if DEBUG
                     await this.Message("Save rows:"+rows);
 #endif
+                    await this.GoAsync("..");
                 },obj,true);
             });
-
-
             if (_plan != null && this.Plan == null)
             {
                 this.Plan = _plan;
                 DayNumber = this.Plan.DayNumber.HasValue ? this.Plan.DayNumber.Value : 0;
+                AddActionPageViewModel.planActions = _plan.PlanEachDays;
+                this.ByWeek = _plan.Cycle == 0;
                 return;
             }
-
             this.Plan = new ExercisePlanDTO()
             {
                 Id = Guid.NewGuid(),
                 AccountId = Utility.LoggedAccount.Id,
             };
         }
-
         private async Task<bool> CheckPlanData()
         {
             if (Plan.Name.IsEmpty())
@@ -224,20 +215,17 @@ namespace XiDeng.ViewModel.PlanViewModels
                 await this.Message("计划名不能为空!");
                 return false;
             }
-
             if (Plan.Description.IsEmpty())
             {
                 await this.Message("描述不能为空!");
                 return false;
             }
-
             if (AddActionPageViewModel.planActions == null || AddActionPageViewModel.planActions.Count == 0)
             {
                 await this.Message("请设置动作!");
                 return false;
             }
             var distinctPlanEachDay = AddActionPageViewModel.planActions.Select(x => x.DayNumber).Distinct().OrderBy(x => x);
-
             if (distinctPlanEachDay.Count() < DayNumber)
             {
                 //get no action day
@@ -250,19 +238,13 @@ namespace XiDeng.ViewModel.PlanViewModels
                         noActionDays += $"\n第{(i + 1)}天";
                     }
                 }
-
                 await this.Message("以下天数还未设置动作:" + noActionDays);
-
                 return false;
             }
             return true;
         }
-
-
         public Command<object> GotoAddActionPageCommand { get; set; }
-
         public Command<object> AddSubmitCommand { get; set; }
         public Command<object> UpdateSubmitCommand { get; set; }
-
     }
 }

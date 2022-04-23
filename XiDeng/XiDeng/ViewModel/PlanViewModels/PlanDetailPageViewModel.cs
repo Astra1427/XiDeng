@@ -11,7 +11,6 @@ using XiDeng.Models.ExercisePlanModels;
 using XiDeng.Views.AccountViews;
 using XiDeng.Views.CollectionViews;
 using XiDeng.Views.PlanViews;
-
 namespace XiDeng.ViewModel.PlanViewModels
 {
     public class PlanDetailPageViewModel : BaseViewModel
@@ -26,7 +25,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(Plan));
             }
         }
-
         private List<IGrouping<int, PlanEachDayDTO>> groupPlanActions;
         public List<IGrouping<int, PlanEachDayDTO>> GroupPlanActions
         {
@@ -37,7 +35,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(GroupPlanActions));
             }
         }
-
         private string publishPlanText;
         public string PublishPlanText
         {
@@ -48,8 +45,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(PublishPlanText));
             }
         }
-
-
         public Guid PlanId { get; set; }
         public PlanDetailPageViewModel(Guid planId)
         {
@@ -62,7 +57,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
                 await this.Try(async o =>
                 {
-
                     //remove from database
                     var response = await (ActionNames.ExercisePlan.DeletePlan + $"?planId={PlanId}").PostAsync("");
                     if (response.IsSuccessStatusCode)
@@ -78,13 +72,10 @@ namespace XiDeng.ViewModel.PlanViewModels
                         await this.Message("失败：\n请检查网络连接。");
                         return;
                     }
-
                     //remove from sqlite
                     this.Plan.IsRemoved = true;
-
                     int rows = await App.Database.UpdateAsync(this.Plan);
 #if DEBUG
-
                     await this.Message(rows.ToString());
 #endif
                     if (rows > 0)
@@ -93,19 +84,16 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
                 }, obj, true);
             });
-
             GotoUpdatePlanCommand = new Command<object>(async delegate
             {
                 await this.GoAsync(nameof(UpdatePlanPage) + $"?PlanJson={this.Plan.ToJson()}");
             });
             PublishPlanCommand = new Command<object>(async delegate
             {
-
                 var response = await (ActionNames.ExercisePlan.PublishOrCancelPlan + $"?PlanId={Plan.Id}").PostAsync();
                 if (response.IsSuccessStatusCode)
                 {
                     await this.Message(this.PublishPlanText == "发布" ? "发布成功！\n 待审核通过后即可在公共计划列表中看见。" : "操作成功！");
-
                     this.Plan.PublishStatus = Plan.PublishStatus == 1 || Plan.PublishStatus == 2 ? 3 : 2;
                     int row = await App.Database.UpdateAsync(this.Plan);
 #if DEBUG
@@ -123,11 +111,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     await this.Message(response.Message);
                     return;
                 }
-
-
             });
-
-
             StartPlanCommand = new Command<object>(async obj =>
             {
                 if (!this.Plan.IsPublic && !this.IsOwner)
@@ -135,10 +119,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                     await this.Message("该计划已被隐藏！");
                     return;
                 }
-
                 await this.Try(async o =>
                 {
-
                     var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     if (model == null)
                     {
@@ -155,8 +137,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
                     model.StartTime = DateTime.Now.Date;
                     model.IsPause = false;
-
-
                     ResponseModel response = await ActionNames.ExercisePlan.StartPlan.PostAsync(model.ToJson());
                     if (response.IsSuccessStatusCode)
                     {
@@ -171,7 +151,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                         await this.Message("失败，请连接网络！");
                         return;
                     }
-
                     //pause other plan
                     var otherPlans = await App.Database.GetAllAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.Id != model.Id);
                     otherPlans.ForEach(x => x.IsPause = true);
@@ -184,7 +163,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                     IsStarted = rows > 0;
                 }, obj, true);
             });
-
             PausePlanCommand = new Command<object>(async obj =>
             {
                 await this.Try(async o =>
@@ -202,7 +180,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                         await this.Message("失败：\n请连接网络。");
                         return;
                     }
-
                     var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.AccountId == Utility.LoggedAccount.Id && x.PlanId == Plan.Id);
                     model.IsPause = true;
                     int rows = await App.Database.UpdateAsync(model);
@@ -215,7 +192,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
                 }, obj, true);
             });
-
             RestartPlanCommand = new Command<object>(async obj =>
             {
                 await this.Try(async o =>
@@ -223,7 +199,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                     var response = await (ActionNames.ExercisePlan.RestartPlan + $"?PlanId={Plan.Id}").PostAsync();
                     if (response.IsSuccessStatusCode)
                     {
-
                     }
                     else
                     {
@@ -238,25 +213,21 @@ namespace XiDeng.ViewModel.PlanViewModels
 #if DEBUG
                     await this.Message($"Update rows:{rows}");
 #endif
-
                     if (rows > 0)
                     {
                         IsStarted = true;
                     }
-
                 }, obj, true);
             });
             GotoCollectPopupPageCommand = new Command<object>(async obj =>
             {
                 var popup = new CollectPopupPage(planId);
                 await Shell.Current.Navigation.PushPopupAsync(popup);
-
                 bool? isCollect = await popup.PopupClosedTask;
                 if (!isCollect.HasValue)
                 {
                     return;
                 }
-
                 if (Plan.IsCollect)
                 {
                     if (!isCollect.Value)
@@ -271,9 +242,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                         plan.CollectionCount++;
                     }
                 }
-
                 Plan.IsCollect = isCollect.Value;
-
                 if (Plan.IsCollect)
                 {
                     await this.Try(async o =>
@@ -283,11 +252,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                         await App.Database.InsertAllAsync(this.Plan.PlanEachDays);
                     }, obj, false);
                 }
-
                 MessagingCenter.Send<object, Tuple<Guid, bool, int>>(this, "UpdateCollect", new Tuple<Guid, bool, int>(PlanId, Plan.IsCollect, Plan.CollectionCount));
-
             });
-
             RefreshCommand = new Command<object>(async delegate
             {
                 await Task.Delay(200);
@@ -302,7 +268,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                     await SetPlan();
                 }, null, true);
             });
-
             GotoAuthorVisitorPageCommand = new Command<object>(async delegate {
                 await this.GoAsync(nameof(VisitorPage)+$"?AuthorId={this.Plan.AccountId}");
             });
@@ -312,7 +277,6 @@ namespace XiDeng.ViewModel.PlanViewModels
         {
             //need optimize
             this.GroupPlanActions = this.Plan.PlanEachDays.GroupBy(x => x.DayNumber).OrderBy(x => x.Key).ToList();
-
         }
         private bool isStarted;
         public bool IsStarted
@@ -334,9 +298,16 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(IsOwner));
             }
         }
-
         public async Task Init()
         {
+            //await this.Message(Shell.Current.CurrentState.ToString());
+
+            //await this.Message(Shell.Current.CurrentState.Location.ToString());
+
+            //await this.Message(Shell.Current.CurrentState.Location.AbsolutePath.ToString());
+
+            //await this.Message(Shell.Current.CurrentState.Location.AbsoluteUri.ToString());
+
             if (this.Plan != null)
             {
                 return;
@@ -346,35 +317,33 @@ namespace XiDeng.ViewModel.PlanViewModels
             {
                 //Load from local database
                 this.Plan = await App.Database.GetAsync<ExercisePlanDTO>(x => x.Id == PlanId);
-
                 //await this.Message("数据丢失！");
                 //await ShellApp.Current.GoAsync("../");
                 //return;
-
-
                 //load from cloud database
-                if (Plan == null)
+                if (Plan == null || Plan.AccountId != Utility.LoggedAccount.Id)
                 {
                     await LoadPlanFromCloud();
                 }
-
                 if (Plan == null)
                 {
                     await this.Message("计划数据丢失");
                     return;
                 }
                 await SetPlan();
-
             }, null, true);
         }
-
         private async Task LoadPlanFromCloud()
         {
             var response = await (ActionNames.ExercisePlan.GetPlanByID + $"?planId={PlanId}").GetStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 Plan = response.Content.To<ExercisePlanDTO>();
-                
+
+                await App.Database.SaveAsync(Plan);
+
+                await App.Database.DeleteAllAsync<PlanEachDayDTO>(x => x.PlanId == Plan.Id);
+                await App.Database.InsertAllAsync(Plan.PlanEachDays);
             }
             else
             {
@@ -385,7 +354,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
                 return;
             }
-
         }
         private ImageSource tempCover = Utility.GetImage("pexels_evgeny_tchebotarev_4101555");
         public ImageSource TempCover
@@ -397,23 +365,17 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(TempCover));
             }
         }
-
         private async Task SetPlan()
         {
             if (this.Plan.PlanEachDays == null || this.Plan.PlanEachDays.Count == 0)
             {
                 this.Plan.PlanEachDays = (await App.Database.GetAllAsync<PlanEachDayDTO>(x => x.PlanId == Plan.Id)).ToObservableCollection();
             }
-
             IsOwner = Plan.AccountId == Utility.LoggedAccount.Id;
-
             var model = await App.Database.GetAsync<AccountRunningPlanDTO>(x => x.PlanId == Plan.Id && x.AccountId == Utility.LoggedAccount.Id);
             IsStarted = model == null ? false : !model.IsPause;
             UpdateGroupList();
-
-
             PublishPlanText = this.Plan.PublishStatus == 1 || this.plan.PublishStatus == 2 ? "取消发布" : "发布";
-            
             if (!Plan.CoverUrl.IsEmpty())
             {
                 Uri CoverUri = null;
@@ -421,12 +383,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                 {
                     TempCover = ImageSource.FromUri(CoverUri);
                 }
-                
             }
-            
         }
-
-
         public Command<object> OnAppearingCommand { get; set; }
         public Command<object> GotoUpdatePlanCommand { get; set; }
         public Command<object> PublishPlanCommand { get; set; }

@@ -21,7 +21,7 @@ namespace XiDeng.Views.AccountViews
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            lContent.Scale = 0;
             await LoadUserAgreementAsync();
         }
         private async Task LoadUserAgreementAsync()
@@ -29,8 +29,14 @@ namespace XiDeng.Views.AccountViews
             try
             {
                 rvView.IsRefreshing = true;
-                var response = await Utility.Client.GetStringAsync("https://gitee.com/AC200/turn-off-the-lights/raw/master/%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE.txt");
-                lContent.Text = response;
+                var response = await Utility.GetStringAsync("https://gitee.com/AC200/turn-off-the-lights/raw/master/%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE.txt");
+                if (!response.IsSuccessStatusCode)
+                {
+                    await this.Message(response.Message);
+                    return;
+                }
+                lContent.Text = response.Content;
+
             }
             catch (Exception ex)
             {
@@ -39,6 +45,8 @@ namespace XiDeng.Views.AccountViews
             finally
             {
                 rvView.IsRefreshing = false;
+                
+                await lContent.ScaleTo(1,250,Easing.CubicIn);
             }
         }
         private async void rvView_Refreshing(object sender, EventArgs e)

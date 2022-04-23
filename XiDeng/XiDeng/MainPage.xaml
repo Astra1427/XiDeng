@@ -35,7 +35,7 @@
     </ContentPage.ToolbarItems>
 
     
-    <Grid RowDefinitions="20,2*,20,*" Padding="5">
+    <Grid RowDefinitions="20,1.3*,20,*" Padding="5">
         <Label Text="当前进行的计划" TextColor="White" FontSize="16">
             <Label.Triggers>
                 <DataTrigger TargetType="Label"
@@ -81,8 +81,7 @@
         <CollectionView  ItemsSource="{Binding Skills}" Grid.Row="3">
 
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="8" Orientation="Horizontal"/>
-
+                <GridItemsLayout VerticalItemSpacing="8" HorizontalItemSpacing="8" Orientation="Vertical" Span="2"/>
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
 
@@ -94,7 +93,7 @@
                                 <TapGestureRecognizer Command="{Binding SkillCommand}"  />
                             </Grid.GestureRecognizers>
                             <Label IsVisible="False" Text="{Binding Id}"/>
-                            <Image Source="{Binding ImgUrl}" Aspect="AspectFill"/>
+                            <Image Source="{Binding ImgUrl}" Aspect="Fill" HeightRequest="75"/>
 
                             <Label TextColor="White" Margin="20">
                                 <Label.FormattedText>

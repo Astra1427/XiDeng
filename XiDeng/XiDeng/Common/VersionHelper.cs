@@ -16,8 +16,16 @@ namespace XiDeng.Common
         
         public static async Task CheckUpdate(bool notice = true)
         {
-            string json = await Utility.Client.GetStringAsync("https://gitee.com/AC200/turn-off-the-lights/raw/master/CurrentVerion");
-            var model = json.To<VersionModel>();
+            var response = await Utility.GetStringAsync("https://gitee.com/AC200/turn-off-the-lights/raw/master/CurrentVerion");
+            if (!response.IsSuccessStatusCode)
+            {
+                if (notice)
+                {
+                    await "获取版本信息失败".Message();
+                }
+                return;
+            }
+            var model = response.Content.To<VersionModel>();
             if (model == null || model.VersionNumber == VersionTracking.CurrentVersion)
             {
                 if (notice)
@@ -26,8 +34,8 @@ namespace XiDeng.Common
                 }
                 return;
             }
-            
-            var currentVersion = VersionTracking.CurrentVersion.Split('.').Select(x=>int.Parse(x)).ToList();
+
+            var currentVersion = VersionTracking.CurrentVersion.Split('.').Select(x => int.Parse(x)).ToList();
             var newVersion = model.VersionNumber.Split('.').Select(x => int.Parse(x)).ToList();
 
             for (int i = 0; i < currentVersion.Count; i++)
@@ -54,6 +62,7 @@ namespace XiDeng.Common
             {
                 await Shell.Current.DisplayToastAsync("已是最新版本！");
             }
+
         }
 
     }

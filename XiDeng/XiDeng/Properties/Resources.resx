@@ -559,13 +559,13 @@
   <data name="WeChatPay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WeChatPay.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="xd_logo_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\xd_logo_02.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="XiDengSkillsDataJson" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\XiDengSkillsDataJson.json;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="xz" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\xz.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="zm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zm.jpg;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="_1俯卧撑" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\1俯卧撑.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

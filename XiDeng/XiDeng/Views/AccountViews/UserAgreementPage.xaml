@@ -11,7 +11,7 @@
             <StackLayout>
                 <Label Text="熄灯APP用户使用协议" FontSize="Title" FontAttributes="Bold" TextColor="White"/>
 
-                <Label x:Name="lContent" MaxLines="999999"/>
+                <Label x:Name="lContent" MaxLines="99999" TextType="Text"/>
             </StackLayout>
         </ScrollView>
     </RefreshView>

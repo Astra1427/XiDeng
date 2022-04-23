@@ -102,7 +102,7 @@ namespace XiDeng.Models.ExercisePlanModels
             get {
                 if (style == null && StyleID.HasValue)
                 {
-                    style = SkillDataCommon.Skills.FirstOrDefault(x=>x.SkillStyles.Any(s=>s.Id == StyleID)).SkillStyles.FirstOrDefault(x=>x.Id == StyleID);
+                    style = SkillDataCommon.Skills.FirstOrDefault(x=>x.SkillStyles.Any(s=>s.Id == StyleID))?.SkillStyles?.FirstOrDefault(x=>x.Id == StyleID);
                 }
                 return style;
             }
@@ -134,7 +134,7 @@ namespace XiDeng.Models.ExercisePlanModels
 
         public override string ToString()
         {
-            if (IsRestDay)
+            if (IsRestDay || Style == null)
             {
                 return "休息日";
             }

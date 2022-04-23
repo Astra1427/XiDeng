@@ -63,6 +63,16 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] _1俯卧撑 {
+            get {
+                object obj = ResourceManager.GetObject("_1俯卧撑", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] AliPay {
             get {
                 object obj = ResourceManager.GetObject("AliPay", resourceCulture);
@@ -1533,29 +1543,19 @@ namespace XiDeng.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] xd_logo_02 {
+            get {
+                object obj = ResourceManager.GetObject("xd_logo_02", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] XiDengSkillsDataJson {
             get {
                 object obj = ResourceManager.GetObject("XiDengSkillsDataJson", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] xz {
-            get {
-                object obj = ResourceManager.GetObject("xz", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] zm {
-            get {
-                object obj = ResourceManager.GetObject("zm", resourceCulture);
                 return ((byte[])(obj));
             }
         }

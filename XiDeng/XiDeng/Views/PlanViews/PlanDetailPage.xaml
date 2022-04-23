@@ -23,7 +23,7 @@
         <ToolbarItem Text="修改" Order="Primary" Command="{Binding BindingContext.GotoUpdatePlanCommand,Source={x:Reference page}}" IsEnabled="{Binding IsOwner}"/>
         <ToolbarItem Text="{Binding PublishPlanText}" Order="Secondary" Command="{Binding BindingContext.PublishPlanCommand,Source={x:Reference page}}" IsEnabled="{Binding IsOwner}"/>
         <ToolbarItem Text="删除" Order="Secondary" Command="{Binding BindingContext.DeletePlanCommand,Source={x:Reference page}}" IsDestructive="True" IsEnabled="{Binding IsOwner}" />
-        <ToolbarItem Text="收藏" IconImageSource="{Binding BindingContext.Plan.CollectIcon,Source={x:Reference page}}" Order="Primary" Command="{Binding BindingContext.GotoCollectPopupPageCommand,Source={x:Reference page}}"/>
+        <ToolbarItem Text="收藏" Order="Primary" Command="{Binding BindingContext.GotoCollectPopupPageCommand,Source={x:Reference page}}"/>
         <!--<ToolbarItem Text="分享" Order="Secondary" />-->
 
     </ContentPage.ToolbarItems>
@@ -90,7 +90,7 @@
                 <DataTemplate>
                     <ViewCell>
                         <Grid >
-                            <Label Text="{Binding Style.Name}">
+                            <Label>
                                 <Label.Triggers>
                                     <DataTrigger TargetType="Label"
                                                  Binding="{Binding StyleID,TargetNullValue=''}"
@@ -100,6 +100,12 @@
                                         <Setter Property="TextColor" Value="LightGreen" />
                                     </DataTrigger>
                                 </Label.Triggers>
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding Style.SkillName}" FontSize="16"/>
+                                        <Span Text="{Binding Style.Name,StringFormat=' - {0}'}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
                             </Label>
                             <Label>
                                 <Label.FormattedText>

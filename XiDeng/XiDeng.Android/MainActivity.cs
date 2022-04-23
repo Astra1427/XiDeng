@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
@@ -17,7 +16,6 @@ using Android.Graphics;
 using Android;
 using AndroidX.Core.Content;
 using AndroidX.Core.App;
-
 [assembly : Dependency(typeof(PhotoPickerService))]
 [assembly : Dependency(typeof(VideoPickerService))]
 namespace XiDeng.Droid
@@ -30,23 +28,17 @@ namespace XiDeng.Droid
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
             base.OnCreate(savedInstanceState);
-
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
-
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-
             if ((ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
             || (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted))
             {
                 ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ReadExternalStorage, Manifest.Permission.WriteExternalStorage }, 0);
             }
             LoadApplication(new App());
-
             Window.SetStatusBarColor(Android.Graphics.Color.Black);
-
             Instance = this;
         }
         public static readonly int PickImageId = 1000;
@@ -56,7 +48,6 @@ namespace XiDeng.Droid
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -90,7 +81,6 @@ namespace XiDeng.Droid
                 }
             }
         }
-
         public string GetPath(Android.Net.Uri uri)
         {
             //string[] projection = MediaStore.Video.Media.DATA;
@@ -105,35 +95,27 @@ namespace XiDeng.Droid
             else
                 return null;
         }
-
         public override void OnBackPressed()
         {
             Rg.Plugins.Popup.Popup.SendBackPressed(base.OnBackPressed);
         }
     }
-
-
     public class PhotoPickerService : IPhotoPickerService
     {
         public Task<Stream> GetImageStreamAsync()
         {
             // Define the Intent for getting images
-
             Intent intent = new Intent();
             intent.SetType("image/*");
             intent.SetAction(Intent.ActionGetContent);
-
             // Start the picture-picker activity (resumes in MainActivity.cs)
             MainActivity.Instance.StartActivityForResult(Intent.CreateChooser(intent,"Select Picture"),MainActivity.PickImageId);
-
             // Save the TaskCompletionSource object as a MainActivity property
             MainActivity.Instance.PickImageTaskCompletionSource = new TaskCompletionSource<Stream>();
-
             // Return Task object
             return MainActivity.Instance.PickImageTaskCompletionSource.Task;
         }
     }
-
     public class VideoPickerService : IVideoPickerService
     {
         public Task<string> GetVideoFileNameAsync()
@@ -141,14 +123,9 @@ namespace XiDeng.Droid
             Intent intent = new Intent();
             intent.SetType("video/*");
             intent.SetAction(Intent.ActionGetContent);
-
             MainActivity.Instance.StartActivityForResult(Intent.CreateChooser(intent,"选择视频"), MainActivity.PickVideoId) ;
-
             MainActivity.Instance.PickVideoTaskCompletionSource = new TaskCompletionSource<string>();
-
             return MainActivity.Instance.PickVideoTaskCompletionSource.Task;
-
         }
     }
-
 }

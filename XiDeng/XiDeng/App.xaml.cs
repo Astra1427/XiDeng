@@ -14,6 +14,8 @@ using System.Text;
 using System.IO;
 using XiDeng.Models.AccountModels;
 using XiDeng.Models.ExerciseLogs;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.Extensions;
 
 namespace XiDeng
 {
@@ -24,20 +26,38 @@ namespace XiDeng
             InitializeComponent();
 
             VersionTracking.Track();
-            if (!LoadNewVersionData())
-            {
-                //DataCommon.InitDatas();
-                InitFiles();
-            }
+            
 
             InitSettingFile();
             //InitData();
             LoadAccountInfo();
+
             MainPage = new ShellApp();
         }
-        public bool LoadNewVersionData()
+        
+        public async Task<bool> LoadNewVersionData()
         {
-            SkillDataCommon.Skills = Encoding.UTF8.GetString(XiDeng.Properties.Resources.XiDengSkillsDataJson).To<ObservableCollection<SkillDTO>>();
+            bool IsLogged = Utility.LoggedAccount != null && !Utility.LoggedAccount.JwtToken.IsEmpty();
+            if (IsLogged)
+            {
+                SkillDataCommon.Skills = (await App.Database.GetAllAsync<SkillDTO>(x => x.OrderNumber <= 6 || x.OwnerId == Utility.LoggedAccount.Id)).ToObservableCollection();
+            }
+            else
+            {
+                SkillDataCommon.Skills = (await App.Database.GetAllAsync<SkillDTO>(x => x.OrderNumber <= 6)).ToObservableCollection();
+            }
+
+            if (SkillDataCommon.Skills == null || SkillDataCommon.Skills.Count < 6)
+            {
+                SkillDataCommon.Skills = Encoding.UTF8.GetString(XiDeng.Properties.Resources.XiDengSkillsDataJson).To<ObservableCollection<SkillDTO>>();
+            }
+            else
+            {
+                await SkillDataCommon.Skills.ForEachAsync(async x=> {
+                    x.SkillStyles = await App.Database.GetAllAsync<SkillStyleDTO>(st=>st.SkillId == x.Id);
+                });
+            }
+
 
             return SkillDataCommon.Skills != null;
         }
@@ -156,13 +176,30 @@ namespace XiDeng
 
         protected override async void OnStart()
         {
-            if (VersionTracking.IsFirstLaunchEver)
+            try
             {
-                await this.Message("这是你第一次运行熄灯App，请联网并登录一个账号，以便熄灯App从云端下载必备的数据！");
-                await Shell.Current.GoToAsync(nameof(LoginPage));
+                if (VersionTracking.IsFirstLaunchEver)
+                {
+                    await this.Message("这是你第一次运行熄灯App，请联网并登录一个账号，以便熄灯App从云端下载必备的数据！");
+                    await Shell.Current.GoToAsync(nameof(LoginPage));
+                }
+
+                
+
+                await VersionHelper.CheckUpdate(false);
             }
-            await VersionHelper.CheckUpdate(false);
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
+
         }
+
+
 
         protected override void OnSleep()
         {

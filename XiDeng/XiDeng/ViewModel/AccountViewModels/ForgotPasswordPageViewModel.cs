@@ -6,12 +6,10 @@ using System.Text.RegularExpressions;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models.AccountModels;
-
 namespace XiDeng.ViewModel.AccountViewModels
 {
-    public class ForgotPasswordPageViewModel:BaseViewModel
+    public class ForgotPasswordPageViewModel : BaseViewModel
     {
-
         private string email;
         public string Email
         {
@@ -22,7 +20,6 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(Email));
             }
         }
-
         private string password;
         public string Password
         {
@@ -43,7 +40,6 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(ConfirmPassword));
             }
         }
-
         private string verifyCode;
         public string VerifyCode
         {
@@ -54,16 +50,13 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(VerifyCode));
             }
         }
-
         private static int sendEmailCountDown = 60;
         public int SendEmailCountDown
         {
             get { return sendEmailCountDown; }
             set
             {
-
                 sendEmailCountDown = value == 0 ? 60 : value;
-
                 this.RaisePropertyChanged(nameof(SendEmailCountDown));
                 this.RaisePropertyChanged(nameof(SendEmailButtonText));
             }
@@ -78,8 +71,6 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(CanExecuteSendEmail));
             }
         }
-
-
         private static string sendEmailButtonText = "发送验证码到邮箱";
         public string SendEmailButtonText
         {
@@ -90,7 +81,6 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(SendEmailButtonText));
             }
         }
-
         private bool isInputEmail = true;
         public bool IsInputEmail
         {
@@ -101,9 +91,6 @@ namespace XiDeng.ViewModel.AccountViewModels
                 this.RaisePropertyChanged(nameof(IsInputEmail));
             }
         }
-
-
-
         public ForgotPasswordPageViewModel(string accountEmail = null)
         {
             if (!accountEmail.IsEmpty())
@@ -115,19 +102,18 @@ namespace XiDeng.ViewModel.AccountViewModels
             {
                 CanExecuteSendEmail = false;
             }
-
-            SendCodeToEmailCommand = new Command<object>(async obj => {
-
+            SendCodeToEmailCommand = new Command<object>(async obj =>
+            {
                 //this.IsRefresh = true;
                 CanExecuteSendEmail = false;
-                await this.Try(async o => {
+                await this.Try(async o =>
+                {
                     //check email valid
                     if (Email.IsEmpty() || !Regex.IsMatch(Email, @"^\w+@[a-zA-Z0-9]+((\.[a-z0-9A-Z]{1,})+)$"))
                     {
                         await this.Message("邮箱格式有误!");
                         return;
                     }
-
                     //Send forgot password verify code to email
                     var response = await ActionNames.Account.SendForgotPasswordEmail.PostAsync(new StringContent(new { this.Email }.ToJson(), Encoding.UTF8, "application/json"));
                     if (!response.IsSuccessStatusCode)
@@ -135,21 +121,16 @@ namespace XiDeng.ViewModel.AccountViewModels
                         await this.Message($"失败：\n{response.Message}");
                         return;
                     }
-
                     SetCountDown();
-
-
-
                 }, obj, true);
-
                 //this.IsRefresh = false ;
             });
-
-            RegisterCommand = new Command<object>(async obj => {
-
-                await this.Try(async o => {
+            RegisterCommand = new Command<object>(async obj =>
+            {
+                await this.Try(async o =>
+                {
                     var response = await ActionNames.Account.ResetPassword.PostAsync(
-                            new StringContent(new ResetPasswordModel {  Password = Password, ConfirmPassword = ConfirmPassword, Email = Email, ResetPasswordCode = VerifyCode }.ToJson(),
+                            new StringContent(new ResetPasswordModel { Password = Password, ConfirmPassword = ConfirmPassword, Email = Email, ResetPasswordCode = VerifyCode }.ToJson(),
                             Encoding.UTF8,
                             "application/json"
                         ));
@@ -162,17 +143,15 @@ namespace XiDeng.ViewModel.AccountViewModels
                         await this.Message("修改成功！");
                         this.BackCommand.Execute(null);
                     }
-
                 }, obj, true);
-
             });
         }
-
         public static bool IsTimer { get; set; }
         private void SetCountDown()
         {
             IsTimer = true;
-            Device.StartTimer(TimeSpan.FromSeconds(1), () => {
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+            {
                 SendEmailButtonText = $"{--SendEmailCountDown} 秒后可再次发送";
                 if (SendEmailCountDown == 0 || SendEmailCountDown == 60)
                 {
@@ -184,12 +163,7 @@ namespace XiDeng.ViewModel.AccountViewModels
                 return true;
             });
         }
-
-
-
         public Command<object> SendCodeToEmailCommand { get; set; }
         public Command<object> RegisterCommand { get; set; }
-
-
     }
 }

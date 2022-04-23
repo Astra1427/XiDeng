@@ -5,14 +5,12 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using XiDeng.Common;
 using XiDeng.Models.ExercisePlanModels;
-
 namespace XiDeng.ViewModel.PlanViewModels
 {
     public class UpdatePlanPageViewModel:PlanViewModel
     {
         public UpdatePlanPageViewModel(ExercisePlanDTO plan):base(plan)
         {
-
             SelectCoverCommand = new Command<object>(async delegate {
                 var fileResult = await FilePicker.PickAsync(PickOptions.Images);
                 if (fileResult != null)
@@ -24,9 +22,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             CancelCommand = new Command<object>(async delegate {
                 await this.GoAsync("../");
             });
-
         }
-
         public Command<object> CancelCommand { get; set; }
         public Command<object> SelectCoverCommand { get; set; }
     }

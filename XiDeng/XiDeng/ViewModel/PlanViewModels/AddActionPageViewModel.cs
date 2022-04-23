@@ -8,14 +8,11 @@ using XiDeng.Models.SkillModels;
 using System.Linq;
 using XiDeng.Common;
 using XiDeng.Common.Converts;
-
 namespace XiDeng.ViewModel.PlanViewModels
 {
-    public class AddActionPageViewModel:BaseViewModel
+    public class AddActionPageViewModel : BaseViewModel
     {
         public ImageSource RemoveIcon => Utility.GetImage("minus_5_240");
-
-
         public static ObservableCollection<PlanEachDayDTO> planActions;
         public ObservableCollection<PlanEachDayDTO> PlanActions
         {
@@ -26,9 +23,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(PlanActions));
             }
         }
-
-        public static IEnumerable<IGrouping<int,PlanEachDayDTO>> groupPlanActions;
-        public IEnumerable<IGrouping<int,PlanEachDayDTO>> GroupPlanActions
+        public static IEnumerable<IGrouping<int, PlanEachDayDTO>> groupPlanActions;
+        public IEnumerable<IGrouping<int, PlanEachDayDTO>> GroupPlanActions
         {
             get { return groupPlanActions; }
             set
@@ -37,9 +33,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(GroupPlanActions));
             }
         }
-
-
-
         private int selectedDayNumber;
         public int SelectedDayNumber
         {
@@ -50,7 +43,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(SelectedDayNumber));
             }
         }
-
         private SkillDTO selectedSkill;
         public SkillDTO SelectedSkill
         {
@@ -61,7 +53,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(SelectedSkill));
             }
         }
-
         private SkillStyleDTO selectedStyle;
         public SkillStyleDTO SelectedStyle
         {
@@ -74,12 +65,13 @@ namespace XiDeng.ViewModel.PlanViewModels
                     this.RaisePropertyChanged(nameof(SelectedStyle));
                     return;
                 }
-                if(selectedStyle.Standards.Count == 3)
+                if (selectedStyle.Standards.Count == 3)
                 {
-                    selectedStyle.Standards.Add(new StandardDTO() { 
+                    selectedStyle.Standards.Add(new StandardDTO()
+                    {
                         Style = SelectedStyle,
                         StyleId = SelectedStyle.Id,
-                        Grade = 4 ,
+                        Grade = 4,
                         GroupNumber = 1,
                         Number = 1
                     });
@@ -87,7 +79,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(SelectedStyle));
             }
         }
-
         private StandardDTO selectedStandard;
         public StandardDTO SelectedStandard
         {
@@ -96,17 +87,14 @@ namespace XiDeng.ViewModel.PlanViewModels
             {
                 selectedStandard = value;
                 this.RaisePropertyChanged(nameof(SelectedStandard));
-
                 if (value == null)
                 {
                     IsReadOnlyStandard = true;
                     return;
                 }
                 IsReadOnlyStandard = value.Grade <= 3;
-
             }
         }
-
         private bool isReadOnlyStandard;
         public bool IsReadOnlyStandard
         {
@@ -117,9 +105,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(IsReadOnlyStandard));
             }
         }
-
-
-
         private ObservableCollection<SkillDTO> skills;
         public ObservableCollection<SkillDTO> Skills
         {
@@ -130,7 +115,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(Skills));
             }
         }
-
         private static List<int> dayList;
         public List<int> DayList
         {
@@ -142,25 +126,21 @@ namespace XiDeng.ViewModel.PlanViewModels
             }
         }
         public Binding DayListItemDisplayBinding { get; set; }
-
         public static Guid PlanID { get; set; }
         public bool ByWeek { get; set; }
-        public AddActionPageViewModel(Guid planId,int dayNumber,bool byWeek)
+        public AddActionPageViewModel(Guid planId, int dayNumber, bool byWeek)
         {
             ByWeek = byWeek;
             //set daylist item display binding
             //DayListItemDisplayBinding = new Binding(".",converter:new DayWeekConverter(),converterParameter:ByWeek);
-
-            if ( dayList?.Count != dayNumber)
+            if (dayList?.Count != dayNumber)
             {
-                this.PlanActions = this.PlanActions == null ? new ObservableCollection<PlanEachDayDTO>() : this.PlanActions.Where(x=>x.DayNumber <= dayNumber).ToObservableCollection();
+                this.PlanActions = this.PlanActions == null ? new ObservableCollection<PlanEachDayDTO>() : this.PlanActions.Where(x => x.DayNumber <= dayNumber).ToObservableCollection();
                 UpdateGroupList();
                 this.DayList = new List<int>();
-                
-
                 for (int i = 0; i < dayNumber; i++)
                 {
-                    DayList.Add(i+1);
+                    DayList.Add(i + 1);
                     //this.PlanActions.Add(new PlanEachDayDTO() { 
                     //    DayNumber = i+1,
                     //    Id = Guid.NewGuid(),
@@ -168,9 +148,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                     //});
                 }
             }
-
             this.Skills = SkillDataCommon.Skills;
-
             AppearingCommand = new Command<object>(async obj =>
             {
                 base.Appearing(obj);
@@ -184,10 +162,8 @@ namespace XiDeng.ViewModel.PlanViewModels
                     }
                 }, obj, true);
             });
-
-
-            AddDayActionCommand = new Command<object>(async obj=> {
-
+            AddDayActionCommand = new Command<object>(async obj =>
+            {
                 if (SelectedDayNumber == 0)
                 {
                     await this.Message("请选择一天!");
@@ -198,26 +174,24 @@ namespace XiDeng.ViewModel.PlanViewModels
                     await this.Message("请选择一个动作组!");
                     return;
                 }
-
                 if (SelectedStyle == null)
                 {
                     await this.Message("请选择一个动作!");
                     return;
                 }
-
                 if (SelectedStandard == null)
                 {
                     await this.Message("请选择一个等级!");
                     return;
                 }
-
-                if (SelectedStandard.GroupNumber  <= 0 || SelectedStandard.Number <= 0)
+                if (SelectedStandard.GroupNumber <= 0 || SelectedStandard.Number <= 0)
                 {
                     await this.Message("组数和动作数必须大于0!");
                     return;
                 }
-
-                int orderNumer = PlanActions == null || PlanActions.Count == 0 ? 1 : PlanActions.Max(x => x.OrderNumber);
+                //await this.Message((PlanActions == null || PlanActions.Count == 0).ToString());
+                
+                int orderNumer = PlanActions == null || PlanActions.Count == 0 ? 1 : PlanActions.Max(x => x.OrderNumber)+1;
                 PlanEachDayDTO DayAction = new PlanEachDayDTO()
                 {
                     PlanId = PlanID,
@@ -231,15 +205,15 @@ namespace XiDeng.ViewModel.PlanViewModels
                     OrderNumber = orderNumer
                     //Time
                 };
+                //await this.Message(orderNumer.ToString());
                 //remove reset day tag for current day number
-                this.PlanActions.Remove(this.PlanActions.FirstOrDefault(x =>x.DayNumber == SelectedDayNumber && x.IsRestDay));
+                this.PlanActions.Remove(this.PlanActions.FirstOrDefault(x => x.DayNumber == SelectedDayNumber && x.IsRestDay));
                 //add day action
                 this.PlanActions.Add(DayAction);
-
                 UpdateGroupList();
             });
-
-            SetRestDayCommand = new Command<object>(async obj=> {
+            SetRestDayCommand = new Command<object>(async obj =>
+            {
                 if (SelectedDayNumber == 0)
                 {
                     await this.Message("请选择一天!");
@@ -258,35 +232,26 @@ namespace XiDeng.ViewModel.PlanViewModels
                     IsRestDay = true,
                     StyleID = null,
                 });
-
                 UpdateGroupList();
-
             });
-
-            RemoveActionCommand = new Command<object>(id=> {
+            RemoveActionCommand = new Command<object>(id =>
+            {
                 if (id is Guid guid)
                 {
-                    this.PlanActions.Remove(this.PlanActions.FirstOrDefault(x=>x.Id == guid));
-
+                    this.PlanActions.Remove(this.PlanActions.FirstOrDefault(x => x.Id == guid));
                     UpdateGroupList();
                 }
             });
-
         }
-
         private void UpdateGroupList()
         {
             //need optimize
-            this.GroupPlanActions = this.PlanActions.OrderBy(x=>x.DayNumber).ThenBy(x=>x.OrderNumber).GroupBy(x => x.DayNumber).OrderBy(x => x.Key);
-            
+            this.GroupPlanActions = this.PlanActions.OrderBy(x => x.DayNumber).ThenBy(x => x.OrderNumber).GroupBy(x => x.DayNumber).OrderBy(x => x.Key);
         }
-
         public Command<object> AddCommand { get; set; }
         public Command<object> AddDayActionCommand { get; set; }
         public Command<object> SetRestDayCommand { get; set; }
         public Command<object> RemoveActionCommand { get; set; }
         public new Command<object> AppearingCommand { get; set; }
-
-
     }
 }

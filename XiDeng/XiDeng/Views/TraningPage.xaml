@@ -9,6 +9,7 @@
                 IsEnabled="{Binding IsE}"
                 xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="{Binding SkillStyle.Name}"
+             
              >
 
     <ContentPage.Behaviors>

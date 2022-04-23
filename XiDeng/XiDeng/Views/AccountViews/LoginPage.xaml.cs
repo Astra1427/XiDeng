@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XiDeng.Common;
 using XiDeng.ViewModel.AccountViewModels;
 
 namespace XiDeng.Views.AccountViews
@@ -17,6 +18,7 @@ namespace XiDeng.Views.AccountViews
         {
             InitializeComponent();
             this.BindingContext = new LoginPageViewModel();
+            imgLogo.Source = Utility.GetImage("xd_logo_02");
         }
     }
 }

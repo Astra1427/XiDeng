@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 using XiDeng.Common;
 using XiDeng.DataTest;
 using XiDeng.Models.ExerciseLogs;
-
 namespace XiDeng.Data
 {
     
     public class DataCommon
     {
         public static List<ExerciseLogDTO> ExerciseLogs = new List<ExerciseLogDTO>();
-
         public static ObservableCollection<Skill> SkillsTest = new ObservableCollection<Skill>();
         public static void InitDatas()
         {
@@ -34,7 +32,6 @@ namespace XiDeng.Data
                         ActionDescription = "面对墙壁站立，双脚并拢，双臂伸直，与肩同宽，双手平放在墙上，手掌与胸等高。" +
                         "这是该动作的起始姿势。弯曲肘部，直到前额轻触墙面。这是该动作的结束姿势。" +
                         "然后将自己推回到起始姿势，如此重复。",
-
                         Analysis = "俯卧撑动作共有十式，墙壁俯卧撑只是第一式。既然是第一式，也就最容易的，毫无疑" +
                         "问普通人都能做。墙壁俯卧撑也是第一个有治疗效果的练习。刚受伤、做过手术或身体正处" +
                         "于恢复期的人若想加快恢复速度、尽快拥有强健的体魄，可以选择这个动作。肘、腕、肩（尤" +
@@ -51,7 +48,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 25 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 50},
                     },
-
                     new SkillStyle{
                         ID = 2,
                         SkillID = 1,
@@ -79,7 +75,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 20 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 40},
                     },
-
                     new SkillStyle{
                         ID = 3,
                         SkillID = 1,
@@ -105,7 +100,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 15 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 30},
                     },
-
                     new SkillStyle{
                         ID = 4,
                         SkillID = 1,
@@ -131,7 +125,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 12 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 25},
                     },
-
                     new SkillStyle{
                         ID = 5,
                         SkillID = 1,
@@ -158,7 +151,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20},
                     },
-
                     new SkillStyle{
                         ID = 6,
                         SkillID = 1,
@@ -184,7 +176,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 20},
                     },
-
                     new SkillStyle{
                         ID = 7,
                         SkillID = 1,
@@ -211,7 +202,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10,IsSingle = 1 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20,IsSingle = 1},
                     },
-
                     new SkillStyle{
                         ID = 8,
                         SkillID = 1,
@@ -237,7 +227,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10,IsSingle = 1 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20,IsSingle = 1},
                     },
-
                     new SkillStyle{
                         ID = 9,
                         SkillID = 1,
@@ -264,7 +253,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10,IsSingle = 1 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20,IsSingle = 1},
                     },
-
                     new SkillStyle{
                         ID = 10,
                         SkillID = 1,
@@ -292,10 +280,8 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 6, Number = 10,IsSingle = 1 },
                         UpgradeStandard = new Standard{ GroupsNumber = 1, Number = 100,IsSingle = 1},
                     },
-
                 }
             });
-
             SkillsTest.Add(new Skill
             {
                 ID = 2,
@@ -357,7 +343,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 20 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 40},
                     },
-
                     new SkillStyle{
                         ID = 3,
                         SkillID = 2,
@@ -383,7 +368,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 15 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 30},
                     },
-
                     new SkillStyle{
                         ID = 4,
                         SkillID = 2,
@@ -410,7 +394,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 35 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 50},
                     },
-
                     new SkillStyle{
                         ID = 5,
                         SkillID = 2,
@@ -437,7 +420,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 30},
                     },
-
                     new SkillStyle{
                         ID = 6,
                         SkillID = 2,
@@ -463,7 +445,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20},
                     },
-
                     new SkillStyle{
                         ID = 7,
                         SkillID = 2,
@@ -492,7 +473,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10,IsSingle = 1 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20,IsSingle = 1},
                     },
-
                     new SkillStyle{
                         ID = 8,
                         SkillID = 2,
@@ -519,7 +499,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 ,IsSingle = 1},
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20,IsSingle = 1},
                     },
-
                     new SkillStyle{
                         ID = 9,
                         SkillID = 2,
@@ -547,7 +526,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 ,IsSingle = 1},
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20,IsSingle = 1},
                     },
-
                     new SkillStyle{
                         ID = 10,
                         SkillID = 2,
@@ -574,11 +552,8 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 ,IsSingle = 1},
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 50,IsSingle = 1},
                     },
-
                 },
-
             });
-
             SkillsTest.Add(new Skill
             {
                 ID = 3,
@@ -855,9 +830,7 @@ namespace XiDeng.Data
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 6, IsSingle = 1},
                     },
                 },
-
             });
-
             SkillsTest.Add(new Skill
             {
                 ID = 4,
@@ -939,7 +912,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 15 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 30},
                     },
-
                     new SkillStyle{
                         ID = 4,
                         SkillID = 4,
@@ -994,7 +966,6 @@ namespace XiDeng.Data
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 10 },
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 20},
                     },
-
                     new SkillStyle{
                         ID = 6,
                         SkillID = 4,
@@ -1120,9 +1091,7 @@ namespace XiDeng.Data
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 30},
                     },
                 },
-
             });
-
             SkillsTest.Add(new Skill
             {
                 ID = 5,
@@ -1150,12 +1119,10 @@ namespace XiDeng.Data
                         TraningPart = "脊椎",
                         SlowSteady  = "大多数人做短桥时都不会感觉太吃力。如果你正处于背伤恢复阶段，动作对你而言稍有" +
                         "困难，那你可以在锁部下方放上枕头或坐垫，以缩小动作幅度。",
-
                         PrimaryStandard = new Standard{ GroupsNumber = 1,Number = 10 },
                         IntermediateStandard = new Standard{GroupsNumber = 2, Number = 25 },
                         UpgradeStandard = new Standard{ GroupsNumber = 3, Number = 50},
                     },
-
                     new SkillStyle{
                         ID = 2,
                         SkillID = 5,
@@ -1382,9 +1349,7 @@ namespace XiDeng.Data
                         UpgradeStandard = new Standard{ GroupsNumber = 2, Number = 30},
                     },
                 },
-
             });
-
             SkillsTest.Add(new Skill
             {
                 ID = 6,
@@ -1423,7 +1388,6 @@ namespace XiDeng.Data
                         //升级
                         UpgradeStandard = new Standard{ GroupsNumber = 1, Number = 120,TraningType = 1},
                     },
-
                     new SkillStyle{
                         ID = 2,
                         SkillID = 6,
@@ -1648,17 +1612,12 @@ namespace XiDeng.Data
                     },
                 },
             }) ;
-
         }
-
         public static async Task LoadLog()
         {
             //先加载有记录的日期（DateTime）
             //var logDates = await App.Database.database.QueryAsync<DateTime>("SELECT CreateTime from \"ExercisePlans\" GROUP BY DATE(CreateTime)");
-
-
             var logs = (await App.Database.GetAllAsync<ExerciseLogDTO>(x => x.AccountId == Utility.LoggedAccount.Id))?.ToList();
-
             if (logs == null)
             {
                 await "加载锻炼日志失败！\n请检查日志文件是否损坏或者缺失".Message();
@@ -1667,8 +1626,6 @@ namespace XiDeng.Data
             logs.ForEach(x => x.DisFeeling = x.Feeling.Length > 9 ? x.Feeling.Substring(0, 9) + "……" : x.Feeling);
             ExerciseLogs.AddRange(logs);
             ExerciseLogs = ExerciseLogs.Distinct().ToList();
-
         }
-
     }
 }

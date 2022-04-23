@@ -14,7 +14,6 @@ using System.Linq;
 using XiDeng.Models.Collections;
 using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.CommunityToolkit.ObjectModel;
-
 namespace XiDeng.ViewModel.PlanViewModels
 {
     public class PublicPlanPageViewModel : BaseViewModel
@@ -41,8 +40,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(OrderPriority));
             }
         }
-
-
         public bool IsAppearing { get; set; }
         public bool IsLoadPlan { get; set; }
         public PublicPlanPageViewModel()
@@ -57,6 +54,7 @@ namespace XiDeng.ViewModel.PlanViewModels
                 await base.Appearing(obj);
                 if (this.Plans != null)
                 {
+                    IsAppearing = false;
                     return;
                 }
                 Plans = new ObservableCollection<ExercisePlanDTO>();
@@ -64,7 +62,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 await LoadPlans();
                 IsAppearing = false;
             });
-
             LoadPlansCommand = new AsyncCommand<object>(async obj =>
             {
                 if (IsAppearing)
@@ -77,37 +74,28 @@ namespace XiDeng.ViewModel.PlanViewModels
                     this.Plans = new ObservableCollection<ExercisePlanDTO>();
                 else
                     this.Plans.Clear();
-
                 Plans = new ObservableCollection<ExercisePlanDTO>();
                 pageIndex = 0;
                 await LoadPlans();
                 IsLoadPlan = false;
             });
-
             GotoPlanDetailCommand = new AsyncCommand<object>(async obj =>
             {
                 if (obj is ExercisePlanDTO plan)
                 {
-
                     await this.GoAsync(nameof(PlanDetailPage) + $"?PlanId={plan.Id}&ByWeek={plan.Cycle == 0}");
-
                 }
             });
-
             GotoCollectionFolderPopupPageCommand = new AsyncCommand<object>(async obj =>
             {
                 if (obj is Guid planId)
                 {
                     var popup = new CollectPopupPage(planId);
                     await Shell.Current.Navigation.PushPopupAsync(popup);
-
                     bool? isCollect = await popup.PopupClosedTask;
-
                     UpdateCollect(planId, isCollect);
-
                 }
             });
-
             LoadMoreCommand = new AsyncCommand<object>(async obj =>
             {
                 if (IsAppearing || IsLoadPlan || IsLoadMore || LoadMoreText == "到底了")
@@ -134,7 +122,6 @@ namespace XiDeng.ViewModel.PlanViewModels
                 this.RaisePropertyChanged(nameof(LoadMoreText));
             }
         }
-
         public bool IsLoadMore { get; set; }
         private async Task LoadPlans(bool isAnimate = true)
         {
@@ -146,13 +133,16 @@ namespace XiDeng.ViewModel.PlanViewModels
                 {
                     var ps = response.Content.To<ObservableCollection<ExercisePlanDTO>>();
                     
-                    if (ps == null || ps.Count < pageSize)
+                    if (ps == null || ps.Count == 0)
                     {
                         pageIndex--;
                         LoadMoreText = "到底了";
                         return;
                     }
-
+                    if (ps.Count < pageSize)
+                    {
+                        LoadMoreText = "到底了";
+                    }
                     //防止初始Scroll Position 等于最后一个Item的位置
                     if (Plans == null || Plans.Count == 0)
                     {
@@ -162,12 +152,10 @@ namespace XiDeng.ViewModel.PlanViewModels
                     {
                         Plans.AddRange(ps);
                     }
-
                     var folders = (await App.Database.GetAllAsync<CollectionFolderDTO>(f => f.AccountId == Utility.LoggedAccount.Id)).Select(x => x.Id);
                     await Plans.ForEachAsync(async x =>
                     {
                         x.IsCollect = (await App.Database.GetAsync<ExercisePlanCollectionDTO>(epc => epc.ExercisePlanId == x.Id && folders.Contains(epc.CollectionFolderId))) != null;
-
                     });
                 }
                 else if(response.StatusCode == System.Net.HttpStatusCode.SeeOther){
@@ -186,7 +174,6 @@ namespace XiDeng.ViewModel.PlanViewModels
             {
                 return;
             }
-
             if (collectCount.HasValue)
             {
                 plan.CollectionCount = collectCount.Value;
@@ -212,16 +199,11 @@ namespace XiDeng.ViewModel.PlanViewModels
                 }
                 plan.IsCollect = isCollect.Value;
             }
-
-
         }
         public AsyncCommand<object> LoadPlansCommand { get; set; }
         public AsyncCommand<object> LoadMoreCommand { get; set; }
         public AsyncCommand<object> GotoPlanDetailCommand { get; set; }
         public AsyncCommand<object> GotoCollectionFolderPopupPageCommand { get; set; }
         public new AsyncCommand<object> AppearingCommand { get; set; }
-
-
     }
-
 }

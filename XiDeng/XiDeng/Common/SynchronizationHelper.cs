@@ -96,7 +96,7 @@ namespace XiDeng.Common
 
                     #region My ExercisePlans
 
-                    model.ExercisePlans.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
+                    model.ExercisePlans?.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
                     rows = await App.Database.SaveAllAsync(model.ExercisePlans);
                     RecordCountInfo.AppendLine($"ExercisePlans:{rows}");
                     int deleteRows = rows = 0;
@@ -114,14 +114,14 @@ namespace XiDeng.Common
                     #endregion
 
                     #region Running Plans
-                    model.RunningPlans.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
+                    model.RunningPlans?.ForEach(x => { x.Updated = true; x.IsRemoved = false; });
                     rows = await App.Database.SaveAllAsync(model.RunningPlans);
                     RecordCountInfo.AppendLine($"RunningPlans:{rows}");
                     #endregion
 
                     #region CollectionFolders
                     deleteRows = rows = 0;
-                    await model.CollectionFolders.ForEachAsync(async x =>
+                    await model.CollectionFolders?.ForEachAsync(async x =>
                     {
                         x.Updated = true;
                         x.IsRemoved = false;
@@ -150,7 +150,7 @@ namespace XiDeng.Common
 
                     #region PlansOfCollectionFolders
                     deleteRows = rows = 0;
-                    await model.PlansOfCollectionFolders.ForEachAsync(async x => {
+                    await model.PlansOfCollectionFolders?.ForEachAsync(async x => {
                         x.Updated = true;
                         x.IsRemoved = false;
                         x.PlanEachDays.ForEach(p => {
@@ -159,10 +159,10 @@ namespace XiDeng.Common
                         });
                         var deletedPlanDays = await App.Database.GetAllAsync<PlanEachDayDTO>(a => a.PlanId == x.Id);
                         deleteRows += await App.Database.DeleteAllAsync(deletedPlanDays);
-                        rows += await App.Database.InsertAllAsync(x.PlanEachDays);
+                        rows += await App.Database.SaveAllAsync(x.PlanEachDays);
                     });
                     RecordCountInfo.AppendLine($"PlansOfCollectionFolders: Delete:{deleteRows}___Insert:{rows}");
-                    await App.Database.InsertAllAsync(model.PlansOfCollectionFolders?.Where(pocf => !model.ExercisePlans.Any(ep => ep.Id == pocf.Id)));
+                    await App.Database.SaveAllAsync(model.PlansOfCollectionFolders?.Where(pocf => !model.ExercisePlans.Any(ep => ep.Id == pocf.Id)));
                     #endregion
 
                     #region Exercise Logs
