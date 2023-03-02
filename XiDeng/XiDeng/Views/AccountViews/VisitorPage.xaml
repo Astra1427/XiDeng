@@ -20,7 +20,7 @@
 
             <Frame HeightRequest="100" HasShadow="True" BackgroundColor="#252526" xct:TouchEffect.PressedOpacity="0.7">
                 <StackLayout Orientation="Horizontal">
-                    <Image Source="{Binding VisitInfo.Account.PhotoUrl}" WidthRequest="50" HeightRequest="50" BackgroundColor="LightBlue"/>
+                    <Image Source="{Binding VisitInfo.Account.PhotoUrl}" WidthRequest="50" HeightRequest="50" Aspect="AspectFill"/>
                     <Label HorizontalOptions="StartAndExpand">
                         <Label.FormattedText>
                             <FormattedString>

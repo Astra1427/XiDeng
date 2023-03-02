@@ -99,7 +99,7 @@ namespace XiDeng.ViewModel.ExerciseLogViewModels
             GotoExerciseProjectDetailCommand = new AsyncCommand<object>(async obj=> {
                 if (obj is Guid EID)
                 {
-                    await Shell.Current.GoToAsync(nameof(ExerciseProjectDetailPage)+$"?EID={EID}");
+                    await Shell.Current.GoToAsync(nameof(ExerciseProjectDetailPage)+$"?Eid={EID}");
                 }
             });
             ExportExerciseLogCommand = new AsyncCommand(async () => {

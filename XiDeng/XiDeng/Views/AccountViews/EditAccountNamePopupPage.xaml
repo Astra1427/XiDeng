@@ -6,6 +6,7 @@
             IsEnabled="{Binding IsE}"
             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="XiDeng.Views.AccountViews.EditAccountNamePopupPage"
+                 
                  >
     <ContentPage.Behaviors>
         <xct:EventToCommandBehavior

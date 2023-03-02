@@ -23,8 +23,29 @@
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackCommand}"/>
     </Shell.BackButtonBehavior>
-    
-    
+
+
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="#007acc" />
+                                
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        
+    </ContentPage.Resources>
+
+
     <ContentPage.Content>
 
 
@@ -117,7 +138,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid IsEnabled="False">
-                                <Label Text="{Binding Style.Name}">
+                                <Label>
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label"
                                                  Binding="{Binding StyleID,TargetNullValue=''}"
@@ -126,7 +147,14 @@
                                             <Setter Property="Text" Value="休息日" />
                                             <Setter Property="TextColor" Value="LightGreen" />
                                         </DataTrigger>
+                                        
                                     </Label.Triggers>
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Style.SkillName}" FontSize="16"/>
+                                            <Span Text="{Binding Style.Name,StringFormat=' - {0}'}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
                                 </Label>
                                 <Label>
                                     <Label.FormattedText>

@@ -46,7 +46,7 @@ namespace XiDeng.ViewModel
         public ExerciseProjectDetailPageViewModel(Guid eid)
         {
             Exercise = DataCommon.ExerciseLogs.First(a => a.Id == eid);
-            Title = Exercise.SkillName + "-" + Exercise.ToString();
+            Title = Exercise.Style.Name + "-" + Exercise.ToString();
             Feeling = Exercise.Feeling;
 
             SaveFeelingCommand = new AsyncCommand(async ()=> {

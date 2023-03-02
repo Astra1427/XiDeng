@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using XiDeng.Common;
+using XiDeng.Models;
 
 namespace XiDeng.ViewModel
 {
@@ -33,6 +34,34 @@ namespace XiDeng.ViewModel
                 this.RaisePropertyChanged(nameof(IsE));
             }
         }
+
+        //public static CustomTheme currentTheme = new CustomTheme();
+        //public static CustomTheme CurrentTheme
+        //{
+        //    get { return currentTheme; }
+        //    set
+        //    {
+        //        currentTheme = value;
+        //        StaticPropertyChanged?.Invoke(null,new PropertyChangedEventArgs(nameof(CurrentTheme)));
+        //        RaiseStaticPropertyChanged(nameof(CurrentTheme));
+        //    }
+        //}
+
+
+        //private static Color tabColor;
+        //public static Color TabColor
+        //{
+        //    get { return tabColor; }
+        //    set
+        //    {
+        //        tabColor = value;
+        //        RaiseStaticPropertyChanged(nameof(TabColor));
+        //    }
+        //}
+
+
+
+
         public virtual Logger logger { get; set; }
 
 
@@ -80,6 +109,13 @@ namespace XiDeng.ViewModel
         public void RaisePropertyChanged(string name)
         {
             this.PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(name));
+        }
+
+
+        public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged ;
+        public static void RaiseStaticPropertyChanged(string name)
+        {
+            StaticPropertyChanged?.Invoke(null,new PropertyChangedEventArgs(name));
         }
 
     }

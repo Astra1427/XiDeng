@@ -6,6 +6,7 @@
              xmlns:cb="clr-namespace:XiDeng.Common.Controls"
              IsEnabled="{Binding IsE}"
              BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             
              Shell.TabBarIsVisible="False">
     <RefreshView IsRefreshing="{Binding IsRefresh}">
         

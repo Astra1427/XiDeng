@@ -137,6 +137,7 @@ namespace XiDeng.ViewModel.CollectionViewModels
                 {
                     await this.Message("获取收藏夹列表失败！");
                     await Shell.Current.Navigation.PopPopupAsync();
+                    return;
                 }
                 foreach (var item in CollectionFolders)
                 {

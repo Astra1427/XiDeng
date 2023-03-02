@@ -13,6 +13,8 @@ using XiDeng.Views.AccountViews;
 using XiDeng.Views.CollectionViews;
 using XiDeng.Views.ExerciseLogViews;
 using XiDeng.Views.PlanViews;
+using XiDeng.Views.ThemeSettingViews;
+
 namespace XiDeng
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -72,6 +74,11 @@ namespace XiDeng
             #endregion
             #region Exercise Log
             Routing.RegisterRoute(nameof(ExerciseCalendarLogPage), typeof(ExerciseCalendarLogPage));
+            #endregion
+            #region Theme Setting
+            //Routing.RegisterRoute(nameof(ThemeListPage),typeof(ThemeListPage));
+            //Routing.RegisterRoute(nameof(ThemeSettingPage),typeof(ThemeSettingPage));
+            //Routing.RegisterRoute(nameof(AddThemePage),typeof(AddThemePage));
             #endregion
         }
     }

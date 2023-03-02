@@ -7,6 +7,7 @@
         <ResourceDictionary x:Name="AppResources" Source="Common/Styles/DefaultTheme.xaml"/>
 
         <converts:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converts:BoolToShowTriangleSwitchConverter x:Key="BoolToShowTriangleSwitchConverter"/>
         <!--<converts:DayWeekConverter x:Key="DayWeekConverter"/>-->
         <x:Boolean x:Key="True">True</x:Boolean>
 
@@ -33,6 +34,9 @@
         <Style TargetType="Picker">
             <Setter Property="TitleColor" Value="#ACACAC" />
             <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style TargetType="ContentPage">
+            <Setter Property="Shell.BackgroundColor" Value="White" />
         </Style>
     </Application.Resources>
     

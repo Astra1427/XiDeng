@@ -9,6 +9,7 @@
             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Shell.TabBarIsVisible="False"
              xmlns:cb="clr-namespace:XiDeng.Common.Controls"
+             
              >
 
     <ContentPage.Behaviors>

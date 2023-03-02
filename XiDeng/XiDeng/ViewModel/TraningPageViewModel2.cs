@@ -432,6 +432,7 @@ namespace XiDeng.ViewModel
             CurrentNumber = 0;
             CurrentGroupNumber = 0;
             IsStart = false;
+            IsShowNavBar = true;
         }
         /// <summary>
         /// record Exercise

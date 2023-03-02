@@ -29,7 +29,7 @@
                     <TapGestureRecognizer Command="{Binding ViewMyProfileCommand}"/>
                 </Frame.GestureRecognizers>
                 <StackLayout Orientation="Horizontal">
-                    <Image Source="{Binding Account.PhotoUrl}" WidthRequest="50" HeightRequest="50" BackgroundColor="LightBlue"/>
+                    <Image Source="{Binding Account.PhotoUrl}" WidthRequest="75" HeightRequest="50" Aspect="AspectFill"/>
                     <Label HorizontalOptions="StartAndExpand">
                         <Label.FormattedText>
                             <FormattedString>
@@ -128,6 +128,17 @@
                                 <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
                             </StackLayout>
                         </ViewCell>
+                        <!--<ViewCell>
+
+                            <StackLayout Orientation="Horizontal">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapTableItemCommand}" CommandParameter="ThemeListPage"/>
+                                </StackLayout.GestureRecognizers>
+
+                                <Label Text="主题设置"/>
+                                <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
+                            </StackLayout>
+                        </ViewCell>
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout.GestureRecognizers>
@@ -136,7 +147,7 @@
                                 <Label Text="帮助"/>
                                 <Image HorizontalOptions="EndAndExpand" Source="{Binding ImgRight}"/>
                             </StackLayout>
-                        </ViewCell>
+                        </ViewCell>-->
                         <ViewCell>
                             <StackLayout Orientation="Horizontal">
                                 <StackLayout.GestureRecognizers>

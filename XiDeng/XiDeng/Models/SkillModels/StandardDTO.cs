@@ -13,8 +13,24 @@ namespace XiDeng.Models.SkillModels
         public int GroupNumber { get; set; }
         public int Number { get; set; }
         public int Grade { get; set; }
+        public string DisGrade { 
+            get {
+                switch (this.Grade)
+                {
+                    case 1:
+                        return "初级标准";
+                    case 2:
+                        return "中级标准";
+                    case 3:
+                        return "高级标准";
+                    case 4:
+                        return "自由训练";
+                    default: return "----";
+                }
+            } 
+        }
 
-        [Newtonsoft.Json.JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
         private SkillStyleDTO style;
 
         [Newtonsoft.Json.JsonIgnore]

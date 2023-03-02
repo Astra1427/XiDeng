@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using ColorPicker.iOS;
 using Foundation;
 using UIKit;
 
@@ -24,6 +24,7 @@ namespace XiDeng.iOS
         {
             Rg.Plugins.Popup.Popup.Init();
             global::Xamarin.Forms.Forms.Init();
+            ColorPickerEffects.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

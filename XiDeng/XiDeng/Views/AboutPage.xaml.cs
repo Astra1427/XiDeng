@@ -32,7 +32,13 @@ namespace XiDeng.Views
         private async void CopyQQ_Tapped(object sender, EventArgs e)
         {
             await Clipboard.SetTextAsync("745872311");
-            await Shell.Current.DisplayToastAsync("已复制群号");
+
+            if (Device.UWP == Device.RuntimePlatform)
+            {
+                await "已复制群号".Message();
+            }
+            else
+                await Shell.Current.DisplayToastAsync("已复制群号");
         }
 
         private async void GotoLicenseFragment_Clicked(object sender, EventArgs e)

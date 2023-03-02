@@ -8,6 +8,7 @@
              Title="锻炼日记"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Shell.TabBarIsVisible="False"
+             
              >
 
     <ContentPage.Behaviors>
@@ -22,7 +23,17 @@
     </ContentPage.ToolbarItems>
     <RefreshView IsRefreshing="{Binding IsRefresh}">
         <StackLayout>
-            <c:Calendar Events="{Binding LogEvents}" Culture="{Binding LocalCulture}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" OtherMonthDayColor="Gray" DeselectedDayTextColor="White" DaysTitleColor="LightGray" SelectedDateTextFormat="D" TodayTextColor="White">
+            <c:Calendar Events="{Binding LogEvents}" 
+                        Culture="{Binding LocalCulture}"
+                        HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="FillAndExpand" 
+                        OtherMonthDayColor="Gray"
+                        DeselectedDayTextColor="White" 
+                        DaysTitleColor="LightGray" 
+                        SelectedDateTextFormat="D" 
+                        TodayTextColor="White" 
+                        EventIndicatorTextColor="White"
+                        ArrowsColor="White">
                 <c:Calendar.EventTemplate>
                     <DataTemplate>
                         <StackLayout Padding="15,0,0,0">
@@ -30,7 +41,7 @@
                                 <TapGestureRecognizer  Command="{Binding BindingContext.GotoExerciseProjectDetailCommand, Source={x:Reference page}}" CommandParameter="{Binding Id}"/>
                             </StackLayout.GestureRecognizers>
                             <Label
-                            Text="{Binding SkillName}"
+                            Text="{Binding Style.SkillName}"
                             FontAttributes="Bold"
                             FontSize="Medium" />
                             <Label Text="{Binding Style.Name}"

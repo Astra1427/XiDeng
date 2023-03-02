@@ -5,6 +5,7 @@
              x:Class="XiDeng.ShellApp"
        TitleColor="White"
        BackgroundColor="{x:DynamicResource ShellBackGroundColor}"
+       
        UnselectedColor="#ACACAC"
        >
     

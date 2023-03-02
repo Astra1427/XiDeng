@@ -60,6 +60,8 @@ namespace XiDeng.ViewModel.AccountViewModels
                         IsLogged = false;
                     }
                 }
+
+
             });
 
             ViewMyProfileCommand = new AsyncCommand<object>(async obj => {

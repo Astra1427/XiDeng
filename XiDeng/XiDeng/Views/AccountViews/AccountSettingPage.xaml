@@ -4,6 +4,7 @@
              x:Class="XiDeng.Views.AccountViews.AccountSettingPage"
              Title="账号设置"
              BackgroundColor="{StaticResource ContentPageBackGroundColor}"
+             
              Shell.TabBarIsVisible="False">
 
     <TableView Intent="Menu">

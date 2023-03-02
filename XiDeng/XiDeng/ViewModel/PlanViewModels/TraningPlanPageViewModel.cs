@@ -530,6 +530,7 @@ namespace XiDeng.ViewModel.PlanViewModels
             CurrentNumber = 0;
             CurrentGroupNumber = 0;
             IsStart = false;
+            IsShowNavBar = true;
         }
 
         public async Task Traning()

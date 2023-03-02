@@ -4,11 +4,14 @@
              x:Class="XiDeng.PublicPlanPage"
              BackgroundColor="{StaticResource ContentPageBackGroundColor}"
              Title="公开的计划"
-                IsEnabled="{Binding IsE}"
+             IsEnabled="{Binding IsE}"
              x:Name="page"
-            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:baseVM="clr-namespace:XiDeng.ViewModel"
+             
              >
-
+<!--Shell.TabBarBackgroundColor="{Binding TabColor}"
+             Shell.BackgroundColor="{Binding TabColor}"-->
     <ContentPage.Behaviors>
         <xct:EventToCommandBehavior
             EventName="Appearing"
@@ -17,7 +20,7 @@
     </ContentPage.Behaviors>
     <RefreshView IsRefreshing="{Binding IsRefresh}" Command="{Binding LoadPlansCommand}">
         <CollectionView ItemsSource="{Binding Plans}"  
-                  SelectionMode="None" Margin="10"
+                    SelectionMode="None" Margin="10"
                     RemainingItemsThreshold="2"
                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}"
                         Footer=""

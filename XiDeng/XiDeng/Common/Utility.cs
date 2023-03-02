@@ -17,6 +17,7 @@ using XiDeng.Views;
 using XiDeng.Views.ExerciseLogViews;
 using System.Linq;
 using Android.App;
+using XiDeng.Views.ThemeSettingViews;
 
 namespace XiDeng.Common
 {
@@ -259,7 +260,7 @@ namespace XiDeng.Common
             try
             {
                 
-                return JsonConvert.DeserializeObject<T>(json);
+                return json == null ? default : JsonConvert.DeserializeObject<T>(json);
             }
             catch (Exception ex)
             {
@@ -271,7 +272,7 @@ namespace XiDeng.Common
             try
             {
 
-                return JsonConvert.SerializeObject(obj);
+                return obj == null ? null : JsonConvert.SerializeObject(obj);
             }
             catch (Exception ex)
             {
@@ -344,7 +345,7 @@ namespace XiDeng.Common
         #endregion
 
         #region Shell Extensions
-        public static string[] IgnorePreventNavigationKeyWords = new string[] {nameof(LoginPage),"../","..",nameof(ForgotPasswordPage), nameof(RegisterPage),nameof(StylePage),nameof(SkillStyleDetailPage),nameof(TraningPage), nameof(ThanksPage),nameof(DonationPage),nameof(AboutPage),nameof(StatisticsPage), nameof(ExerciseCalendarLogPage),nameof(StretchGuidancePage),nameof(FeedbackEmailPage),nameof(FeedbackPage),nameof(SettingPage), nameof(UserAgreementPage) };
+        public static string[] IgnorePreventNavigationKeyWords = new string[] {nameof(LoginPage),"../","..",nameof(ForgotPasswordPage), nameof(RegisterPage),nameof(StylePage),nameof(SkillStyleDetailPage),nameof(TraningPage), nameof(ThanksPage),nameof(DonationPage),nameof(AboutPage),nameof(StatisticsPage), nameof(ExerciseCalendarLogPage),nameof(StretchGuidancePage),nameof(FeedbackEmailPage),nameof(FeedbackPage),nameof(SettingPage), nameof(UserAgreementPage),nameof(ThemeListPage),nameof(AddThemePage),nameof(ThemeSettingPage) };
         public static async Task GoAsync(this BaseViewModel vm,string navigationState,bool animation = true)
         {
             vm.IsE = false;

@@ -33,6 +33,8 @@ namespace XiDeng
             LoadAccountInfo();
 
             MainPage = new ShellApp();
+            //MainPage = new MainPage();
+            //MainPage = new Views.ThemeSettingViews.AddThemePage();
         }
         
         public async Task<bool> LoadNewVersionData()

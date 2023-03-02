@@ -31,6 +31,7 @@ namespace XiDeng.Data
             database.CreateTableAsync<AccountRunningPlanDTO>().Wait();
             database.CreateTableAsync<ExercisePlanCollectionDTO>().Wait();
             database.CreateTableAsync<ExerciseLogDTO>().Wait();
+            database.CreateTableAsync<CustomTheme>().Wait();
         }
 
 

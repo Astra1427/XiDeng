@@ -34,7 +34,7 @@
         </Picker>
         <Picker Title="动作组" ItemsSource="{Binding Skills}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedSkill}"/>
         <Picker Title="动作" ItemsSource="{Binding SelectedSkill.SkillStyles}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedStyle}"/>
-        <Picker Title="等级" ItemsSource="{Binding SelectedStyle.Standards}" ItemDisplayBinding="{Binding Grade}" SelectedItem="{Binding SelectedStandard}"/>
+        <Picker Title="等级" ItemsSource="{Binding SelectedStyle.Standards}" ItemDisplayBinding="{Binding DisGrade}" SelectedItem="{Binding SelectedStandard}"/>
         <StackLayout Orientation="Horizontal">
             <Label Text="组数：" VerticalOptions="Center"/>
             <Entry Text="{Binding SelectedStandard.GroupNumber}" Keyboard="Numeric" WidthRequest="100" IsReadOnly="{Binding IsReadOnlyStandard}"/>

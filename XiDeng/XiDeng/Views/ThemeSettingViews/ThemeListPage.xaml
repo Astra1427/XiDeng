@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.ThemeSettingViews.ThemeListPage"
+             Title="主题列表"
+             x:Name="page"
+             BackgroundColor="{Binding CurrentTheme.PageBgColor}"
+             Shell.TabBarBackgroundColor="{Binding CurrentTheme.TopBarColor}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="{Binding BookIcon}" Command="{Binding GotoExerciseCalendarLogCommand}"/>
+
+
+        <ToolbarItem Text="添加" Order="Primary" Command="{Binding GotoAddThemeCommand}"/>
+
+    </ContentPage.ToolbarItems>
+
+    <CollectionView ItemsSource="{Binding Themes}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame HasShadow="True" CornerRadius="5" Margin="10,5">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BindingContext.ThemeTappedCommand,Source={x:Reference page}}" CommandParameter="{Binding .}"/>
+                    </Frame.GestureRecognizers>
+                    <Label>
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Name}" FontSize="Subtitle"/>
+                                <Span Text="&#10;"/>
+                                <Span Text="{Binding DisTone}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

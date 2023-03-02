@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XiDeng.Views.ThemeSettingViews.ThemeSettingPage"
+             xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+             >
+    <ScrollView>
+        <StackLayout>
+
+            <StackLayout Orientation="Horizontal" Spacing="0">
+                <Button Text="亮色调" FontSize="20" CornerRadius="0" HorizontalOptions="StartAndExpand" Command="{Binding ToneCommand}" CommandParameter="Light" BackgroundColor="{Binding LightButtonColor}" TextColor="{Binding LightTextColor}"/>
+                <Button Text="暗色调" FontSize="20" CornerRadius="0" HorizontalOptions="EndAndExpand" Command="{Binding ToneCommand}" CommandParameter="Dark" BackgroundColor="{Binding DarkButtonColor}" TextColor="{Binding DarkTextColor}"/>
+            </StackLayout>
+
+            <Label Text="顶部颜色"/>
+            
+            <Label Text="底部颜色"/>
+
+            <colorpicker:ColorWheel x:Name="ColorWheel1"
+                                ShowAlphaSlider="{ Binding Source={x:Reference ShowAlphaSwitch}, Path=IsToggled }"
+                                ShowLuminositySlider="{ Binding Source={x:Reference ShowLuminositySlider}, Path=IsToggled }"
+                                ShowLuminosityWheel="{ Binding Source={x:Reference ShowLuminosityWheel}, Path=IsToggled }"
+                                IsVisible="{ Binding Source={x:Reference ShowTriangleSwitch}, Path=IsToggled, Converter={StaticResource InverseBoolConverter} }"
+                                Vertical="{ Binding Source={x:Reference VerticalSlider}, Path=IsToggled }"
+                                Padding="5"
+                                Grid.Row="1"/>
+            <colorpicker:ColorTriangle x:Name="ColorTriangle1"
+                                   ConnectedColorPicker="{x:Reference Name=ColorWheel1}"
+                                   IsVisible="{ Binding Source={x:Reference ShowTriangleSwitch}, Path=IsToggled }"
+                                   RotateTriangleByHue="{ Binding Source={x:Reference RotateTriangleByHue}, Path=IsToggled }"
+                                   Padding="5"
+                                   Grid.Row="1"/>
+            <colorpicker:HSLSliders x:Name="HSLSliders1"
+                                ConnectedColorPicker="{x:Reference Name=ColorWheel1}"
+                                ShowAlphaSlider="{ Binding Source={x:Reference ShowAlphaSwitch}, Path=IsToggled }"
+                                Padding="5"
+                                Grid.Row="2"/>
+            <colorpicker:RGBSliders x:Name="RGBSliders1"
+                                ConnectedColorPicker="{x:Reference Name=ColorWheel1}"
+                                ShowAlphaSlider="{ Binding Source={x:Reference ShowAlphaSwitch}, Path=IsToggled }"
+                                Padding="5"
+                                Grid.Row="3"/>
+
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

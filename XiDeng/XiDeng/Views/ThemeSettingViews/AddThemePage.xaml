@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             x:Class="XiDeng.Views.ThemeSettingViews.AddThemePage"
+             xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+             xmlns:forms="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             mc:Ignorable="d"
+             ios:Page.UseSafeArea="true"
+             Title="添加主题"
+             xmlns:baseVM="clr-namespace:XiDeng.ViewModel"
+             
+             >
+    <!--Shell.TabBarBackgroundColor="{Binding Source={x:Static baseVM:BaseViewModel.TabColor}}"
+             Shell.BackgroundColor="{Binding TabColor}"-->
+    <ScrollView>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" Spacing="0">
+                <Button Text="亮色调" FontSize="20" CornerRadius="0" HorizontalOptions="StartAndExpand" Command="{Binding ToneCommand}" CommandParameter="Light" BackgroundColor="{Binding LightButtonColor}" TextColor="{Binding LightTextColor}"/>
+                <Button Text="暗色调" FontSize="20" CornerRadius="0" HorizontalOptions="EndAndExpand" Command="{Binding ToneCommand}" CommandParameter="Dark" BackgroundColor="{Binding DarkButtonColor}" TextColor="{Binding DarkTextColor}"/>
+            </StackLayout>
+
+            <Entry Placeholder="为主题取个名字吧！" Text=""/>
+
+            <Label Text="顶部栏颜色"/>
+            <Label Text="底部栏颜色"/>
+            <Button Text="Popup" Clicked="Popup_Clicked"/>
+
+            <colorpicker:ColorWheel x:Name="ColorWheel1"
+                                    ShowAlphaSlider="True"
+                                    ShowLuminositySlider="False"
+                                    ShowLuminosityWheel="True"
+                                    Vertical="True"
+                                    Padding="5"
+                                    Grid.Row="1"
+                                    SelectedColorChanged="ColorWheel1_SelectedColorChanged"
+                                    
+                                    />
+            <colorpicker:ColorWheel x:Name="ColorWheel2"
+                                    ShowAlphaSlider="True"
+                                    ShowLuminositySlider="False"
+                                    ShowLuminosityWheel="True"
+                                    Vertical="True"
+                                    Padding="5"
+                                    Grid.Row="1"
+                                    SelectedColorChanged="ColorWheel1_SelectedColorChanged"
+                                    />
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>
